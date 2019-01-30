@@ -9,8 +9,11 @@
 
     .heading {
         text-align: center;
+        /*
         background-color: #0c0d12;
         background-image: linear-gradient(#050505, #343434);
+        */
+        background-color: transparent;
     }
 
     .heading .title {
@@ -80,20 +83,24 @@
     }
 
 
-    .sub-heading-footer div .gameCardImg {
-        height: 20px;
+ .gameCardImg {
+        height: 18px;
     }
 
     .sub-heading-footer-strip {
-        padding: 5px;
+        padding: 0px;
         color: white;
+
+        margin: auto;
+    max-width: 300px;
     }
 
 
     .sub-heading-footer-strip.highlighted {
-        background-color: #fbcb36;
+       /* background-color: #fbcb36;
         background-image: linear-gradient(#DAA520, yellow);
         color: black;
+        */
     }
 
     .player {
@@ -102,6 +109,7 @@
         font-weight: bold;
         cursor: pointer;
         padding: 4px;
+        text-transform: uppercase;
     }
 
     .player.altRow {
@@ -111,7 +119,7 @@
     .team-title {
         font-weight: bold;
         color: black;
-        font-size: 26px;
+        font-size: 20px;
         padding: 10px;
         vertical-align: middle;
         display: inline-flex;
@@ -159,6 +167,7 @@
     .playerStats {
         text-align: right;
         color: white;
+        text-transform: uppercase;
     }
 
     .playerStats.title {
@@ -231,22 +240,43 @@
 {
     text-align: left;
 }
+
+.statsValue 
+{
+    background-color: #bdfdfd;
+ 
+    width: 50px;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px;
+    text-align: center;
+    background: linear-gradient(to bottom, #bdfdfd 0%, #c8e6e6  100%);
+}
+
+.statsDescription
+{
+    background-color: #e9fdfe;
+    color: black;
+    font-size: 15px;
+    padding: 4px;
+    font-weight: bold;
+    margin: 0px 5px;    width: 180px;
+    background: linear-gradient(to bottom, #e9fdfe 0%, #d7eaea 100%);
+    text-transform: uppercase;
+}
     /* aligntment */
 </style>
 <div class="body-content">
     <div *ngIf="!showSelectedPlayer" class="container-fluid myContent-body">
 
         <div class="row heading">
-            <div class="col-sm-12">
-                <h4 class="title">MATCH FACTS</h4>
+            <div class="col-sm-12" style="height: 20px;">
+ 
             </div>
         </div>
-        <div class="row sub-heading">
-            <div class="col-sm-12 center">
-                {{match?.tournament}}
-            </div>
-
-        </div>
+ 
         <div class="row navigation-sub-heading">
             <div class="col-sm-6 nav highlighted center">
                 MATCH
@@ -257,24 +287,43 @@
 
         </div>
         <div class="row  sub-heading-footer">
-            <div class="col-sm-4 left barBackground alignRight">
+            <div class="col-sm-3 left barBackground alignRight">
                 <img [attr.src]="homeTeamLogo" class="teamlogo left">
                 <span class="team-title"> {{match?.homeTeam}}</span>
             </div>
-            <div class="col-sm-4 center">
-                <h2 class="score center" style="font-weight: bold;"> {{match?.homeTeamScore}} - {{match?.awayTeamScore}}</h2>
+            <div class="col-sm-6 center" style="    padding: 0;">
+                <span class="score center" style="       width: 60px; background-color: #71abfc;float: left;color:black; font-weight: bold;font-size: 20px;    padding: 10px;">
+                    
+                    {{match?.homeTeamScore}}  
+                </span>
+                    <div style="    text-transform: uppercase;   color: #1d2f57;  float: left;
+                    font-size: 20px;
+                    font-weight: bold;
+                    background-color: #cee1f0;
+                    position: absolute;
+                    left: 60px;
+                    right: 60px;
+                    height: 88px;
+                    top: -40px;
+                    padding: 5px;">
+                        {{match?.tournament}}
+                    </div>
+                <span class="score center" style="    width: 60px; background-color: #71abfc;  float: right;color:black; font-weight: bold;font-size: 20px;    padding: 10px;">
+                    
+                    {{match?.awayTeamScore}} 
+                </span>
             </div>
-            <div class="col-sm-4 right barBackground alignLeft">
+            <div class="col-sm-3 right barBackground alignLeft">
 
                 <img [attr.src]="awayTeamLogo" class="teamlogo right">
                 <span class="team-title"> {{match?.awayTeam}}</span>
             </div>
 
         </div>
-        <hr style=" margin-top: 2px;  margin-bottom: 2px;" />
+     
 
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <!-- Players home team -->
                 <div *ngFor="let player of match.homeTeamPlayers | slice:0:11; let i = index" [attr.data-index]="i" class="playerRow row">
                     <div class="col-sm-12 player">
@@ -299,7 +348,7 @@
                     </div>
                 </div>
                 <div class="playersSub row">
-                    <div class="col-sm-12 player">
+                    <div class="col-sm-12 player" style="color: white;">
                         SUBSTITUTES
                     </div>
                 </div>
@@ -330,158 +379,277 @@
                 </div>
 
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
 
 
                 <div class="row sub-heading-footer-strip highlighted">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
                     </div>
-                    <div class="col-sm-6 center">
-                        Goal Attempts 
+                    <div class="col-sm-6 center statsDescription">
+                        Goal At Goal 
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
                     </div>
                 </div>
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.shotsOnTarget}}
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Shots on Target
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.shotsOnTarget}}
                     </div>
                 </div>
+
+
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
-                        {{match?.homeTeamPossession}} %
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.corners}}
                     </div>
-                    <div class="col-sm-6 center">
-                        Possession %
+                    <div class="col-sm-6 center statsDescription">
+                        Corner Kick
                     </div>
-                    <div class="col-sm-3 aRight">
-                        {{match?.awayTeamPossession}} %
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.corners}}
                     </div>
                 </div>
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
-                        {{match?.homeTeamEvents.tackles}}
-                    </div>
-                    <div class="col-sm-6 center">
-                        Tackles
-                    </div>
-                    <div class="col-sm-3 aRight">
-                        {{match?.awayTeamEvents.tackles}}
-                    </div>
-                </div>
-                <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.fouls}}
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Fouls
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.fouls}}
                     </div>
                 </div>
+
+
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.redCards}}
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Red Cards
+                        <img [attr.src]="redCardUrl" class="gameCardImg">
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.redCards}}
+                    </div>
+                </div>
+                
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.yellowCards}}
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Yellow Cards
                         <img [attr.src]="yellowCardUrl" class="gameCardImg">
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.yellowCards}}
                     </div>
                 </div>
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
-                        {{match?.homeTeamEvents.redCards}}
-                    </div>
-                    <div class="col-sm-6 center">
-                        Red Cards
-                        <img [attr.src]="redCardUrl" class="gameCardImg">
-                    </div>
-                    <div class="col-sm-3 aRight">
-                        {{match?.awayTeamEvents.redCards}}
-                    </div>
-                </div>
-                <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
-                        {{match?.homeTeamEvents.completedPasses}}
-                    </div>
-                    <div class="col-sm-6 center">
-                        Completed Passes
-                    </div>
-                    <div class="col-sm-3 aRight">
-                        {{match?.awayTeamEvents.completedPasses}}
-                    </div>
-                </div>
-
-                <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.offSides}}
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Offsides
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.offSides}}
                     </div>
                 </div>
 
-                <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
-                        {{match?.homeTeamEvents.corners}}
-                    </div>
-                    <div class="col-sm-6 center">
-                        Corners
-                    </div>
-                    <div class="col-sm-3 aRight">
-                        {{match?.awayTeamEvents.corners}}
-                    </div>
-                </div>
-                <hr />
 
                 <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                    <div class="col-sm-3 aLeft statsValue">
+                       ?
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Total Distance (KM)
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                     ?
+                    </div>
+                </div>
+
+
+
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                       ?
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                       Number of Sprints
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                     ?
+                    </div>
+                </div>
+
+
+                
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                       ?
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                       Average Speed
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                     ?
+                    </div>
+                </div>
+
+
+
+
+                
+                
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                       ?
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                       Total Passes
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                     ?
+                    </div>
+                </div>
+
+
+                                
+                
+          
+
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.completedPasses}}
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Successful Passes
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.completedPasses}}
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row sub-heading-footer-strip" style="display:none">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.passAccuracy}} %
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Pass Completion %
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.passAccuracy}} %
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamPossession}} 
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Possession %
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamPossession}} 
+                    </div>
+                </div>
+
+                           
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft statsValue">
+                       ?
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                       Auctual Play Time
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                     ?
+                    </div>
+                </div>
+
+
+                
+                <div class="row sub-heading-footer-strip" style="display:none">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.tackles}}
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Tackles
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.tackles}}
+                    </div>
+                </div>
+               
+
+
+
+
+            
+  
+
+               
+    
+                <div class="row sub-heading-footer-strip" style="display:none">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.shotAccuracy}} %
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Shot Accuracy %
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.shotAccuracy}} %
                     </div>
                 </div>
 
-                <div class="row sub-heading-footer-strip">
-                    <div class="col-sm-3 aLeft">
+                <div class="row sub-heading-footer-strip" style="display:none">
+                    <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.passAccuracy}} %
                     </div>
-                    <div class="col-sm-6 center">
+                    <div class="col-sm-6 center statsDescription">
                         Pass Accuracy %
                     </div>
-                    <div class="col-sm-3 aRight">
+                    <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.passAccuracy}} %
                     </div>
                 </div>
-                <div>
+                <div style="width: 440px;
+    margin: 10px auto;">
                     <div class="col-sm-6 aRight">
                         <img [attr.src]="homeTeamHeatMap" class="teamHeatMap left">
                     </div>
                     <div class="col-sm-6 aRight">
                         <img [attr.src]="awayTeamHeatMap" class="teamHeatMap left">
                     </div>
+                    
                 </div>
+
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <!-- Players away team -->
                 <div *ngFor="let player of match.awayTeamPlayers | slice:0:11; let i = index" [attr.data-index]="i" class="row playerRow">
                     <div class="col-sm-12 player aRight">
@@ -511,7 +679,7 @@
                 </div>
 
                 <div class="playersSub row">
-                    <div class="col-sm-12 player">
+                    <div class="col-sm-12 player" style="color: white;">
                         SUBSTITUTES
                     </div>
                 </div>
@@ -558,109 +726,110 @@
 
 
     </div>
-    <div *ngIf="showSelectedPlayer" class="container-fluid myContent-body ">
-        <div class="myContent-body  player-container fullHeight">
+<div *ngIf="showSelectedPlayer" class="container-fluid myContent-body ">
+    <div class="myContent-body  player-container fullHeight">
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row">
-                        <h4 class="left playerName"> {{selectedPlayer?.name}}</h4>
-                        <h1 class="left playerName"> {{selectedPlayer?.surname}}</h1>
-                    </div>
-                    <div class="row">
-                        <Span class="tornament-sub">{{match?.tournament}}</Span>
-                    </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <h4 class="left playerName"> {{selectedPlayer?.name}}</h4>
+                    <h1 class="left playerName"> {{selectedPlayer?.surname}}</h1>
                 </div>
-                <div class="col-sm-6">
-                    <img [attr.src]="selectedPlayerTeamLogo" class="playerTeamLogo right playerImage">
+                <div class="row">
+                    <Span class="tornament-sub">{{match?.tournament}}</Span>
                 </div>
             </div>
-            <hr/>
+            <div class="col-sm-6">
+                <img [attr.src]="getPlayerTeamLogoUrl()" class="playerTeamLogo right playerImage">
+            </div>
+        </div>
+        <hr/>
 
-            <div class="row">
-                <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
 
-                    <img [attr.src]="getPlayerPhotoUrl()" class="playerPhoto left">
+                <img [attr.src]="getPlayerPhotoUrl()" class="playerPhoto left">
 
-                    <div class="row playerStats title">
+                <div class="row playerStats title">
+                    <div class="col-sm-12 center">
+                        Basic Infomation
+                    </div>
+                    <div class="row playerStats">
                         <div class="col-sm-12 center">
-                            Basic Infomation
-                        </div>
-                        <div class="row playerStats">
-                            <div class="col-sm-12 center">
-                                Preferred Name:
-                                <span class="player-info">{{selectedPlayer?.preferredName}}</span>
-                            </div>
-                        </div>
-
-                        <div class="row playerStats">
-                            <div class="col-sm-12 center">
-                                Position:
-                                <span class="player-info">{{selectedPlayer?.position}}</span>
-                            </div>
-                        </div>
-
-                        <div class="row playerStats">
-                            <div class="col-sm-12 center">
-                                Jersery Number:
-                                <span class="player-info">{{selectedPlayer?.jerseyNumber}}</span>
-                            </div>
+                            Preferred Name:
+                            <span class="player-info">{{selectedPlayer?.preferredName}}</span>
                         </div>
                     </div>
 
+                    <div class="row playerStats">
+                        <div class="col-sm-12 center">
+                            Position:
+                            <span class="player-info">{{selectedPlayer?.position}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row playerStats">
+                        <div class="col-sm-12 center">
+                            Jersery Number:
+                            <span class="player-info">{{selectedPlayer?.jerseyNumber}}</span>
+                        </div>
+                    </div>
                 </div>
 
+            </div>
 
-                <div class="col-sm-6">
-                    <div class="row playerStats title">
-                        <div class="col-sm-12">
-                            STAT
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            Goals: {{selectedPlayer?.playerEvents.goals + selectedPlayer?.playerEvents.ownGoals}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            Shorts on Target: {{selectedPlayer?.playerEvents.shotsOnTarget}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            Tackles: {{selectedPlayer?.playerEvents.tackles}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            Corners: {{selectedPlayer?.playerEvents.corners}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            OffSides: {{selectedPlayer?.playerEvents.offSides}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
-                        <div class="col-sm-12">
-                            Yellow Cards: {{selectedPlayer?.playerEvents.yellowCards}}
-                        </div>
-                    </div>
-                    <div class="row playerStats">
 
-                        <div class="col-sm-12">
-                            Red Cards: {{selectedPlayer?.playerEvents.redCards}}
-                        </div>
+            <div class="col-sm-6">
+                <div class="row playerStats title">
+                    <div class="col-sm-12">
+                        STAT
                     </div>
-
                 </div>
-            </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Goals: {{selectedPlayer?.playerEvents.goals + selectedPlayer?.playerEvents.ownGoals}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Shots on Target: {{selectedPlayer?.playerEvents.shotsOnTarget}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Tackles: {{selectedPlayer?.playerEvents.tackles}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Corners: {{selectedPlayer?.playerEvents.corners}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        OffSides: {{selectedPlayer?.playerEvents.offSides}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Yellow Cards: {{selectedPlayer?.playerEvents.yellowCards}}
+                    </div>
+                </div>
+                <div class="row playerStats">
 
-            <div class="row">
-        <span class="btnBack" (click)="goBackToMain()">&lt; Back</span>
-            </div>
+                    <div class="col-sm-12">
+                        Red Cards: {{selectedPlayer?.playerEvents.redCards}}
+                    </div>
+                </div>
 
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="btnBack" (click)="goBackToMain()">&lt; Back</span>
         </div>
 
     </div>
+
+</div>
+</div>

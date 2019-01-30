@@ -12,15 +12,15 @@ import { DomSanitizer } from '../../../../node_modules/@angular/platform-browser
 })
 export class HomeComponent implements OnInit {
 
-    public teamAImageUrl = require("./../../images/teamA.png");
-    public teamBImageUrl = require("./../../images/teamA.png");
+    public teamAImageUrl = require("./../../images/defaultTeamLogo.png");
+    public teamBImageUrl = require("./../../images/defaultTeamLogo.png");
     public redCardUrl = require("./../../images/redCard.png");
     public yellowCardUrl = require("./../../images/yellowCard.png");
     public goalBallUrl = require("./../../images/goalBall.png");
     public ownGoalBallUrl = require("./../../images/ownGoalBall.png");
-    public selectedPlayerTeamLogo = require("./../../images/teamA.png");
+    public selectedPlayerTeamLogo = require("./../../images/defaultTeamLogo.png");
     public teamDefaultLogo = require("./../../images/defaultTeamLogo.png");
-
+    
     public selctedPlayerImage: any;
     public defaultPlayerImage = require("./../../images/defaultPhoto.png");
     public match: matchDTO | any;
@@ -78,15 +78,18 @@ export class HomeComponent implements OnInit {
                 let newMatch = res.json() as matchDTO;
                 if (newMatch != this.match) {
                     this.match = newMatch;
-                    if (this.selectedPlayer != null) {
-                        this.reloadSelectedPlayer()
-                    }
+                
                     this.LoadHomeTeamLogo(this.match.homeTeam);
                     this.LoaddAwayTeamLogo(this.match.awayTeam);
                     
                     
                     this.LoadHomeTeamHeatMapImage(this.match.homeTeam);
                     this.LoadAwayTeamHeatMapImage(this.match.awayTeam);
+
+                    if (this.selectedPlayer != null) {
+                        this.reloadSelectedPlayer()
+                    }
+
                 }
 
                 // this.selectedPlayer = this.match.homeTeamPlayers[0];
@@ -148,6 +151,10 @@ export class HomeComponent implements OnInit {
                         this.awayTeamLogo = this.sanitizer.bypassSecurityTrustResourceUrl("data:image/png;base64," + res.text().substr(1, res.text().length - 2));
                     } else
                         this.awayTeamLogo = this.teamDefaultLogo;
+
+                 
+
+
                 } else {
                     console.log("API -Away team Logo Unknown Response");
                 }
@@ -164,6 +171,19 @@ export class HomeComponent implements OnInit {
             );
     }
 
+    loadSelectedPlayerTeamLogo()
+    {
+        if (this.selectedPlayer != null)  
+        {
+            if(this.selectedPlayer.teamID == this.match.awayTeamId)
+            {
+                this.selectedPlayerTeamLogo = this.awayTeamLogo;
+            }else             if(this.selectedPlayer.teamID == this.match.homeTeamId)
+            {
+                this.selectedPlayerTeamLogo = this.homeTeamLogo;
+            }
+        }
+    }
 
     
     LoadAwayTeamHeatMapImage(teamName: any) {
@@ -225,7 +245,6 @@ export class HomeComponent implements OnInit {
 
         this.selectedPlayer = player;
         if (player.photoPath != "") {
-
             this.loadPlayerPhoto(player.photoPath);
         }
         else
@@ -290,13 +309,22 @@ export class HomeComponent implements OnInit {
     goBackToMain() {
         this.selectedPlayer = null;
         this.selctedPlayerImage = this.defaultPlayerImage;;
+        this.selectedPlayerTeamLogo = this.teamDefaultLogo;;
         this.showSelectedPlayer = false;
     }
 
     getPlayerPhotoUrl() {
+        
+      
         return this.selctedPlayerImage;
         // return ( require( "C:/WORK/PSL_Photos_2017-2018/Bidvest%20Wits/Anthony_Gordinho.png"));
         // return this.sanitizer.bypassSecurityTrustUrl( ;
+    }
+
+    getPlayerTeamLogoUrl()
+    {
+        this.loadSelectedPlayerTeamLogo();
+        return this.selectedPlayerTeamLogo;
     }
 
     playerTimerCount() {
