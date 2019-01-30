@@ -1,7 +1,5 @@
  body {
-    background-image: url("../../images/background.jpg"); /* url(/app/images/background.jpg); */
-    background-repeat: no-repeat;
-    background-size: cover;
+background-color: #11345a;
 }
 
 @media (max-width: 767px) {

@@ -4,7 +4,7 @@
     }
 
     .myContent-body {
-        background: rgba(0, 0, 0, 0.7);
+      
     }
 
     .heading {
@@ -55,9 +55,25 @@
     }
 
     .sub-heading-footer div .teamlogo {
-        height: 60px;
+        height: 85px;
         cursor: pointer;
+        position: absolute;
+    top: -26px;
     }
+
+    .sub-heading-footer div .teamlogo.left 
+{
+ 
+    left: -43px;
+ 
+}
+
+
+.sub-heading-footer div .teamlogo.right 
+{ 
+    right: -43px; 
+}
+
     .teamHeatMap {
         width: 190px;
         cursor: pointer;
@@ -81,30 +97,38 @@
     }
 
     .player {
-        color: white;
+        color: black;
         font-size: 16px;
+        font-weight: bold;
         cursor: pointer;
         padding: 4px;
     }
 
     .player.altRow {
-        background-color: rgb(126, 125, 125);
+        background-color: #e9fdfe;
     }
 
     .team-title {
         font-weight: bold;
-        color: white;
-        font-size: large;
+        color: black;
+        font-size: 26px;
         padding: 10px;
         vertical-align: middle;
         display: inline-flex;
     }
 
+    
 
 
+
+    .playerRow
+    {
+        background-color:#e9fdfe;
+        margin-top: 5px;
+    }
 
     .playerRow.row:nth-child(odd) {
-        background-color: rgb(126, 125, 125);
+        background-color:#e9fdfe;
     }
 
     .playersSub {
@@ -190,7 +214,22 @@
 
 .substituteBar.row:nth-child(odd)
 {
-    background: black;
+    background: #e9fdfe;
+}
+
+.barBackground
+{
+    background-color: #e9fdfe;
+}
+
+.alignRight
+{
+    text-align: right;
+}
+
+.alignLeft
+{
+    text-align: left;
 }
     /* aligntment */
 </style>
@@ -218,17 +257,17 @@
 
         </div>
         <div class="row  sub-heading-footer">
-            <div class="col-sm-4 left">
+            <div class="col-sm-4 left barBackground alignRight">
                 <img [attr.src]="homeTeamLogo" class="teamlogo left">
                 <span class="team-title"> {{match?.homeTeam}}</span>
             </div>
             <div class="col-sm-4 center">
                 <h2 class="score center" style="font-weight: bold;"> {{match?.homeTeamScore}} - {{match?.awayTeamScore}}</h2>
             </div>
-            <div class="col-sm-4 right">
+            <div class="col-sm-4 right barBackground alignLeft">
 
                 <img [attr.src]="awayTeamLogo" class="teamlogo right">
-                <span class="right team-title"> {{match?.awayTeam}}</span>
+                <span class="team-title"> {{match?.awayTeam}}</span>
             </div>
 
         </div>
