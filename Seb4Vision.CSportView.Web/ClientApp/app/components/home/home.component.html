@@ -1,0 +1,615 @@
+<style>
+    .body-content {
+        padding: 25px;
+    }
+
+    .myContent-body {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .heading {
+        text-align: center;
+        background-color: #0c0d12;
+        background-image: linear-gradient(#050505, #343434);
+    }
+
+    .heading .title {
+        color: #fbc720;
+    }
+
+    .sub-heading {
+        background-color: #4f4f4f;
+        color: white;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+
+    .navigation-sub-heading {
+        display: none;
+    }
+
+
+    .navigation-sub-heading .nav {
+        color: black;
+        font-weight: bold;
+        background-color: white;
+        background: rgba(255, 255, 255, 0.5);
+        border-bottom: 2px solid #999;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .navigation-sub-heading .nav.highlighted {
+        background-color: white;
+        background: rgba(255, 255, 255, 0.7);
+        border-bottom: 2px solid red;
+    }
+
+    .sub-heading-footer {
+        padding: 10px;
+    }
+
+    .sub-heading-footer div .score {
+        color: white;
+    }
+
+    .sub-heading-footer div .teamlogo {
+        height: 60px;
+        cursor: pointer;
+    }
+
+
+    .sub-heading-footer div .gameCardImg {
+        height: 20px;
+    }
+
+    .sub-heading-footer-strip {
+        padding: 5px;
+        color: white;
+    }
+
+
+    .sub-heading-footer-strip.highlighted {
+        background-color: #fbcb36;
+        background-image: linear-gradient(#DAA520, yellow);
+        color: black;
+    }
+
+    .player {
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .player.altRow {
+        background-color: rgb(126, 125, 125);
+    }
+
+    .team-title {
+        font-weight: bold;
+        color: white;
+        font-size: large;
+        padding: 10px;
+        vertical-align: middle;
+        display: inline-flex;
+    }
+
+
+
+
+    .playerRow.row:nth-child(odd) {
+        background-color: rgb(126, 125, 125);
+    }
+
+    .playersSub {
+        font-weight: bold;
+        padding: 8px;
+    }
+
+
+    .jersey.highlighted {
+        background-color: #fbcb36;
+        background-image: linear-gradient(#DAA520, yellow);
+        color: black;
+        display: inline-block;
+        width: 25px;
+        text-align: center;
+        padding-left: 2px;
+        padding-right: 2px;
+        margin: 0px 2px 0px 2px;
+    }
+
+
+    .player-container {
+        padding: 30px;
+        width: 640px;
+        margin: auto auto;
+    }
+
+    .playerStats {
+        text-align: right;
+        color: white;
+    }
+
+    .playerStats.title {
+        font-weight: bold;
+        color: white;
+    }
+
+
+    .tornament-sub {
+        color: red;
+        font-weight: bold;
+    }
+
+    .playerName {
+        font-weight: bold;
+        color: white;
+    }
+
+    .player-info {
+        color: gray;
+    }
+
+    .playerTeamLogo {
+        height: 74px;
+        cursor: pointer;
+        background: transparent;
+    }
+
+    .playerPhoto {
+        height: 255px;
+        cursor: pointer;
+    }
+
+    .btnBack {
+        color: green;
+        cursor: pointer;
+    }
+
+    /* float */
+
+    .right {
+        float: right;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .fullHeight {
+        height: 90vh;
+    }
+
+
+.substituteBar.row:nth-child(odd)
+{
+    background: black;
+}
+    /* aligntment */
+</style>
+<div class="body-content">
+    <div *ngIf="!showSelectedPlayer" class="container-fluid myContent-body">
+
+        <div class="row heading">
+            <div class="col-sm-12">
+                <h4 class="title">MATCH FACTS</h4>
+            </div>
+        </div>
+        <div class="row sub-heading">
+            <div class="col-sm-12 center">
+                {{match?.tournament}}
+            </div>
+
+        </div>
+        <div class="row navigation-sub-heading">
+            <div class="col-sm-6 nav highlighted center">
+                MATCH
+            </div>
+            <div class="col-sm-6 nav center">
+                SQUAD
+            </div>
+
+        </div>
+        <div class="row  sub-heading-footer">
+            <div class="col-sm-4 left">
+                <img [attr.src]="homeTeamLogo" class="teamlogo left">
+                <span class="team-title"> {{match?.homeTeam}}</span>
+            </div>
+            <div class="col-sm-4 center">
+                <h2 class="score center" style="font-weight: bold;"> {{match?.homeTeamScore}} - {{match?.awayTeamScore}}</h2>
+            </div>
+            <div class="col-sm-4 right">
+
+                <img [attr.src]="awayTeamLogo" class="teamlogo right">
+                <span class="right team-title"> {{match?.awayTeam}}</span>
+            </div>
+
+        </div>
+        <hr style=" margin-top: 2px;  margin-bottom: 2px;" />
+
+        <div class="row">
+            <div class="col-sm-4">
+                <!-- Players home team -->
+                <div *ngFor="let player of match.homeTeamPlayers | slice:0:11; let i = index" [attr.data-index]="i" class="playerRow row">
+                    <div class="col-sm-12 player">
+                        <span (click)="onPlayerClick(match.id,  player)">
+
+                            <span class="jersey highlighted"> {{player.jerseyNumber}} </span>{{player.name}} {{player.surname}}
+                            <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>
+                            <span *ngIf="showPlayerShortDescription(player.personTypeShort)">({{player.personTypeShort}})</span>
+                            <!-- Game cards -->
+                            <!-- <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg" />
+                           -->
+
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />
+                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg"  />
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg"  />
+
+                        </span>
+
+                    </div>
+                </div>
+                <div class="playersSub row">
+                    <div class="col-sm-12 player">
+                        SUBSTITUTES
+                    </div>
+                </div>
+
+                <!-- Home team substitutes -->
+                <div *ngFor="let player of match.homeTeamPlayers | slice:11; let i = index" [attr.data-index]="i" class="playerRow row substituteBar">
+                    <div class="col-sm-12 player">
+                        <span (click)="onPlayerClick(match.id,  player)">
+
+                            <span class="jersey highlighted"> {{player.jerseyNumber}} </span>{{player.name}} {{player.surname}}
+                            <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>
+                            <span *ngIf="showPlayerShortDescription(player.personTypeShort)">({{player.personTypeShort}})</span>
+                            <!-- Game cards -->
+                            <!-- 
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />
+                                   -->
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg"  />
+                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg"  />
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg"  />
+
+
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+
+
+                <div class="row sub-heading-footer-strip highlighted">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Goal Attempts 
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.shotsOnTarget}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Shots on Target
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.shotsOnTarget}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamPossession}} %
+                    </div>
+                    <div class="col-sm-6 center">
+                        Possession %
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamPossession}} %
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.tackles}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Tackles
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.tackles}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.fouls}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Fouls
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.fouls}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.yellowCards}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Yellow Cards
+                        <img [attr.src]="yellowCardUrl" class="gameCardImg">
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.yellowCards}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.redCards}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Red Cards
+                        <img [attr.src]="redCardUrl" class="gameCardImg">
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.redCards}}
+                    </div>
+                </div>
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.completedPasses}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Completed Passes
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.completedPasses}}
+                    </div>
+                </div>
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.offSides}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Offsides
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.offSides}}
+                    </div>
+                </div>
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.corners}}
+                    </div>
+                    <div class="col-sm-6 center">
+                        Corners
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.corners}}
+                    </div>
+                </div>
+                <hr />
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.shotAccuracy}} %
+                    </div>
+                    <div class="col-sm-6 center">
+                        Shot Accuracy %
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.shotAccuracy}} %
+                    </div>
+                </div>
+
+                <div class="row sub-heading-footer-strip">
+                    <div class="col-sm-3 aLeft">
+                        {{match?.homeTeamEvents.passAccuracy}} %
+                    </div>
+                    <div class="col-sm-6 center">
+                        Pass Accuracy %
+                    </div>
+                    <div class="col-sm-3 aRight">
+                        {{match?.awayTeamEvents.passAccuracy}} %
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <!-- Players away team -->
+                <div *ngFor="let player of match.awayTeamPlayers | slice:0:11; let i = index" [attr.data-index]="i" class="row playerRow">
+                    <div class="col-sm-12 player aRight">
+                        <span (click)="onPlayerClick(match.id,  player)">
+                            <!-- Game cards -->
+                            <!-- 
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />
+-->
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />
+
+                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg"  />
+
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg"  />
+
+                            <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>
+
+                            <span *ngIf="showPlayerShortDescription(player.personTypeShort)">({{player.personTypeShort}})</span>
+
+                            {{player.name}} {{player.surname}}
+                            <span class="jersey highlighted"> {{player.jerseyNumber}} </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="playersSub row">
+                    <div class="col-sm-12 player">
+                        SUBSTITUTES
+                    </div>
+                </div>
+
+                <!-- Away team substitutes -->
+                <div *ngFor="let player of match.awayTeamPlayers | slice:11; let i = index" [attr.data-index]="i" class="playerRow row substituteBar">
+                    <div class="col-sm-12 player aRight">
+                        <span (click)="onPlayerClick(match.id,  player)">
+                            <!-- Game cards -->
+                            <!-- 
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />-->
+
+
+                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg"
+                            />
+                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg"  />
+
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg"  />
+
+
+                            <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>
+                            <span *ngIf="showPlayerShortDescription(player.personTypeShort)">({{player.personTypeShort}})</span>
+                            {{player.name}} {{player.surname}}
+                            <span class="jersey highlighted"> {{player.jerseyNumber}} </span>
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div *ngIf="showSelectedPlayer" class="container-fluid myContent-body ">
+        <div class="myContent-body  player-container fullHeight">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <h4 class="left playerName"> {{selectedPlayer?.name}}</h4>
+                        <h1 class="left playerName"> {{selectedPlayer?.surname}}</h1>
+                    </div>
+                    <div class="row">
+                        <Span class="tornament-sub">{{match?.tournament}}</Span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <img [attr.src]="selectedPlayerTeamLogo" class="playerTeamLogo right playerImage">
+                </div>
+            </div>
+            <hr/>
+
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <img [attr.src]="getPlayerPhotoUrl()" class="playerPhoto left">
+
+                    <div class="row playerStats title">
+                        <div class="col-sm-12 center">
+                            Basic Infomation
+                        </div>
+                        <div class="row playerStats">
+                            <div class="col-sm-12 center">
+                                Preferred Name:
+                                <span class="player-info">{{selectedPlayer?.preferredName}}</span>
+                            </div>
+                        </div>
+
+                        <div class="row playerStats">
+                            <div class="col-sm-12 center">
+                                Position:
+                                <span class="player-info">{{selectedPlayer?.position}}</span>
+                            </div>
+                        </div>
+
+                        <div class="row playerStats">
+                            <div class="col-sm-12 center">
+                                Jersery Number:
+                                <span class="player-info">{{selectedPlayer?.jerseyNumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="row playerStats title">
+                        <div class="col-sm-12">
+                            STAT
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Goals: {{selectedPlayer?.playerEvents.goals + selectedPlayer?.playerEvents.ownGoals}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Shorts on Target: {{selectedPlayer?.playerEvents.shotsOnTarget}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Tackles: {{selectedPlayer?.playerEvents.tackles}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Corners: {{selectedPlayer?.playerEvents.corners}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            OffSides: {{selectedPlayer?.playerEvents.offSides}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Yellow Cards: {{selectedPlayer?.playerEvents.yellowCards}}
+                        </div>
+                    </div>
+                    <div class="row playerStats">
+
+                        <div class="col-sm-12">
+                            Red Cards: {{selectedPlayer?.playerEvents.redCards}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+        <span class="btnBack" (click)="goBackToMain()">&lt; Back</span>
+            </div>
+
+        </div>
+
+    </div>
