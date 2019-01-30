@@ -1,0 +1,7 @@
+Unable to resolve “unable to get local issuer certificate” using git on Windows with self-signed certificate
+
+git config -l --show-origin
+
+remove http.sslbackend=openssl
+
+git config --global http.sslVerify false

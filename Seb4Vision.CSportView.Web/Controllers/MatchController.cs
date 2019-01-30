@@ -510,5 +510,29 @@ namespace Seb4Vision.CSportView.Web.Controllers
             }
             return NotFound();
         }
+
+
+        [HttpGet]
+        [Route("GetTeamHeatMapImageAsBase64")]
+        public ActionResult GetTeamHeatMapImageAsBase64(string teamName)
+        {
+            try
+            {
+                var teamLogoPath = @"C:\WORK\HeatMaps\" + teamName.Replace(" ", "_") + ".jpg";
+
+                byte[] b = System.IO.File.ReadAllBytes(teamLogoPath);
+                return Ok(Convert.ToBase64String(b));
+
+            }
+            catch (System.IO.DirectoryNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+            return NotFound();
+        }
     }
 }

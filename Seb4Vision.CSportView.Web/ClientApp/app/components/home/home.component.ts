@@ -41,6 +41,9 @@ export class HomeComponent implements OnInit {
     public homeTeamLogo: any;
     public awayTeamLogo: any;
 
+    public awayTeamHeatMap: any;
+    public homeTeamHeatMap: any;
+    public teamHeatMapDefaultImage= require("./../../images/defaultHeatMapImage.png");
 
     loading: boolean = false;
 
@@ -52,11 +55,12 @@ export class HomeComponent implements OnInit {
         this.selectedPlayer = null
         // refresh every 5 seconds (5000 milliseconds)
         this.refreshData();
+        /*
         this.interval = setInterval(() => {
             this.refreshData();
         }, this.autoRefreshInterval);
 
-
+*/
 
     }
 
@@ -79,6 +83,10 @@ export class HomeComponent implements OnInit {
                     }
                     this.LoadHomeTeamLogo(this.match.homeTeam);
                     this.LoaddAwayTeamLogo(this.match.awayTeam);
+                    
+                    
+                    this.LoadHomeTeamHeatMapImage(this.match.homeTeam);
+                    this.LoadAwayTeamHeatMapImage(this.match.awayTeam);
                 }
 
                 // this.selectedPlayer = this.match.homeTeamPlayers[0];
@@ -146,6 +154,61 @@ export class HomeComponent implements OnInit {
             },
                 err => {
                     this.awayTeamLogo = this.teamDefaultLogo;
+                    const body = err.json() || "";
+                    const error = body.error || JSON.stringify(body);
+                    console.log(err.status); // 500
+                    console.log(err.statusText); // Internal Server Error
+                    console.log(body.Source); // MySqlConnector
+                    console.log(body.Message); // "Connect Timeout expir
+                }
+            );
+    }
+
+
+    
+    LoadAwayTeamHeatMapImage(teamName: any) {
+        console.log("API - Get Away team logo")
+        this.myService.getTeamHeatMap(teamName)
+            .subscribe(res => {
+                if (res.status == 200) {
+                    console.log("API - Away team heatmap Response");
+                    //   console.log(res.text());
+                    if (res != null) {
+                        this.awayTeamHeatMap = this.sanitizer.bypassSecurityTrustResourceUrl("data:image/png;base64," + res.text().substr(1, res.text().length - 2));
+                    } else
+                        this.awayTeamHeatMap = this.teamDefaultLogo;
+                } else {
+                    console.log("API -Away team Logo Unknown Response");
+                }
+            },
+                err => {
+                    this.awayTeamHeatMap = this.teamHeatMapDefaultImage;
+                    const body = err.json() || "";
+                    const error = body.error || JSON.stringify(body);
+                    console.log(err.status); // 500
+                    console.log(err.statusText); // Internal Server Error
+                    console.log(body.Source); // MySqlConnector
+                    console.log(body.Message); // "Connect Timeout expir
+                }
+            );
+    }
+    LoadHomeTeamHeatMapImage(teamName: any) {
+        console.log("API - Get Away team logo")
+        this.myService.getTeamHeatMap(teamName)
+            .subscribe(res => {
+                if (res.status == 200) {
+                    console.log("API - Away team heatmap Response");
+                    //   console.log(res.text());
+                    if (res != null) {
+                        this.homeTeamHeatMap = this.sanitizer.bypassSecurityTrustResourceUrl("data:image/png;base64," + res.text().substr(1, res.text().length - 2));
+                    } else
+                        this.homeTeamHeatMap = this.teamDefaultLogo;
+                } else {
+                    console.log("API -Away team Logo Unknown Response");
+                }
+            },
+                err => {
+                    this.homeTeamHeatMap = this.teamHeatMapDefaultImage;
                     const body = err.json() || "";
                     const error = body.error || JSON.stringify(body);
                     console.log(err.status); // 500

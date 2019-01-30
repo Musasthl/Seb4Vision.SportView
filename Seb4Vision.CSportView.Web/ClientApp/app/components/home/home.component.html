@@ -1,6 +1,6 @@
 <style>
     .body-content {
-        padding: 25px;
+        padding: 5px 25px;
     }
 
     .myContent-body {
@@ -56,6 +56,10 @@
 
     .sub-heading-footer div .teamlogo {
         height: 60px;
+        cursor: pointer;
+    }
+    .teamHeatMap {
+        width: 190px;
         cursor: pointer;
     }
 
@@ -427,6 +431,14 @@
                     </div>
                     <div class="col-sm-3 aRight">
                         {{match?.awayTeamEvents.passAccuracy}} %
+                    </div>
+                </div>
+                <div>
+                    <div class="col-sm-6 aRight">
+                        <img [attr.src]="homeTeamHeatMap" class="teamHeatMap left">
+                    </div>
+                    <div class="col-sm-6 aRight">
+                        <img [attr.src]="awayTeamHeatMap" class="teamHeatMap left">
                     </div>
                 </div>
             </div>
