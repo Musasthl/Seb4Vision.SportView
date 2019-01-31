@@ -79,10 +79,11 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                      from subTeamAway in gj1.DefaultIfEmpty()
                                      join homeTeam in _context.Teams on match.HomeTeamID equals homeTeam.IdTeams into gj2
                                      from subTeamHome in gj2.DefaultIfEmpty()
-                                     join tournament in _context.AdminTournament on match.Tournament equals tournament.idAdminTournament into gj3
+                                         // join tournament in _context.AdminTournament on match.Tournament equals tournament.idAdminTournament into gj3
+                                     join tournament in _context.Tournament on match.Tournament equals tournament.TournamentID into gj3
                                      from subAdminTournament in gj3.DefaultIfEmpty()
-                                         //join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
-                                         //from subVenue in gj4.DefaultIfEmpty() 
+                                         join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
+                                         from subVenue in gj4.DefaultIfEmpty() 
                                          // where match.matchID == matchId
                                      where match.ActiveGame == 1
                                      select new MatchDTO()
@@ -94,10 +95,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                          HomeTeam = subTeamHome.TeamName,
                                          AwayTeamScore = match.AwayTeamScore,
                                          HomeTeamScore = match.HomeTeamScore,
-                                         Tournament = subAdminTournament.Description,
+                                         Tournament = subAdminTournament.TournamentName,
                                          HomeTeamPossession = Convert.ToInt32(match.HomeTeamPossesion),
                                          AwayTeamPossession = 100 - Convert.ToInt32(match.HomeTeamPossesion),
-                                         // Venue = subVenue.Venue
+                                          Venue = subVenue.Venue
                                      }).FirstOrDefault();
 
 

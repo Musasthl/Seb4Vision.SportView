@@ -50,26 +50,24 @@ export class HomeComponent implements OnInit {
     constructor(private myService: MyService, private sanitizer: DomSanitizer) {
     }
     ngOnInit() {
-        console.log(this.myService.serviceProperty)
-        this.myService.serviceProperty = "Calling API"
-        this.selectedPlayer = null
+        console.log(this.myService.serviceProperty);
+        this.myService.serviceProperty = "Calling API";
+        this.selectedPlayer = null;
         // refresh every 5 seconds (5000 milliseconds)
         this.refreshData();
-        /*
+        
         this.interval = setInterval(() => {
             this.refreshData();
         }, this.autoRefreshInterval);
 
-*/
-
     }
 
     refreshData() {
-        this.loadMatchData()
+        this.loadMatchData();
     }
 
     loadMatchData() {
-        console.log(this.myService.serviceProperty)
+        console.log(this.myService.serviceProperty);
         this.myService.getActiveGame()
             .subscribe(res => {
                 console.log("Got API response");
@@ -113,7 +111,7 @@ export class HomeComponent implements OnInit {
     }
 
     LoadHomeTeamLogo(teamName: any) {
-        console.log("API - Get home team logo")
+        console.log("API - Get home team logo");
         this.myService.getTeamLogo(teamName)
             .subscribe(res => {
                 if (res.status == 200) {
