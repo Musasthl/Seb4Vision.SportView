@@ -99,9 +99,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                          AwayTeamPossession = 100 - Convert.ToInt32(match.HomeTeamPossesion),
                                          // Venue = subVenue.Venue
                                      }).FirstOrDefault();
+
+
+
                 if (matchDto != null)
                 {
+
                     var playerApi = (new PlayersController(_context));
+
+                    matchDto.HomeTeamSportVuStats = GetTeamSportVuStats(matchDto.HomeTeam);
+                    matchDto.AwayTeamSportVuStats = GetTeamSportVuStats(matchDto.AwayTeam);
+
 
                     matchDto.HomeTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.HomeTeamId);
                     matchDto.AwayTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.AwayTeamId);
@@ -123,6 +131,21 @@ namespace Seb4Vision.CSportView.Web.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        private SportVuTeamStat GetTeamSportVuStats(string teamName)
+        {
+            try
+            {
+                SportVuTeamStat sportVuTeamStat = _context.SportVuTeamStats
+                    .FirstOrDefault(s => string.Equals(s.TeamName, teamName, StringComparison.OrdinalIgnoreCase));
+
+                return sportVuTeamStat;
+            }
+            catch (Exception ex)
+            {
+                return new SportVuTeamStat();
             }
         }
 
@@ -311,7 +334,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamYellowCardEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.YellowCards++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.YellowCards++;
@@ -322,7 +345,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamRedCardEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.RedCards++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.RedCards++;
@@ -333,7 +356,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamOffSidesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.OffSides++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.OffSides++;
@@ -345,7 +368,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamCornersEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.Corners++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.Corners++;
@@ -356,7 +379,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamTacklesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.Tackles++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.Tackles++;
@@ -367,7 +390,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamFoulsEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.Fouls++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.Fouls++;
@@ -378,7 +401,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamShotOnTargetEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.ShotsOnTarget++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.ShotsOnTarget++;
@@ -389,7 +412,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamGoalEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.Goals++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.Goals++;
@@ -400,7 +423,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamOwnGoalEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.OwnGoals++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.OwnGoals++;
@@ -412,7 +435,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamShotOffTargetEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.ShotsOffTarget++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.ShotsOffTarget++;
@@ -424,7 +447,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamCompletedPassesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.CompletedPasses++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.CompletedPasses++;
@@ -436,7 +459,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         private void UpdateTeamUnCompletedPassesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
             TeamEvent.UnCompletedPasses++;
-            var player = players.Where(p => p.PlayerID == matchEvent.PlayerID_1).SingleOrDefault();
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
             if (player != null)
             {
                 player.PlayerEvents.UnCompletedPasses++;

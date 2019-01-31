@@ -29,5 +29,7 @@ namespace Seb4Vision.CSportView.Data
         public DbSet<PlayerType> PlayerType { get; set; }
         public DbSet<PersonType> PersonType { get; set; }
         public DbSet<MatchEvents> MatchEvents { get; set; }
+        public DbSet<SportVuTeamStat> SportVuTeamStats { get; set; }
+        public DbSet<SportVuPlayerStat> SportVuPlayerStats { get; set; }
     }
 }

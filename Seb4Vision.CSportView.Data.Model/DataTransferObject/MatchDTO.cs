@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Seb4Vision.CSportView.Data.Model.Model;
 
 namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
 {
@@ -22,10 +23,15 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
         public int? AwayTeamPossession { get; set; }
         public int? HomeTeamPossession { get; set; }
 
+        public SportVuTeamStat HomeTeamSportVuStats { get; set; }
+        public SportVuTeamStat AwayTeamSportVuStats { get; set; }
         public MatchDTO()
         {
             HomeTeamEvents = new MatchEventDTO();
             AwayTeamEvents = new MatchEventDTO();
+            HomeTeamSportVuStats = new SportVuTeamStat();
+            AwayTeamSportVuStats = new SportVuTeamStat();
+
         }
 
     }
