@@ -8,7 +8,7 @@ import { DomSanitizer } from '../../../../node_modules/@angular/platform-browser
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
-
+    styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
 
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
     public homeTeamHeatMap: any;
     public teamHeatMapDefaultImage= require("./../../images/defaultHeatMapImage.png");
 
-    loading: boolean = false;
+    loading: boolean = true;
 
     constructor(private myService: MyService, private sanitizer: DomSanitizer) {
     }
@@ -89,14 +89,13 @@ export class HomeComponent implements OnInit {
                     }
 
                 }
+                    this.loading = false;
 
-                // this.selectedPlayer = this.match.homeTeamPlayers[0];
-                //   console.log(this.selectedPlayer)
+                    // this.selectedPlayer = this.match.homeTeamPlayers[0];
+                    //   console.log(this.selectedPlayer)
 
 
-
-
-            },
+                },
                 err => {
 
                     const body = err.json() || "";
