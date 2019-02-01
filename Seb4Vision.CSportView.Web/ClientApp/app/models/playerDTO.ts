@@ -1,4 +1,5 @@
-import { MatchEventDTO } from "./matchEventDTO";
+import { MatchEventDTO } from "./matchEventDTO"; 
+import { SportVuPlayerStatDTO } from "./sportvuplayerstats";
 
 export interface playerDTO {
     playerID: number;
@@ -15,4 +16,5 @@ export interface playerDTO {
     personType: string;
     personTypeShort: string;
     playerEvents: MatchEventDTO;
+    sportVuPlayerStats: SportVuPlayerStatDTO;
 }

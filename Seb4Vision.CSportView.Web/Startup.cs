@@ -13,6 +13,8 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Seb4Vision.CSportView.Web.Configurations;
+
 
 namespace Seb4Vision.CSportView.Web
 {
@@ -117,7 +119,7 @@ namespace Seb4Vision.CSportView.Web
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
-            });
+            }); 
         }
     }
 }

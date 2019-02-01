@@ -81,8 +81,12 @@ export class HomeComponent implements OnInit {
                     this.LoaddAwayTeamLogo(this.match.awayTeam);
                     
                     
-                    this.LoadHomeTeamHeatMapImage(this.match.homeTeam);
-                    this.LoadAwayTeamHeatMapImage(this.match.awayTeam);
+                    //this.LoadHomeTeamHeatMapImage(this.match.homeTeam);
+                    //this.LoadAwayTeamHeatMapImage(this.match.awayTeam);
+
+                    this.LoadHomeTeamHeatMapImage(this.match.homeTeamSportVuStats.teamHeatMap);
+                    this.LoadAwayTeamHeatMapImage(this.match.awayTeamSportVuStats.teamHeatMap);
+
 
                     if (this.selectedPlayer != null) {
                         this.reloadSelectedPlayer()
@@ -183,9 +187,9 @@ export class HomeComponent implements OnInit {
     }
 
     
-    LoadAwayTeamHeatMapImage(teamName: any) {
+    LoadAwayTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
-        this.myService.getTeamHeatMap(teamName)
+        this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                 if (res.status == 200) {
                     console.log("API - Away team heatmap Response");
@@ -209,9 +213,9 @@ export class HomeComponent implements OnInit {
                 }
             );
     }
-    LoadHomeTeamHeatMapImage(teamName: any) {
+    LoadHomeTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
-        this.myService.getTeamHeatMap(teamName)
+        this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                 if (res.status == 200) {
                     console.log("API - Away team heatmap Response");

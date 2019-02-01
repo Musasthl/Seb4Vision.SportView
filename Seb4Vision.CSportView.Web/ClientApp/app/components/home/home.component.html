@@ -202,8 +202,10 @@
     }
 
     .btnBack {
-        color: green;
+        color: #49ff00;
         cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
     }
 
     /* float */
@@ -401,7 +403,7 @@
                         {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
-                        Goal At Goal 
+                        Shots At Goal 
                     </div>
                     <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
@@ -499,13 +501,13 @@
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                       ?
+                        {{match?.homeTeamEvents.totalNumberOfSprints}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
                        Number of Sprints
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                     ?
+                        {{match?.awayTeamEvents.totalNumberOfSprints}}
                     </div>
                 </div>
 
@@ -530,13 +532,13 @@
                 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                       ?
+                        {{match?.homeTeamEvents.completedPasses + match?.homeTeamEvents.unCompletedPasses}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
                        Total Passes
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                     ?
+                        {{match?.awayTeamEvents.completedPasses + match?.awayTeamEvents.unCompletedPasses}}
                     </div>
                 </div>
 
@@ -595,16 +597,27 @@
                            
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                       ?
+                        {{match?.homeTeamSportVuStats.offensiveTime}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
-                       Auctual Play Time
+                        Offensive Time
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                     ?
+                        {{match?.homeTeamSportVuStats.offensiveTime}}
                     </div>
                 </div>
 
+            <div class="row sub-heading-footer-strip">
+                <div class="col-sm-3 aLeft statsValue">
+                    {{match?.homeTeamSportVuStats.defensiveTime}}
+                </div>
+                <div class="col-sm-6 center statsDescription">
+                    Defensive Time
+                </div>
+                <div class="col-sm-3 aRight statsValue">
+                    {{match?.homeTeamSportVuStats.defensiveTime}}
+                </div>
+            </div>
 
                 
                 <div class="row sub-heading-footer-strip" style="display:none">

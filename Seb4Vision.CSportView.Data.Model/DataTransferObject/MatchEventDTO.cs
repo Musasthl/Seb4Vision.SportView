@@ -20,5 +20,7 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
         public double ShotAccuracy { get; set; }
         public int Goals { get; set; }
         public int OwnGoals { get; set; }
+
+        public int TotalNumberOfSprints { get; set; }
     }
 }

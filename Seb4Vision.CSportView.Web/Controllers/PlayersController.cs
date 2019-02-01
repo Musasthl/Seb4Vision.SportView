@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Seb4Vision.CSportView.Data;
 using Seb4Vision.CSportView.Data.Model.DataTransferObject;
+using Seb4Vision.CSportView.Data.Model.Model;
 using Seb4Vision.CSportView.Data.Repository;
 
 namespace Seb4Vision.CSportView.Web.Controllers
@@ -28,15 +29,18 @@ namespace Seb4Vision.CSportView.Web.Controllers
         [Produces(typeof(PlayerDTO))]
         public ActionResult GetByTeam(long teamId)
         {
-            var list = GetPlayersByTeamId(teamId);
+            var teamName = _context.Teams.Where(t => t.IdTeams == teamId).Select(t => t.TeamName).SingleOrDefault();
+            var list = GetPlayersByTeamId(teamId, teamName);
             return Ok(list);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public List<PlayerDTO> GetPlayersByTeamId(long? teamId)
+        public List<PlayerDTO> GetPlayersByTeamId(long? teamId, string teamName)
         {
             if (teamId == null)
                 return null;
+
+
 
             var list = (from player in _context.Players
                             //   join playerType in _context.PlayerType on player.PlayerType equals playerType.PersonType into gj1
@@ -44,10 +48,13 @@ namespace Seb4Vision.CSportView.Web.Controllers
                         where player.TeamID == teamId && player.TeamListPosion != -1
                         from subPlayerType in gj1.DefaultIfEmpty()
 
-                        //join personType in _context.PersonType on player.PersonType equals personType.PersonTypeId into gj2
-                        //from subPersonType in gj2.DefaultIfEmpty()
+                            //join personType in _context.PersonType on player.PersonType equals personType.PersonTypeId into gj2
+                            //from subPersonType in gj2.DefaultIfEmpty()
                         join personType in _context.PlayerType on player.PersonType equals personType.PlayerPositionsID into gj2
                         from subPersonType in gj2.DefaultIfEmpty()
+
+                        join sportVuPlayerStats in _context.SportVuPlayerStats.Where(s => s.TeamName == teamName) on player.JerseyNumber equals sportVuPlayerStats.PlayerJeseryNumber into gj3
+                        from subSportVuPlayerStats in gj3.DefaultIfEmpty()
 
                         orderby player.TeamListPosion ascending
                         select new PlayerDTO()
@@ -64,8 +71,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             Position = subPlayerType.Position,
                             PositionShortDesc = subPlayerType.SortDescription,
                             PersonType = subPersonType.Position,
-                            PersonTypeShort = subPersonType.SortDescription
-
+                            PersonTypeShort = subPersonType.SortDescription,
+                            SportVuPlayerStats = subSportVuPlayerStats ?? new SportVuPlayerStat()
                         }).ToList();
             return list;
         }

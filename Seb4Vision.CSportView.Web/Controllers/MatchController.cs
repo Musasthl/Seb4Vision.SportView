@@ -10,6 +10,7 @@ using Seb4Vision.CSportView.Data.Model;
 using Seb4Vision.CSportView.Data.Model.DataTransferObject;
 using Seb4Vision.CSportView.Data.Model.Enums;
 using Seb4Vision.CSportView.Data.Model.Model;
+using Seb4Vision.CSportView.Web.Configurations;
 
 namespace Seb4Vision.CSportView.Web.Controllers
 {
@@ -112,10 +113,12 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     matchDto.AwayTeamSportVuStats = GetTeamSportVuStats(matchDto.AwayTeam);
 
 
-                    matchDto.HomeTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.HomeTeamId);
-                    matchDto.AwayTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.AwayTeamId);
+                    matchDto.HomeTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.HomeTeamId, matchDto.HomeTeam);
+                    matchDto.AwayTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.AwayTeamId, matchDto.AwayTeam);
+
 
                     GetMatchEvents(matchDto);
+                    GetTeamSportViewTeamsEventsFromPlayers(matchDto);
 
                     if (matchDto.HomeTeamPossession == -1)
                     {
@@ -132,6 +135,23 @@ namespace Seb4Vision.CSportView.Web.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        private void GetTeamSportViewTeamsEventsFromPlayers(MatchDTO matchDto)
+        {
+            if (matchDto != null)
+            {
+                GetTeamSportViewEventsFromPlayer(matchDto.AwayTeamEvents, matchDto.AwayTeamPlayers);
+                GetTeamSportViewEventsFromPlayer(matchDto.HomeTeamEvents, matchDto.HomeTeamPlayers);
+            } 
+        }
+
+        private void GetTeamSportViewEventsFromPlayer(MatchEventDTO events, List<PlayerDTO> players )
+        {
+            if (players != null && events != null)
+            {
+                events.TotalNumberOfSprints = players.Where(s => s.SportVuPlayerStats != null).Sum(s => int.Parse(s.SportVuPlayerStats.PlayerCardSprints));
             }
         }
 
@@ -538,13 +558,15 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
         [HttpGet]
         [Route("GetTeamHeatMapImageAsBase64")]
-        public ActionResult GetTeamHeatMapImageAsBase64(string teamName)
+        public ActionResult GetTeamHeatMapImageAsBase64(string imageName)
         {
             try
             {
-                var teamLogoPath = @"C:\WORK\HeatMaps\" + teamName.Replace(" ", "_") + ".jpg";
-
-                byte[] b = System.IO.File.ReadAllBytes(teamLogoPath);
+                if(string.IsNullOrEmpty(imageName))
+                    return NotFound();
+                // var teamLogoPath = @"C:\WORK\HeatMaps\" + teamName.Replace(" ", "_") + ".jpg";
+                var heatMapImagePath = Settings.HeatMapPath + imageName + ".jpg";
+                byte[] b = System.IO.File.ReadAllBytes(heatMapImagePath);
                 return Ok(Convert.ToBase64String(b));
 
             }

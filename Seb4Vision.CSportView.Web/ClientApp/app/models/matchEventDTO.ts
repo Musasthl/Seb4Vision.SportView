@@ -15,4 +15,5 @@ export interface MatchEventDTO {
     shotAccuracy: number;
     goals: number;
     ownGoals: number;
+    totalNumberOfSprints: number;
 }  
