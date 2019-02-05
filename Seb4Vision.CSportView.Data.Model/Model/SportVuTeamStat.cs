@@ -8,7 +8,7 @@ namespace Seb4Vision.CSportView.Data.Model.Model
     public class SportVuTeamStat
     {
         [Key]
-        public int IdSportVuTeamStats { get; set; }
+        public long IdSportVuTeamStats { get; set; }
         public string TeamName { get; set; }
         public string TeamAvgSpeed { get; set; }
         public string TeamDistance { get; set; }

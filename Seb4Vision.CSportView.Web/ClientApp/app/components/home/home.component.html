@@ -247,7 +247,7 @@
     {
         background-color: #bdfdfd;
  
-        width: 50px;
+        width: 55px;
         color: black;
         font-size: 15px;
         font-weight: bold;
@@ -801,12 +801,14 @@
                             <span class="player-info">{{selectedPlayer?.jerseyNumber}}</span>
                         </div>
                     </div>
+                    
+         
                 </div>
 
             </div>
 
-
-            <div class="col-sm-6">
+             
+            <div class="col-sm-6"  >
                 <div class="row playerStats title">
                     <div class="col-sm-12">
                         STAT
@@ -846,6 +848,69 @@
 
                     <div class="col-sm-12">
                         Red Cards: {{selectedPlayer?.playerEvents.redCards}}
+                    </div>
+                </div>
+                
+                
+                 
+             
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Number of Sprints: {{selectedPlayer?.sportVuPlayerStats.playerCardSprints}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+
+                    <div class="col-sm-12">
+                        Top Speed: {{selectedPlayer?.sportVuPlayerStats.topSpeed}}
+                    </div>
+                </div>
+
+                <div class="row playerStats">
+
+                    <div class="col-sm-12">
+                        Average Speed: {{selectedPlayer?.sportVuPlayerStats.playerCardSpeed}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Speed Walking: {{selectedPlayer?.sportVuPlayerStats.speedWalking}}
+                    </div>
+                </div>
+
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Speed Running: {{selectedPlayer?.sportVuPlayerStats.speedRunning}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
+                        Speed Sprinting: {{selectedPlayer?.sportVuPlayerStats.speedSprinting}}
+                    </div>
+                </div>
+
+
+
+                <div class="row playerStats">
+
+                    <div class="col-sm-12">
+                         Distance Covered: {{selectedPlayer?.sportVuPlayerStats.playerCardDistance / 1000}}
+                    </div>
+                </div>
+                
+
+                
+                
+                <div class="row playerStats">
+
+                    <div class="col-sm-12">
+                        Time Played: {{selectedPlayer?.sportVuPlayerStats.timePlayed}}
+                    </div>
+                </div>
+                
+                <div class="row playerStats">
+                    <div class="col-sm-12 center" style="text-align: center;     padding: 10px;">
+                        <img [attr.src]="selectedPlayerHeatMap" class="teamHeatMap right">
                     </div>
                 </div>
 

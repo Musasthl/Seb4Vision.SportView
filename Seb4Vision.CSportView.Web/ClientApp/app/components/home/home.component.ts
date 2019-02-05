@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
 
     public awayTeamHeatMap: any;
     public homeTeamHeatMap: any;
+    public selectedPlayerHeatMap: any;
     public teamHeatMapDefaultImage= require("./../../images/defaultHeatMapImage.png");
 
     loading: boolean = true;
@@ -89,7 +90,8 @@ export class HomeComponent implements OnInit {
 
 
                     if (this.selectedPlayer != null) {
-                        this.reloadSelectedPlayer()
+                        this.reloadSelectedPlayer();
+                        this.LoadSelectedPlayerHeatMapImage(this.selectedPlayer .sportVuPlayerStats.playerCardHeatMap);
                     }
 
                 }
@@ -213,6 +215,9 @@ export class HomeComponent implements OnInit {
                 }
             );
     }
+
+
+
     LoadHomeTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
         this.myService.getTeamHeatMap(imageName)
@@ -241,15 +246,45 @@ export class HomeComponent implements OnInit {
     }
 
 
+    
+    LoadSelectedPlayerHeatMapImage(imageName: any) {
+        console.log("API - Get Away team logo")
+        this.myService.getTeamHeatMap(imageName)
+            .subscribe(res => {
+                    if (res.status == 200) {
+                        console.log("API - Away team heatmap Response");
+                        //   console.log(res.text());
+                        if (res != null) {
+                            this.selectedPlayerHeatMap = this.sanitizer.bypassSecurityTrustResourceUrl("data:image/png;base64," + res.text().substr(1, res.text().length - 2));
+                        } else
+                            this.selectedPlayerHeatMap = this.teamDefaultLogo;
+                    } else {
+                        console.log("API -Away team Logo Unknown Response");
+                    }
+                },
+                err => {
+                    this.selectedPlayerHeatMap = this.teamHeatMapDefaultImage;
+                    const body = err.json() || "";
+                    const error = body.error || JSON.stringify(body);
+                    console.log(err.status); // 500
+                    console.log(err.statusText); // Internal Server Error
+                    console.log(body.Source); // MySqlConnector
+                    console.log(body.Message); // "Connect Timeout expir
+                }
+            );
+    }
+
 
     onPlayerClick(matchId: any, player: playerDTO) {
 
         this.selectedPlayer = player;
         if (player.photoPath != "") {
-            this.loadPlayerPhoto(player.photoPath);
-        }
-        else
+            this.loadPlayerPhoto(player.photoPath); 
+            this.LoadSelectedPlayerHeatMapImage(this.selectedPlayer.sportVuPlayerStats.playerCardHeatMap);
+        } else {
             this.selctedPlayerImage = this.defaultPlayerImage;
+            this.selectedPlayerHeatMap = this.teamHeatMapDefaultImage;
+        }
         this.showSelectedPlayer = true;
         //  this.startPlayerTimerCount(); 
     }

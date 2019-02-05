@@ -72,7 +72,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         [Route("GetActiveGame")]
         [Produces(typeof(MatchDTO))]
         public ActionResult GetActiveGame()
-        {
+        { 
             try
             {
                 MatchDTO matchDto = (from match in _context.Match
@@ -159,6 +159,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         {
             try
             {
+                teamName = teamName.Replace(" ", string.Empty);
                 SportVuTeamStat sportVuTeamStat = _context.SportVuTeamStats
                     .FirstOrDefault(s => string.Equals(s.TeamName, teamName, StringComparison.OrdinalIgnoreCase));
 

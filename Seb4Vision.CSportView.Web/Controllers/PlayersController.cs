@@ -53,7 +53,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                         join personType in _context.PlayerType on player.PersonType equals personType.PlayerPositionsID into gj2
                         from subPersonType in gj2.DefaultIfEmpty()
 
-                        join sportVuPlayerStats in _context.SportVuPlayerStats.Where(s => s.TeamName == teamName) on player.JerseyNumber equals sportVuPlayerStats.PlayerJeseryNumber into gj3
+                        join sportVuPlayerStats in _context.SportVuPlayerStats.Where(s => s.TeamName == teamName.Replace(" ", string.Empty)) on player.JerseyNumber equals sportVuPlayerStats.PlayerJeseryNumber into gj3
                         from subSportVuPlayerStats in gj3.DefaultIfEmpty()
 
                         orderby player.TeamListPosion ascending
