@@ -163,13 +163,15 @@ namespace Seb4Vision.CSportView.Web.Controllers
         public List<TopTeamPerformerDTO> GetTopPerfomerGoalAttemps(List<PlayerDTO> players)
         {
             var results = players
-                .OrderByDescending(p => p.PlayerEvents.ShotsOffTarget)
-                .Where(p => p.PlayerEvents.ShotsOffTarget > 0)
+                .OrderByDescending(p => (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget))
+                .ThenByDescending(p => p.PlayerEvents.Goals)
+                .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget) 
+                .Where(p => (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget) > 0)
                 .Select(p => new TopTeamPerformerDTO()
                 {
                     PlayerId = p.PlayerID,
                     JerseyNumber = p.JerseyNumber,
-                    StatsValue = p.SportVuPlayerStats.PlayerCardSpeed
+                    StatsValue = (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget).ToString()
                 })
 
                 .Take(MaxTopPerfomersCount).ToList();
@@ -181,8 +183,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
         public List<TopTeamPerformerDTO> GetTopPerfomerDistanceCovered(List<PlayerDTO> players)
         {
             var results = players
-                .OrderByDescending(p => int.Parse(p.SportVuPlayerStats.PlayerCardDistance))
-                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardDistance) && int.Parse(p.SportVuPlayerStats.PlayerCardDistance) > 0)
+                .OrderByDescending(p => float.Parse(p.SportVuPlayerStats.PlayerCardDistance))
+                .ThenByDescending(p => p.PlayerEvents.Goals)
+                .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget)
+                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardDistance) && float.Parse(p.SportVuPlayerStats.PlayerCardDistance) > 0)
                 .Select(p => new TopTeamPerformerDTO()
                 {
                     PlayerId = p.PlayerID,
@@ -197,8 +201,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
         public List<TopTeamPerformerDTO> GetTopPerfomerAverageSpeed(List<PlayerDTO> players)
         {
             var results = players
-                .OrderByDescending(p => int.Parse(p.SportVuPlayerStats.PlayerCardSpeed))
-                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardSpeed) && int.Parse(p.SportVuPlayerStats.PlayerCardSpeed) > 0)
+                .OrderByDescending(p => float.Parse(p.SportVuPlayerStats.PlayerCardSpeed))
+                .ThenByDescending(p => p.PlayerEvents.Goals)
+                .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget)
+                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardSpeed) && float.Parse(p.SportVuPlayerStats.PlayerCardSpeed) > 0)
                 .Select(p => new TopTeamPerformerDTO()
                 {
                     PlayerId = p.PlayerID,
