@@ -566,7 +566,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 if(string.IsNullOrEmpty(imageName))
                     return NotFound();
                 // var teamLogoPath = @"C:\WORK\HeatMaps\" + teamName.Replace(" ", "_") + ".jpg";
-                var heatMapImagePath = Settings.HeatMapPath + imageName + ".jpg";
+                var heatMapImagePath = Settings.HeatMapPath + imageName  ;
                 byte[] b = System.IO.File.ReadAllBytes(heatMapImagePath);
                 return Ok(Convert.ToBase64String(b));
 

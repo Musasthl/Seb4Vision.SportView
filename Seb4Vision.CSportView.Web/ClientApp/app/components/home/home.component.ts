@@ -220,6 +220,7 @@ export class HomeComponent implements OnInit {
 
     LoadHomeTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
+      
         this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                 if (res.status == 200) {

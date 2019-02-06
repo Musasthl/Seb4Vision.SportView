@@ -27,6 +27,6 @@ export class MyService {
     }
 
     getTeamHeatMap(imageName: string) {
-        return this.http.get('/api/Match/GetTeamHeatMapImageAsBase64?teamName=' + encodeURIComponent(imageName))
+        return this.http.get('/api/Match/GetTeamHeatMapImageAsBase64?imageName=' + encodeURIComponent(imageName))
     }
 }
