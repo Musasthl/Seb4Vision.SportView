@@ -403,7 +403,8 @@
                         {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
-                        Shots At Goal 
+                        Goal Attempts
+                        <!--  Shots At Goal -->
                     </div>
                     <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
@@ -821,9 +822,15 @@
                 </div>
                 <div class="row playerStats">
                     <div class="col-sm-12">
+                        Goal Attempts: {{selectedPlayer?.playerEvents.shotsOffTarget}}
+                    </div>
+                </div>
+                <div class="row playerStats">
+                    <div class="col-sm-12">
                         Shots on Target: {{selectedPlayer?.playerEvents.shotsOnTarget}}
                     </div>
                 </div>
+             
                 <div class="row playerStats">
                     <div class="col-sm-12">
                         Tackles: {{selectedPlayer?.playerEvents.tackles}}

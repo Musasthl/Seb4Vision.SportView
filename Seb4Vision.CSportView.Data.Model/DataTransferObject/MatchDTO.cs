@@ -25,6 +25,13 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
 
         public SportVuTeamStat HomeTeamSportVuStats { get; set; }
         public SportVuTeamStat AwayTeamSportVuStats { get; set; }
+        public List<TopTeamPerformerDTO> AwayTeamTopPerfomerGoalAttemps { get; set; }
+        public List<TopTeamPerformerDTO> HomeTeamTopPerfomerGoalAttemps { get; set; }
+        public List<TopTeamPerformerDTO> AwayTeamTopPerfomerDistanceCovered { get; set; }
+        public List<TopTeamPerformerDTO> HomeTeamTopPerfomerDistanceCovered { get; set; }
+        public List<TopTeamPerformerDTO> AwayTeamTopPerfomerAverageSpeed { get; set; }
+        public List<TopTeamPerformerDTO> HomeTeamTopPerfomerAverageSpeed { get; set; }
+
         public MatchDTO()
         {
             HomeTeamEvents = new MatchEventDTO();

@@ -19,6 +19,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
     [Produces("application/json")]
     public class MatchController : Controller
     {
+        private const int MaxTopPerfomersCount = 5;
         private readonly Seb4VisionCSportViewContext _context;
 
         public MatchController(Seb4VisionCSportViewContext context)
@@ -72,7 +73,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         [Route("GetActiveGame")]
         [Produces(typeof(MatchDTO))]
         public ActionResult GetActiveGame()
-        { 
+        {
             try
             {
                 MatchDTO matchDto = (from match in _context.Match
@@ -83,8 +84,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                          // join tournament in _context.AdminTournament on match.Tournament equals tournament.idAdminTournament into gj3
                                      join tournament in _context.Tournament on match.Tournament equals tournament.TournamentID into gj3
                                      from subAdminTournament in gj3.DefaultIfEmpty()
-                                         join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
-                                         from subVenue in gj4.DefaultIfEmpty() 
+                                     join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
+                                     from subVenue in gj4.DefaultIfEmpty()
                                          // where match.matchID == matchId
                                      where match.ActiveGame == 1
                                      select new MatchDTO()
@@ -99,7 +100,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                          Tournament = subAdminTournament.TournamentName,
                                          HomeTeamPossession = Convert.ToInt32(match.HomeTeamPossesion),
                                          AwayTeamPossession = 100 - Convert.ToInt32(match.HomeTeamPossesion),
-                                          Venue = subVenue.Venue
+                                         Venue = subVenue.Venue
                                      }).FirstOrDefault();
 
 
@@ -119,7 +120,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                     GetMatchEvents(matchDto);
                     GetTeamSportViewTeamsEventsFromPlayers(matchDto);
-
+                    GetTopPerfomersForEachTeam(matchDto);
                     if (matchDto.HomeTeamPossession == -1)
                     {
                         matchDto.HomeTeamPossession = 0;
@@ -138,16 +139,89 @@ namespace Seb4Vision.CSportView.Web.Controllers
             }
         }
 
+
+        private void GetTopPerfomersForEachTeam(MatchDTO matchDto)
+        {
+
+
+            // Top 5 Goal Attemps. 
+            matchDto.AwayTeamTopPerfomerGoalAttemps = GetTopPerfomerGoalAttemps(matchDto.AwayTeamPlayers);
+            matchDto.HomeTeamTopPerfomerGoalAttemps = GetTopPerfomerGoalAttemps(matchDto.HomeTeamPlayers);
+
+            // Top 5 Distance Covered
+            matchDto.AwayTeamTopPerfomerDistanceCovered = GetTopPerfomerDistanceCovered(matchDto.AwayTeamPlayers);
+            matchDto.HomeTeamTopPerfomerDistanceCovered = GetTopPerfomerDistanceCovered(matchDto.HomeTeamPlayers);
+
+            // Top Avg Speed
+            matchDto.AwayTeamTopPerfomerAverageSpeed = GetTopPerfomerAverageSpeed(matchDto.AwayTeamPlayers);
+            matchDto.HomeTeamTopPerfomerAverageSpeed = GetTopPerfomerAverageSpeed(matchDto.HomeTeamPlayers);
+
+
+
+        }
+
+        public List<TopTeamPerformerDTO> GetTopPerfomerGoalAttemps(List<PlayerDTO> players)
+        {
+            var results = players
+                .OrderByDescending(p => p.PlayerEvents.ShotsOffTarget)
+                .Where(p => p.PlayerEvents.ShotsOffTarget > 0)
+                .Select(p => new TopTeamPerformerDTO()
+                {
+                    PlayerId = p.PlayerID,
+                    JerseyNumber = p.JerseyNumber,
+                    StatsValue = p.SportVuPlayerStats.PlayerCardSpeed
+                })
+
+                .Take(MaxTopPerfomersCount).ToList();
+            return results;
+        }
+
+
+
+        public List<TopTeamPerformerDTO> GetTopPerfomerDistanceCovered(List<PlayerDTO> players)
+        {
+            var results = players
+                .OrderByDescending(p => int.Parse(p.SportVuPlayerStats.PlayerCardDistance))
+                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardDistance) && int.Parse(p.SportVuPlayerStats.PlayerCardDistance) > 0)
+                .Select(p => new TopTeamPerformerDTO()
+                {
+                    PlayerId = p.PlayerID,
+                    JerseyNumber = p.JerseyNumber,
+                    StatsValue = p.SportVuPlayerStats.PlayerCardDistance
+                })
+
+                .Take(MaxTopPerfomersCount).ToList();
+            return results;
+        }
+
+        public List<TopTeamPerformerDTO> GetTopPerfomerAverageSpeed(List<PlayerDTO> players)
+        {
+            var results = players
+                .OrderByDescending(p => int.Parse(p.SportVuPlayerStats.PlayerCardSpeed))
+                .Where(p => !string.IsNullOrEmpty(p.SportVuPlayerStats.PlayerCardSpeed) && int.Parse(p.SportVuPlayerStats.PlayerCardSpeed) > 0)
+                .Select(p => new TopTeamPerformerDTO()
+                {
+                    PlayerId = p.PlayerID,
+                    JerseyNumber = p.JerseyNumber,
+                    StatsValue = p.SportVuPlayerStats.PlayerCardSpeed
+                })
+
+                .Take(MaxTopPerfomersCount).ToList();
+            return results;
+        }
+
+
+
         private void GetTeamSportViewTeamsEventsFromPlayers(MatchDTO matchDto)
         {
             if (matchDto != null)
             {
                 GetTeamSportViewEventsFromPlayer(matchDto.AwayTeamEvents, matchDto.AwayTeamPlayers);
                 GetTeamSportViewEventsFromPlayer(matchDto.HomeTeamEvents, matchDto.HomeTeamPlayers);
-            } 
+            }
         }
 
-        private void GetTeamSportViewEventsFromPlayer(MatchEventDTO events, List<PlayerDTO> players )
+        private void GetTeamSportViewEventsFromPlayer(MatchEventDTO events, List<PlayerDTO> players)
         {
             if (players != null && events != null)
             {
@@ -563,10 +637,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(imageName))
+                if (string.IsNullOrEmpty(imageName))
                     return NotFound();
                 // var teamLogoPath = @"C:\WORK\HeatMaps\" + teamName.Replace(" ", "_") + ".jpg";
-                var heatMapImagePath = Settings.HeatMapPath + imageName  ;
+                var heatMapImagePath = Settings.HeatMapPath + imageName;
                 byte[] b = System.IO.File.ReadAllBytes(heatMapImagePath);
                 return Ok(Convert.ToBase64String(b));
 
