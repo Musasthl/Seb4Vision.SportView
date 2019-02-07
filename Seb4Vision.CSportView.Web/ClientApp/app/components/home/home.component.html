@@ -258,7 +258,10 @@
 
     .topPerformerStatsValue
     {
-        height: 29px; }
+        height: 29px; 
+        width: 70px;
+
+    }
 
     .topPerformerStatsTableCol
     {
@@ -510,13 +513,13 @@
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamSportVuStats.teamAvgSpeed}}
+                        {{match?.homeTeamSportVuStats.teamAvgSpeed || '-'}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
                         Average Speed (KPH)
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                        {{match?.awayTeamSportVuStats.teamAvgSpeed}}
+                        {{match?.awayTeamSportVuStats.teamAvgSpeed || '-'}}
                     </div>
                 </div>
 
@@ -592,25 +595,25 @@
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamSportVuStats.offensiveTime}}
+                        {{match?.homeTeamSportVuStats.offensiveTime || '-'}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
                         Offensive Time
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                        {{match?.homeTeamSportVuStats.offensiveTime}}
+                        {{match?.homeTeamSportVuStats.offensiveTime || '-'}}
                     </div>
                 </div>
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamSportVuStats.defensiveTime}}
+                        {{match?.homeTeamSportVuStats.defensiveTime || '-'}} 
                     </div>
                     <div class="col-sm-6 center statsDescription">
                         Defensive Time
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                        {{match?.homeTeamSportVuStats.defensiveTime}}
+                        {{match?.homeTeamSportVuStats.defensiveTime || '-'}}
                     </div>
                 </div>
 
@@ -682,10 +685,10 @@
 
                         <div class="row">
                        
-                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
-                                <b>Top 5 Goal Attempts</b>
+                            <div class="col-sm-4 topPerformerStatsTableCol  ">
+                                <b>Top 5 Goal<br/>Attempts</b>
                                 <ul style="list-style-type: none; padding: 0;">
-                                    <li *ngFor="let number of [0,1,2,3,4]">
+                                    <li *ngFor="let number of [0,1,2,3,4]" style="width: auto;float: left;">
                                         <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                             {{match?.homeTeamTopPerfomerGoalAttemps[number]?.jerseyNumber}}
                                         </div>
@@ -698,10 +701,10 @@
                                 </ul>
                             </div>
 
-                                <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
-                                    <b>Top 5 Average Speed (KPH)</b>
+                                <div class="col-sm-4 topPerformerStatsTableCol ">
+                                    <b>Top 5 Average<br />Speed (KPH)</b>
                                     <ul style="list-style-type: none; padding: 0;">
-                                        <li *ngFor="let number of [0,1,2,3,4]">
+                                        <li *ngFor="let number of [0,1,2,3,4]" style="width: auto;float: left;">
                                             <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                                 {{match?.homeTeamTopPerfomerAverageSpeed[number]?.jerseyNumber}}
                                             </div>
@@ -714,15 +717,15 @@
                                     </ul>
 
                                 </div>
-                                <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
-                                    <b>Top 5 Distance Covered (KM)</b>
+                                <div class="col-sm-4 topPerformerStatsTableCol ">
+                                    <b>Top 5 Distance<br />Covered (KM)</b>
                                     <ul style="list-style-type: none; padding: 0;">
-                                        <li *ngFor="let number of [0,1,2,3,4]">
+                                        <li *ngFor="let number of [0,1,2,3,4]" style="width: auto;float: left;">
                                             <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                                 {{match?.homeTeamTopPerfomerDistanceCovered[number]?.jerseyNumber}}
                                             </div>
                                             <div class="statsValue left topPerformerStatsValue">
-                                                {{(match?.homeTeamTopPerfomerDistanceCovered[number]?.statsValue / 1000) | number : '1.2-2'}}
+                                                {{returnEmptyIfZero((match?.homeTeamTopPerfomerDistanceCovered[number]?.statsValue  / 1000 ) | number : '1.2-2') }}
                                             </div>
 
                                         </li>
@@ -739,10 +742,10 @@
             
 
                         <div class="row">
-                            <div class="col-sm-3 topPerformerStatsTableCol">
-                                <b>Top 5 Goal Attempts</b>
+                            <div class="col-sm-4 topPerformerStatsTableCol">
+                                <b>Top 5 Goal<br />Attempts</b>
                                 <ul style="list-style-type: none;    padding: 0;">
-                                    <li *ngFor="let number of [0,1,2,3,4]">
+                                    <li *ngFor="let number of [0,1,2,3,4]" style="width: auto;float: left;">
                                         <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                             {{match?.awayTeamTopPerfomerGoalAttemps[number]?.jerseyNumber}}
                                         </div>
@@ -755,10 +758,10 @@
                                 </ul>
                             </div>
 
-                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
-                                <b>Top 5 Average Speed (KPH)</b>
+                            <div class="col-sm-4 topPerformerStatsTableCol ">
+                                <b>Top 5 Average<br/>Speed (KPH)</b>
                                 <ul style="list-style-type: none;    padding: 0;">
-                                    <li *ngFor="let number of [0,1,2,3,4]">
+                                    <li *ngFor="let number of [0,1,2,3,4]" style="width: auto; float: left;">
                                         <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                             {{match?.awayTeamTopPerfomerAverageSpeed[number]?.jerseyNumber}}
                                         </div>
@@ -771,15 +774,15 @@
                                 </ul>
 
                             </div>
-                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
-                                <b>Top 5 Distance Covered (KM)</b>
+                            <div class="col-sm-4 topPerformerStatsTableCol ">
+                                <b>Top 5 Distance<br />Covered (KM)</b>
                                 <ul style="list-style-type: none;    padding: 0;">
-                                    <li *ngFor="let number of [0,1,2,3,4]">
+                                    <li *ngFor="let number of [0,1,2,3,4]" style="width: auto;float: left;">
                                         <div class="statsValue jersey highlighted left topPerformerStatsValue">
                                             {{match?.awayTeamTopPerfomerDistanceCovered[number]?.jerseyNumber}}
                                         </div>
-                                        <div class="statsValue left topPerformerStatsValue">
-                                            {{(match?.awayTeamTopPerfomerDistanceCovered[number]?.statsValue / 1000) | number : '1.2-2'}}
+                                        <div class="statsValue left topPerformerStatsValue"> 
+                                            {{returnEmptyIfZero((match?.awayTeamTopPerfomerDistanceCovered[number]?.statsValue  / 1000 ) | number : '1.2-2') }}
                                         </div>
 
                                     </li>
@@ -982,36 +985,36 @@
 
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Number of Sprints: {{selectedPlayer?.sportVuPlayerStats.playerCardSprints}}
+                            Number of Sprints: {{selectedPlayer?.sportVuPlayerStats.playerCardSprints || '-'}}
                         </div>
                     </div>
                     <div class="row playerStats">
 
                         <div class="col-sm-12">
-                            Top Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.topSpeed}}
+                            Top Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.topSpeed|| '-'}}
                         </div>
                     </div>
 
                     <div class="row playerStats">
 
                         <div class="col-sm-12">
-                            Average Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.playerCardSpeed}}
+                            Average Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.playerCardSpeed || '-'}}
                         </div>
                     </div>
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Walking (KPH): {{selectedPlayer?.sportVuPlayerStats.speedWalking}}
+                            Speed Walking (KPH): {{selectedPlayer?.sportVuPlayerStats.speedWalking || '-'}}
                         </div>
                     </div>
 
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Running (KPH): {{selectedPlayer?.sportVuPlayerStats.speedRunning}}
+                            Speed Running (KPH): {{selectedPlayer?.sportVuPlayerStats.speedRunning || '-'}}
                         </div>
                     </div>
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Sprinting (KPH): {{selectedPlayer?.sportVuPlayerStats.speedSprinting}}
+                            Speed Sprinting (KPH): {{selectedPlayer?.sportVuPlayerStats.speedSprinting || '-'}}
                         </div>
                     </div>
 

@@ -30,7 +30,7 @@ namespace Seb4Vision.CSportView.Data.Model.Model
             TeamAvgSpeed = "0";
             TeamDistance = "0";
             TeamSpeed = "0";
-            TeamHeatMap = "0";
+            TeamHeatMap = "";
             TeamDistanceWalking = "0";
             TeamDistanceRunning = "0";
             TeamDistanceSprinting = "0";

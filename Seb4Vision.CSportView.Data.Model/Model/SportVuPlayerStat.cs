@@ -35,7 +35,7 @@ namespace Seb4Vision.CSportView.Data.Model.Model
             PlayerCardDistance = "0";
             PlayerCardSpeed = "0";
             PlayerCardSprints = "0";
-            PlayerCardHeatMap = "0";
+            PlayerCardHeatMap = "";
             SpeedWalking = "0";
             SpeedRunning = "0";
             SpeedSprinting = "0";

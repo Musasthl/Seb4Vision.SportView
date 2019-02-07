@@ -78,12 +78,8 @@ export class HomeComponent implements OnInit {
                 if (newMatch != this.match) {
                     this.match = newMatch;
                 
-                    this.LoadHomeTeamLogo(this.match.homeTeam);
-                    this.LoaddAwayTeamLogo(this.match.awayTeam);
-                    
-                    
-                    //this.LoadHomeTeamHeatMapImage(this.match.homeTeam);
-                    //this.LoadAwayTeamHeatMapImage(this.match.awayTeam);
+                   this.LoadHomeTeamLogo(this.match.homeTeam);
+                   this.LoaddAwayTeamLogo(this.match.awayTeam); 
 
                     this.LoadHomeTeamHeatMapImage(this.match.homeTeamSportVuStats.teamHeatMap);
                     this.LoadAwayTeamHeatMapImage(this.match.awayTeamSportVuStats.teamHeatMap);
@@ -114,7 +110,11 @@ export class HomeComponent implements OnInit {
                 }
             );
     }
-
+    returnEmptyIfZero(val: any) {
+        if (val == '0.00' || val == '0,00')
+            return '';
+        return val;
+    }
     LoadHomeTeamLogo(teamName: any) {
         console.log("API - Get home team logo");
         this.myService.getTeamLogo(teamName)
@@ -191,6 +191,10 @@ export class HomeComponent implements OnInit {
     
     LoadAwayTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
+        if (imageName == "") {
+            this.awayTeamHeatMap = this.teamHeatMapDefaultImage;
+            return;
+        }
         this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                 if (res.status == 200) {
@@ -220,7 +224,12 @@ export class HomeComponent implements OnInit {
 
     LoadHomeTeamHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
-      
+        if (imageName == "")
+        {
+            this.homeTeamHeatMap = this.teamHeatMapDefaultImage;
+            return;
+        }
+
         this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                 if (res.status == 200) {
@@ -250,6 +259,11 @@ export class HomeComponent implements OnInit {
     
     LoadSelectedPlayerHeatMapImage(imageName: any) {
         console.log("API - Get Away team logo")
+        if (imageName == "") {
+            this.selectedPlayerHeatMap = this.teamHeatMapDefaultImage;
+            return;
+        }
+
         this.myService.getTeamHeatMap(imageName)
             .subscribe(res => {
                     if (res.status == 200) {
