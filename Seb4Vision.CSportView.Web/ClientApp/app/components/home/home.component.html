@@ -86,7 +86,7 @@
         padding: 0px;
         color: white;
         margin: auto;
-        max-width: 300px;
+        max-width: 306px;
     }
 
 
@@ -251,7 +251,7 @@
         padding: 4px;
         font-weight: bold;
         margin: 0px 5px;
-        width: 180px;
+        width: 186px;
         background: linear-gradient(to bottom, #e9fdfe 0%, #d7eaea 100%);
         text-transform: uppercase;
     }
@@ -513,7 +513,7 @@
                         {{match?.homeTeamSportVuStats.teamAvgSpeed}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
-                        Average Speed
+                        Average Speed (KPH)
                     </div>
                     <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamSportVuStats.teamAvgSpeed}}
@@ -681,9 +681,8 @@
                                                        padding-right: 27px;">
 
                         <div class="row">
-                            <div class="col-sm-3 ">
-                                </div>
-                            <div class="col-sm-3 topPerformerStatsTableCol">
+                       
+                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
                                 <b>Top 5 Goal Attempts</b>
                                 <ul style="list-style-type: none; padding: 0;">
                                     <li *ngFor="let number of [0,1,2,3,4]">
@@ -699,8 +698,8 @@
                                 </ul>
                             </div>
 
-                                <div class="col-sm-3 topPerformerStatsTableCol">
-                                    <b>Top 5 Average Speed</b>
+                                <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
+                                    <b>Top 5 Average Speed (KPH)</b>
                                     <ul style="list-style-type: none; padding: 0;">
                                         <li *ngFor="let number of [0,1,2,3,4]">
                                             <div class="statsValue jersey highlighted left topPerformerStatsValue">
@@ -715,7 +714,7 @@
                                     </ul>
 
                                 </div>
-                                <div class="col-sm-3 topPerformerStatsTableCol">
+                                <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
                                     <b>Top 5 Distance Covered (KM)</b>
                                     <ul style="list-style-type: none; padding: 0;">
                                         <li *ngFor="let number of [0,1,2,3,4]">
@@ -756,8 +755,8 @@
                                 </ul>
                             </div>
 
-                            <div class="col-sm-3 topPerformerStatsTableCol">
-                                <b>Top 5 Average Speed</b>
+                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
+                                <b>Top 5 Average Speed (KPH)</b>
                                 <ul style="list-style-type: none;    padding: 0;">
                                     <li *ngFor="let number of [0,1,2,3,4]">
                                         <div class="statsValue jersey highlighted left topPerformerStatsValue">
@@ -772,7 +771,7 @@
                                 </ul>
 
                             </div>
-                            <div class="col-sm-3 topPerformerStatsTableCol">
+                            <div class="col-sm-3 topPerformerStatsTableCol col-md-offset-1">
                                 <b>Top 5 Distance Covered (KM)</b>
                                 <ul style="list-style-type: none;    padding: 0;">
                                     <li *ngFor="let number of [0,1,2,3,4]">
@@ -788,8 +787,7 @@
                                 </ul>
                             </div>
                             
-                            <div class="col-sm-3 ">
-                            </div>
+                            
                         </div>
 
 
@@ -990,30 +988,30 @@
                     <div class="row playerStats">
 
                         <div class="col-sm-12">
-                            Top Speed: {{selectedPlayer?.sportVuPlayerStats.topSpeed}}
+                            Top Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.topSpeed}}
                         </div>
                     </div>
 
                     <div class="row playerStats">
 
                         <div class="col-sm-12">
-                            Average Speed: {{selectedPlayer?.sportVuPlayerStats.playerCardSpeed}}
+                            Average Speed (KPH): {{selectedPlayer?.sportVuPlayerStats.playerCardSpeed}}
                         </div>
                     </div>
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Walking: {{selectedPlayer?.sportVuPlayerStats.speedWalking}}
+                            Speed Walking (KPH): {{selectedPlayer?.sportVuPlayerStats.speedWalking}}
                         </div>
                     </div>
 
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Running: {{selectedPlayer?.sportVuPlayerStats.speedRunning}}
+                            Speed Running (KPH): {{selectedPlayer?.sportVuPlayerStats.speedRunning}}
                         </div>
                     </div>
                     <div class="row playerStats">
                         <div class="col-sm-12">
-                            Speed Sprinting: {{selectedPlayer?.sportVuPlayerStats.speedSprinting}}
+                            Speed Sprinting (KPH): {{selectedPlayer?.sportVuPlayerStats.speedSprinting}}
                         </div>
                     </div>
 
