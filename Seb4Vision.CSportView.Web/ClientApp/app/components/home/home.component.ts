@@ -110,11 +110,13 @@ export class HomeComponent implements OnInit {
                 }
             );
     }
+
     returnEmptyIfZero(val: any) {
         if (val == '0.00' || val == '0,00')
             return '';
         return val;
     }
+
     LoadHomeTeamLogo(teamName: any) {
         console.log("API - Get home team logo");
         this.myService.getTeamLogo(teamName)
@@ -186,6 +188,16 @@ export class HomeComponent implements OnInit {
                 this.selectedPlayerTeamLogo = this.homeTeamLogo;
             }
         }
+    }
+
+    getSelectedPlayerPassAccuracy() {
+        if (this.selectedPlayer != null) {
+            if (this.selectedPlayer.playerEvents.completedPasses + this.selectedPlayer.playerEvents.unCompletedPasses > 0)
+                return Math.round(((this.selectedPlayer.playerEvents.completedPasses * 1.0) /
+                    (this.selectedPlayer.playerEvents.completedPasses + this.selectedPlayer.playerEvents.unCompletedPasses)) *
+                    100);
+        }
+        return 0;
     }
 
     

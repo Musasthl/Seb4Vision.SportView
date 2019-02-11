@@ -484,7 +484,7 @@
                 </div>
 
 
-            <div class="row sub-heading-footer-strip">
+                <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.offSides}}
                     </div>
@@ -578,17 +578,44 @@
 
 
 
+                <div class="row sub-heading-footer-strip"  >
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.passAccuracy}}
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Pass Accuracy %
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.passAccuracy}}
+                    </div>
+                </div>
+
+
+            <div class="row sub-heading-footer-strip" style="display:none">
+                    <div class="col-sm-3 aLeft statsValue">
+                        {{match?.homeTeamEvents.shotAccuracy}} 
+                    </div>
+                    <div class="col-sm-6 center statsDescription">
+                        Shot Accuracy %
+                    </div>
+                    <div class="col-sm-3 aRight statsValue">
+                        {{match?.awayTeamEvents.shotAccuracy}} 
+                    </div>
+                </div>
+
+
+
 
 
                 <div class="row sub-heading-footer-strip" style="display:none">
                     <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamEvents.passAccuracy}} %
+                        {{match?.homeTeamEvents.passAccuracy}} 
                     </div>
                     <div class="col-sm-6 center statsDescription">
                         Pass Completion %
                     </div>
                     <div class="col-sm-3 aRight statsValue">
-                        {{match?.awayTeamEvents.passAccuracy}} %
+                        {{match?.awayTeamEvents.passAccuracy}} 
                     </div>
                 </div>
 
@@ -645,29 +672,6 @@
 
 
 
-                <div class="row sub-heading-footer-strip" style="display:none">
-                    <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamEvents.shotAccuracy}} %
-                    </div>
-                    <div class="col-sm-6 center statsDescription">
-                        Shot Accuracy %
-                    </div>
-                    <div class="col-sm-3 aRight statsValue">
-                        {{match?.awayTeamEvents.shotAccuracy}} %
-                    </div>
-                </div>
-
-                <div class="row sub-heading-footer-strip" style="display:none">
-                    <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamEvents.passAccuracy}} %
-                    </div>
-                    <div class="col-sm-6 center statsDescription">
-                        Pass Accuracy %
-                    </div>
-                    <div class="col-sm-3 aRight statsValue">
-                        {{match?.awayTeamEvents.passAccuracy}} %
-                    </div>
-                </div>
                 <div style="width: 440px;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           margin: 10px auto;">
                     <div class="col-sm-6 aRight">
@@ -983,6 +987,29 @@
 
                         <div class="col-sm-12">
                             Red Cards: {{selectedPlayer?.playerEvents.redCards}}
+                        </div>
+                    </div>
+
+                    <!--<div class="row playerStats">
+                        <div class="col-sm-12">
+                            Total Passes: {{selectedPlayer?.playerEvents.completedPasses + selectedPlayer?.playerEvents.unCompletedPasses}}
+                        </div>
+                    </div>
+
+					
+					
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Successful Passes: {{selectedPlayer?.playerEvents.completedPasses}}
+                        </div>
+                    </div>-->
+
+					
+					
+					
+                    <div class="row playerStats">
+                        <div class="col-sm-12">
+                            Pass Accuracy %: {{getSelectedPlayerPassAccuracy()}}
                         </div>
                     </div>
 
