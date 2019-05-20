@@ -17,6 +17,12 @@ export class MyService {
         return this.http.get('/api/Match/GetActiveGame')
     }
 
+    getActiveNetBallGame() {
+        //   console.log(ROOT_URL + '/Match/GetDetails/'  + ID);
+        // http://localhost:61060/api/Match/GetDetails?matchId=1502882987868
+        return this.http.get('/api/Match/GetActiveNetBallGame')
+    }
+
     getPhoto(photoPath: string) {
         return this.http.get('/api/Match/GetPhotoAsBase64?photoPath=' + encodeURIComponent(photoPath))
     }

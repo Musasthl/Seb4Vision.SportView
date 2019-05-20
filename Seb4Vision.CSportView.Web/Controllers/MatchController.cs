@@ -76,6 +76,36 @@ namespace Seb4Vision.CSportView.Web.Controllers
         {
             try
             {
+               
+
+                MatchDTO matchDto = GetActiveSoccerMatch();
+                if (matchDto == null)
+                {
+                    return NotFound();
+                }
+                return Ok(matchDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Get Match full details, including team list
+        /// </summary>
+        /// <param name="matchId">Match id of the match you want to get data for</param>
+        /// <returns>Returns match details and team line up</returns>
+        [HttpGet]
+        [Route("GetActiveNetBallGame")]
+        [Produces(typeof(MatchDTO))]
+        public ActionResult GetActiveNetBallGame()
+        {
+            try
+            {
+                // var sportCode = _context.Match.Where(x => x.ActiveGame == 1).SingleOrDefault();   
+
                 MatchDTO matchDto = (from match in _context.Match
                                      join awayTeam in _context.Teams on match.AwayTeamID equals awayTeam.IdTeams into gj1
                                      from subTeamAway in gj1.DefaultIfEmpty()
@@ -110,24 +140,24 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                     var playerApi = (new PlayersController(_context));
 
-                    matchDto.HomeTeamSportVuStats = GetTeamSportVuStats(matchDto.HomeTeam);
-                    matchDto.AwayTeamSportVuStats = GetTeamSportVuStats(matchDto.AwayTeam);
+                    //matchDto.HomeTeamSportVuStats = GetTeamSportVuStats(matchDto.HomeTeam);
+                    //matchDto.AwayTeamSportVuStats = GetTeamSportVuStats(matchDto.AwayTeam);
 
 
                     matchDto.HomeTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.HomeTeamId, matchDto.HomeTeam);
                     matchDto.AwayTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.AwayTeamId, matchDto.AwayTeam);
 
 
-                    GetMatchEvents(matchDto);
-                    GetTeamSportViewTeamsEventsFromPlayers(matchDto);
-                    GetTopPerfomersForEachTeam(matchDto);
-                    if (matchDto.HomeTeamPossession == -1)
-                    {
-                        matchDto.HomeTeamPossession = 0;
-                        matchDto.AwayTeamPossession = 0;
-                    }
+                    GetNetBallMatchEvents(matchDto);
+                    //GetTeamSportViewTeamsEventsFromPlayers(matchDto);
+                    //GetTopPerfomersForEachTeam(matchDto);
+                    //if (matchDto.HomeTeamPossession == -1)
+                    //{
+                    //    matchDto.HomeTeamPossession = 0;
+                    //    matchDto.AwayTeamPossession = 0;
+                    //}
                 }
-                else
+                else 
                 {
                     return NotFound();
                 }
@@ -137,6 +167,63 @@ namespace Seb4Vision.CSportView.Web.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
+        }
+
+        private MatchDTO GetActiveSoccerMatch()
+        {
+            MatchDTO matchDto = (from match in _context.Match
+                                 join awayTeam in _context.Teams on match.AwayTeamID equals awayTeam.IdTeams into gj1
+                                 from subTeamAway in gj1.DefaultIfEmpty()
+                                 join homeTeam in _context.Teams on match.HomeTeamID equals homeTeam.IdTeams into gj2
+                                 from subTeamHome in gj2.DefaultIfEmpty()
+                                     // join tournament in _context.AdminTournament on match.Tournament equals tournament.idAdminTournament into gj3
+                                 join tournament in _context.Tournament on match.Tournament equals tournament.TournamentID into gj3
+                                 from subAdminTournament in gj3.DefaultIfEmpty()
+                                 join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
+                                 from subVenue in gj4.DefaultIfEmpty()
+                                     // where match.matchID == matchId
+                                 where match.ActiveGame == 1
+                                 select new MatchDTO()
+                                 {
+                                     Id = match.matchID,
+                                     AwayTeamId = match.AwayTeamID,
+                                     HomeTeamId = match.HomeTeamID,
+                                     AwayTeam = subTeamAway.TeamName,
+                                     HomeTeam = subTeamHome.TeamName,
+                                     AwayTeamScore = match.AwayTeamScore,
+                                     HomeTeamScore = match.HomeTeamScore,
+                                     Tournament = subAdminTournament.TournamentName,
+                                     HomeTeamPossession = Convert.ToInt32(match.HomeTeamPossesion),
+                                     AwayTeamPossession = 100 - Convert.ToInt32(match.HomeTeamPossesion),
+                                     Venue = subVenue.Venue
+                                 }).FirstOrDefault();
+
+
+
+            if (matchDto != null)
+            {
+
+                var playerApi = (new PlayersController(_context));
+
+                matchDto.HomeTeamSportVuStats = GetTeamSportVuStats(matchDto.HomeTeam);
+                matchDto.AwayTeamSportVuStats = GetTeamSportVuStats(matchDto.AwayTeam);
+
+
+                matchDto.HomeTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.HomeTeamId, matchDto.HomeTeam);
+                matchDto.AwayTeamPlayers = playerApi.GetPlayersByTeamId(matchDto.AwayTeamId, matchDto.AwayTeam);
+
+
+                GetMatchEvents(matchDto);
+                GetTeamSportViewTeamsEventsFromPlayers(matchDto);
+                GetTopPerfomersForEachTeam(matchDto);
+                if (matchDto.HomeTeamPossession == -1)
+                {
+                    matchDto.HomeTeamPossession = 0;
+                    matchDto.AwayTeamPossession = 0;
+                }
+            }
+
+            return matchDto;
         }
 
 
@@ -164,10 +251,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
         {
             var results = players
 
-                .Where(p => p.PlayerEvents != null &&  (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget) > 0)
+                .Where(p => p.PlayerEvents != null && (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget) > 0)
                 .OrderByDescending(p => (p.PlayerEvents.ShotsOnTarget + p.PlayerEvents.ShotsOffTarget))
                 .ThenByDescending(p => p.PlayerEvents.Goals)
-                .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget) 
+                .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget)
                 .Select(p => new TopTeamPerformerDTO()
                 {
                     PlayerId = p.PlayerID,
@@ -188,7 +275,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 .OrderByDescending(p => float.Parse(p.SportVuPlayerStats.PlayerCardDistance))
                 .ThenByDescending(p => p.PlayerEvents.Goals)
                 .ThenByDescending(p => p.PlayerEvents.ShotsOnTarget)
-              
+
                 .Select(p => new TopTeamPerformerDTO()
                 {
                     PlayerId = p.PlayerID,
@@ -233,7 +320,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         {
             if (players != null && events != null)
             {
-                events.TotalNumberOfSprints = players.Where(s => s.SportVuPlayerStats != null).Sum(s => string.IsNullOrEmpty(s.SportVuPlayerStats.PlayerCardSprints)? 0 :  int.Parse(s.SportVuPlayerStats.PlayerCardSprints));
+                events.TotalNumberOfSprints = players.Where(s => s.SportVuPlayerStats != null).Sum(s => string.IsNullOrEmpty(s.SportVuPlayerStats.PlayerCardSprints) ? 0 : int.Parse(s.SportVuPlayerStats.PlayerCardSprints));
             }
         }
 
@@ -244,7 +331,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 teamName = teamName.Replace(" ", string.Empty);
                 SportVuTeamStat sportVuTeamStat = _context.SportVuTeamStats
                     .FirstOrDefault(s => string.Equals(s.TeamName, teamName, StringComparison.OrdinalIgnoreCase));
-                if(sportVuTeamStat == null)
+                if (sportVuTeamStat == null)
                     sportVuTeamStat = new SportVuTeamStat();
 
                 return sportVuTeamStat;
@@ -436,6 +523,275 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
         }
 
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void GetNetBallMatchEvents(MatchDTO match)
+        {
+            var matchEvents = _context.MatchEvents.Where(e => e.MatchID == match.Id).ToList<MatchEvents>();
+            foreach (var matchEvent in matchEvents)
+            {
+                switch (matchEvent.StatEvent)
+                {
+                    // Goal 
+                    case 18:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamGoalEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    // Goal  Assested
+                    case 19:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamGoalAssisted(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamGoalAssisted(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+
+                    // Goal attempts
+                    case 20:
+                    case 72:
+                    case 183:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    // Rebounds
+                    case 21:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+                    // Offensive Rebounds
+                    case 116:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamReboundOffensiveEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamReboundOffensiveEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+                    // Defensive Rebounds
+                    case 117:
+                        {
+
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamTurnOversEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamReboundDefensiveEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamReboundEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamTurnOversEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamReboundDefensiveEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+                    // Intercepts
+                    case 22:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers); // 22
+                                UpdateTeamInterceptsEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers); // 22
+                                UpdateTeamInterceptsEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+
+                            }
+                        }
+                        break;
+                    //TurnOvers
+                    case 23:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    // OffSides
+                    case 73:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamOffSidesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamTurnOversEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamOffSidesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+
+                    // Pernalties
+                    case 24:
+
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+                    case 212:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamThreeSecondRuleEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamThreeSecondRuleEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    case 213:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamFootFaultsEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamFootFaultsEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    case 214:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamErrorHandlingEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamErrorHandlingEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                        }
+                        break;
+                    // Deflections
+                    case 26:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamDeflectionsEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamDeflectionsEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+                    // CPReceives
+                    case 25:
+                        {
+                            if (matchEvent.TeamID == match.HomeTeamId)
+                            {
+                                UpdateTeamCPReceivesEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                            }
+                            else if (matchEvent.TeamID == match.AwayTeamId)
+                            {
+                                UpdateTeamCPReceivesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
+                            }
+                        }
+                        break;
+
+
+
+
+
+
+                }
+            }
+
+            // Shot Accuracy  percentage
+            if (match.HomeTeamEvents.ShotsOnTarget + match.HomeTeamEvents.ShotsOffTarget != 0)
+                match.HomeTeamEvents.ShotAccuracy = Math.Round(((match.HomeTeamEvents.ShotsOnTarget * 1.0) / (match.HomeTeamEvents.ShotsOnTarget + match.HomeTeamEvents.ShotsOffTarget)) * 100, 0);
+            if (match.AwayTeamEvents.ShotsOnTarget + match.AwayTeamEvents.ShotsOffTarget != 0)
+                match.AwayTeamEvents.ShotAccuracy = Math.Round(((match.AwayTeamEvents.ShotsOnTarget * 1.0) / (match.AwayTeamEvents.ShotsOnTarget + match.AwayTeamEvents.ShotsOffTarget)) * 100, 0);
+            // Pass accuracy percentage 
+            if (match.HomeTeamEvents.CompletedPasses + match.HomeTeamEvents.UnCompletedPasses != 0)
+                match.HomeTeamEvents.PassAccuracy = Math.Round(((match.HomeTeamEvents.CompletedPasses * 1.0) / (match.HomeTeamEvents.CompletedPasses + match.HomeTeamEvents.UnCompletedPasses)) * 100, 0);
+            if (match.AwayTeamEvents.CompletedPasses + match.AwayTeamEvents.UnCompletedPasses != 0)
+                match.AwayTeamEvents.PassAccuracy = Math.Round(((match.AwayTeamEvents.CompletedPasses * 1.0) / (match.AwayTeamEvents.CompletedPasses + match.AwayTeamEvents.UnCompletedPasses)) * 100, 0);
+
+
+
+        }
+
         [ApiExplorerSettings(IgnoreApi = true)]
         private void UpdateTeamYellowCardEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
         {
@@ -455,6 +811,133 @@ namespace Seb4Vision.CSportView.Web.Controllers
             if (player != null)
             {
                 player.PlayerEvents.RedCards++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamReboundEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.Rebounds++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.Rebounds++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamReboundOffensiveEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.ReboundOffensive++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.ReboundOffensive++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamReboundDefensiveEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.ReboundDefensive++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.ReboundDefensive++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamTurnOversEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.TurnOvers++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.TurnOvers++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamPernaltiesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.Penalties++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.Penalties++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamThreeSecondRuleEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.ThreeSecondRule++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.ThreeSecondRule++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamFootFaultsEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.FootFaults++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.FootFaults++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamErrorHandlingEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.ErrorHandling++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.ErrorHandling++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamDeflectionsEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.Deflections++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.Deflections++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamCPReceivesEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.CpReceives++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.CpReceives++;
+            }
+        }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamInterceptsEvent(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.Intercepts++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.Intercepts++;
             }
         }
 
@@ -522,6 +1005,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
             if (player != null)
             {
                 player.PlayerEvents.Goals++;
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private void UpdateTeamGoalAssisted(MatchEvents matchEvent, MatchEventDTO TeamEvent, List<PlayerDTO> players)
+        {
+            TeamEvent.GoalsAssisted++;
+            var player = players.SingleOrDefault(p => p.PlayerID == matchEvent.PlayerID_1);
+            if (player != null)
+            {
+                player.PlayerEvents.GoalsAssisted++;
             }
         }
 

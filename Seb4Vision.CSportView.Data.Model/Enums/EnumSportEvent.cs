@@ -22,4 +22,11 @@ namespace Seb4Vision.CSportView.Data.Model.Enums
         PenaltyGoal = 42
 
     }
+
+
+    public enum EnumNetballSportEvent
+    {
+ 
+
+    }
 }

@@ -6,6 +6,7 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
 {
     public class MatchEventDTO
     {
+    
         public int RedCards { get; set; }
         public int YellowCards { get; set; }
         public int OffSides { get; set; }
@@ -22,5 +23,18 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
         public int OwnGoals { get; set; }
 
         public int TotalNumberOfSprints { get; set; }
+
+        public int Rebounds { get; set; }
+        public int Intercepts { get; set; }
+        public int TurnOvers { get; set; }
+        public int Penalties { get; set; }
+        public int CpReceives { get; set; }
+        public int Deflections { get; set; }
+        public int FootFaults { get; set; }
+        public int ErrorHandling { get; set; }
+        public int ThreeSecondRule { get; set; }
+        public int GoalsAssisted { get; set; }
+        public int ReboundOffensive { get; set; }
+        public int ReboundDefensive { get; set; }
     }
 }
