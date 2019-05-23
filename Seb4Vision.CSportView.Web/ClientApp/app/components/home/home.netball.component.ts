@@ -3,6 +3,7 @@ import { MyService } from '../../services/myService';
 import { matchDTO } from '../../models/matchDTO';
 import { playerDTO } from '../../models/playerDTO';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class HomeNetballComponent implements OnInit {
 
+    public matchId: any;
     public teamAImageUrl = require("./../../images/defaultTeamLogo.png");
     public teamBImageUrl = require("./../../images/defaultTeamLogo.png");
     public redCardUrl = require("./../../images/redCard.png");
@@ -47,29 +49,52 @@ export class HomeNetballComponent implements OnInit {
     public teamHeatMapDefaultImage= require("./../../images/defaultHeatMapImage.png");
 
     loading: boolean = true;
+    sub: any;
+    matchQaurterScore: any;
+ 
 
-    constructor(private myService: MyService, private sanitizer: DomSanitizer) {
+    constructor(private myService: MyService, private sanitizer: DomSanitizer,     private route: ActivatedRoute,
+        private router: Router) {
+            
+ 
+
+ 
+    
     }
     ngOnInit() {
+
+        this.sub = this.route
+        .queryParams
+        .subscribe(params => {
+          // Defaults to 0 if no query param provided.
+          this.matchId = +params['match'] || 0;
+           
+ 
         console.log(this.myService.serviceProperty);
         this.myService.serviceProperty = "Calling API";
         this.selectedPlayer = null;
         // refresh every 5 seconds (5000 milliseconds)
-        this.refreshData();
-        
+       
+        // this.refreshData();
         this.interval = setInterval(() => {
-            this.refreshData();
+           this.refreshData();
         }, this.autoRefreshInterval);
+    });
+
 
     }
-
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+      }
     refreshData() {
+    
         this.loadMatchData();
+        this.loadMatchQuarterScorer();
     }
 
     loadMatchData() {
         console.log(this.myService.serviceProperty);
-        this.myService.getActiveNetBallGame()
+        this.myService.getNetBallGame(this.matchId)
             .subscribe(res => {
                 console.log("Got API response");
 
@@ -109,6 +134,33 @@ export class HomeNetballComponent implements OnInit {
 
                 }
             );
+    }
+
+    loadMatchQuarterScorer()
+    {
+        this.myService.GetAllNetBallQuarterScore(this.matchId)
+        .subscribe(res => {
+            console.log("Got API response");
+          this.matchQaurterScore = res.json() as any;
+         
+         //       this.loading = false;
+
+                // this.selectedPlayer = this.match.homeTeamPlayers[0];
+                //   console.log(this.selectedPlayer)
+
+
+            },
+            err => {
+             //   this.loading = false;
+                const body = err.json() || "";
+                const error = body.error || JSON.stringify(body);
+                console.log(err.status); // 500
+                console.log(err.statusText); // Internal Server Error
+                console.log(body.Source); // MySqlConnector
+                console.log(body.Message); // "Connect Timeout expir
+
+            }
+        );
     }
 
     returnEmptyIfZero(val: any) {

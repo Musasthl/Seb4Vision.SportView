@@ -170,7 +170,7 @@
 
 
     .tornament-sub {
-        color: red;
+        color: #49ff00;
         font-weight: bold;
     }
 
@@ -180,7 +180,7 @@
     }
 
     .player-info {
-        color: gray;
+        color: #edff00;
     }
 
     .playerTeamLogo {
@@ -267,6 +267,11 @@
     {
         padding: 0;text-align: center;}
     /* aligntment */
+    .quarterScore
+    {
+        background-color: #fbcb36;
+    background-image: linear-gradient(#DAA520, yellow);
+    }
 </style>
 <div *ngIf="loading" style="    background: transparent; font-weight: bold;
                                       color: white;
@@ -279,6 +284,10 @@
     <br />    <br />
     <p>Loading. Please wait...</p>
 </div>
+<div *ngIf="!loading"  style="    text-align: center;
+margin: 5px;   
+    font-weight: bold;"><a [routerLink]="['/netball.matches']" style="animation: blinker 1s linear infinite;  color: #edff00;">((Click Go To Home)) </a></div>
+       
 
 <div class="body-content" *ngIf="!loading" style="    margin-bottom: 60px;">
     <div *ngIf="!showSelectedPlayer" class="container-fluid myContent-body">
@@ -289,15 +298,7 @@
             </div>
         </div>
 
-        <div class="row navigation-sub-heading">
-            <div class="col-sm-6 nav highlighted center">
-                MATCH
-            </div>
-            <div class="col-sm-6 nav center">
-                SQUAD
-            </div>
 
-        </div>
         <div class="row  sub-heading-footer">
             <div class="col-sm-3 left barBackground alignRight">
                 <img [attr.src]="homeTeamLogo" class="teamlogo left">
@@ -321,6 +322,11 @@
                     {{match?.tournament}}
                     <br>
                     {{match?.venue}}
+                    <p *ngIf="match?.isLiveMatch">       <img src="./../../images/live.png" class="liveIcon"
+                        style="  height:36px; position: absolute;
+                    left: 0; right:0;
+                        margin: auto;"
+                        ></p>
                 </div>
                 <span class="score center" style="    width: 60px; background-color: #71abfc;  float: right;color:black; font-weight: bold;font-size: 20px;    padding: 10px;">
 
@@ -340,7 +346,7 @@
             <div class="col-sm-3">
                 <!-- Players home team -->
                 <div *ngFor="let player of match.homeTeamPlayers | slice:0:7; let i = index" [attr.data-index]="i" class="playerRow row">
-                    <div class="col-sm-12 player">
+                    <div class="col-sm-12 player " style="text-align: left;">
                         <span (click)="onPlayerClick(match.id,  player)">
 
                             <span class="jersey highlighted"> {{player.jerseyNumber}} </span>{{player.name}} {{player.surname}}
@@ -394,20 +400,83 @@
             </div>
             <div class="col-sm-6">
 
- <!-- 
-                <div class="row sub-heading-footer-strip highlighted">
-                    <div class="col-sm-3 aLeft statsValue">
-                        {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
-                    </div>
-                    <div class="col-sm-6 center statsDescription">
-                        Goal Attempts
-                       
-                    </div>
-                    <div class="col-sm-3 aRight statsValue">
-                        {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
-                    </div>
+                <!--
+                   <div class="row sub-heading-footer-strip highlighted">
+                       <div class="col-sm-3 aLeft statsValue">
+                           {{match?.homeTeamEvents.shotsOnTarget + match?.homeTeamEvents.shotsOffTarget}}
+                       </div>
+                       <div class="col-sm-6 center statsDescription">
+                           Goal Attempts
+
+                       </div>
+                       <div class="col-sm-3 aRight statsValue">
+                           {{match?.awayTeamEvents.shotsOnTarget + match?.awayTeamEvents.shotsOffTarget}}
+                       </div>
+                   </div>
+               -->
+
+               
+
+                
+               <div class="row sub-heading-footer-strip">
+                <div class="col-sm-3 aLeft statsValue quarterScore">
+                    {{ matchQaurterScore.homeTeamQuarterScore[0]}}
                 </div>
-            -->
+                <div class="col-sm-6 center statsDescription">
+                    QUARTER 1
+                </div>
+                <div class="col-sm-3 aRight statsValue quarterScore">
+                    {{ matchQaurterScore.awayTeamQuarterScore[0]}}
+                </div>
+            </div>
+
+
+                            
+            <div class="row sub-heading-footer-strip">
+                <div class="col-sm-3 aLeft statsValue quarterScore">
+                    {{ matchQaurterScore.homeTeamQuarterScore[1]}}
+                </div>
+                <div class="col-sm-6 center statsDescription">
+                    QUARTER 2
+                </div>
+                <div class="col-sm-3 aRight statsValue quarterScore">
+                    {{ matchQaurterScore.awayTeamQuarterScore[1]}}
+                </div>
+            </div>
+
+
+                                            
+            <div class="row sub-heading-footer-strip">
+                <div class="col-sm-3 aLeft statsValue quarterScore">
+                    {{ matchQaurterScore.homeTeamQuarterScore[2]}}
+                </div>
+                <div class="col-sm-6 center statsDescription">
+                    QUARTER 3
+                </div>
+                <div class="col-sm-3 aRight statsValue quarterScore">
+                    {{ matchQaurterScore.awayTeamQuarterScore[2]}}
+                </div>
+            </div>
+
+                                            
+            <div class="row sub-heading-footer-strip">
+                <div class="col-sm-3 aLeft statsValue quarterScore">
+                    {{ matchQaurterScore.homeTeamQuarterScore[3]}}
+                </div>
+                <div class="col-sm-6 center statsDescription">
+                    QUARTER 4
+                </div>
+                <div class="col-sm-3 aRight statsValue quarterScore">
+                    {{ matchQaurterScore.awayTeamQuarterScore[3]}}
+                </div>
+            </div>
+
+            <hr style="    margin-top: 10px;
+            margin-bottom: 10px;"/>
+
+
+
+
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.shotsOnTarget}}
@@ -462,7 +531,7 @@
                     </div>
                     <div class="col-sm-6 center statsDescription">
                         Intercepts
-                       
+
                     </div>
                     <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.intercepts}}
@@ -474,7 +543,7 @@
                         {{match?.homeTeamEvents.turnOvers}}
                     </div>
                     <div class="col-sm-6 center statsDescription">
-                        Turn Overs  
+                        Turn Overs
                     </div>
                     <div class="col-sm-3 aRight statsValue">
                         {{match?.awayTeamEvents.turnOvers}}
@@ -494,7 +563,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
                         {{match?.homeTeamEvents.deflections}}
@@ -522,7 +591,7 @@
 
 
 
-                
+
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
@@ -536,7 +605,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
@@ -551,7 +620,7 @@
                 </div>
 
 
-                
+
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
@@ -565,7 +634,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="row sub-heading-footer-strip">
                     <div class="col-sm-3 aLeft statsValue">
@@ -580,10 +649,18 @@
                 </div>
 
 
- 
-  
 
-             
+ 
+
+
+
+ 
+
+
+
+
+
+
             </div>
             <div class="col-sm-3">
                 <!-- Players away team -->

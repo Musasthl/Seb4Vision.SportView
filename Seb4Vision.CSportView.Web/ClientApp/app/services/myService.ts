@@ -17,11 +17,6 @@ export class MyService {
         return this.http.get('/api/Match/GetActiveGame')
     }
 
-    getActiveNetBallGame() {
-        //   console.log(ROOT_URL + '/Match/GetDetails/'  + ID);
-        // http://localhost:61060/api/Match/GetDetails?matchId=1502882987868
-        return this.http.get('/api/Match/GetActiveNetBallGame')
-    }
 
     getPhoto(photoPath: string) {
         return this.http.get('/api/Match/GetPhotoAsBase64?photoPath=' + encodeURIComponent(photoPath))
@@ -35,4 +30,24 @@ export class MyService {
     getTeamHeatMap(imageName: string) {
         return this.http.get('/api/Match/GetTeamHeatMapImageAsBase64?imageName=' + encodeURIComponent(imageName))
     }
+
+    getNetBallGame(matchId: any) {
+        //   console.log(ROOT_URL + '/Match/GetDetails/'  + ID);
+        // http://localhost:61060/api/Match/GetDetails?matchId=1502882987868
+        return this.http.get('/api/Match/getNetBallGame?matchId=' + matchId)
+    }
+
+    getActiveNetBallMatches() {
+        //   console.log(ROOT_URL + '/Match/GetDetails/'  + ID);
+        // http://localhost:61060/api/Match/GetDetails?matchId=1502882987868
+        return this.http.get('/api/TournamentMatch/GetAllNetball')
+    }
+
+    
+    GetAllNetBallQuarterScore(matchId: any) {
+        //   console.log(ROOT_URL + '/Match/GetDetails/'  + ID);
+        // http://localhost:61060/api/Match/GetDetails?matchId=1502882987868
+        return this.http.get('/api/TournamentMatch/GetAllNetBallQuarterScore?matchId=' + matchId )
+    }
+
 }

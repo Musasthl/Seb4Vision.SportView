@@ -6,6 +6,7 @@ import { TopTeamPerformerDTO } from  "./topTeamPerformerDTO";
 
 export interface matchDTO {
     id: number;
+    isLiveMatch: boolean;
     awayTeamId: number;
     homeTeamId: number;
     homeTeam: string;

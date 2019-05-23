@@ -98,9 +98,9 @@ namespace Seb4Vision.CSportView.Web.Controllers
         /// <param name="matchId">Match id of the match you want to get data for</param>
         /// <returns>Returns match details and team line up</returns>
         [HttpGet]
-        [Route("GetActiveNetBallGame")]
+        [Route("getNetBallGame")]
         [Produces(typeof(MatchDTO))]
-        public ActionResult GetActiveNetBallGame()
+        public ActionResult getNetBallGame(long matchId)
         {
             try
             {
@@ -117,10 +117,11 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                      join venue in _context.Venue on match.Venue equals venue.idVenue into gj4
                                      from subVenue in gj4.DefaultIfEmpty()
                                          // where match.matchID == matchId
-                                     where match.ActiveGame == 1
+                                     where match.matchID == matchId
                                      select new MatchDTO()
                                      {
                                          Id = match.matchID,
+                                         IsLiveMatch = (match.ActiveGame == 1),
                                          AwayTeamId = match.AwayTeamID,
                                          HomeTeamId = match.HomeTeamID,
                                          AwayTeam = subTeamAway.TeamName,

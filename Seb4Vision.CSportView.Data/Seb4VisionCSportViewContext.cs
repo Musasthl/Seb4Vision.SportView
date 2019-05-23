@@ -32,5 +32,6 @@ namespace Seb4Vision.CSportView.Data
         public DbSet<MatchEvents> MatchEvents { get; set; }
         public DbSet<SportVuTeamStat> SportVuTeamStats { get; set; }
         public DbSet<SportVuPlayerStat> SportVuPlayerStats { get; set; }
+        public DbSet<GameStages> GameStages { get; set; }
     }
 }

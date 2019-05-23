@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Seb4Vision.CSportView.Data;
+using Seb4Vision.CSportView.Data.Model.Model;
 
 namespace Seb4Vision.CSportView.Web.Controllers
 {
@@ -19,5 +21,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
             ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             return View();
         }
+
+        
     }
 }

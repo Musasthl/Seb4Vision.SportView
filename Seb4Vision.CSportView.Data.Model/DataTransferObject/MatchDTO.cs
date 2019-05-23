@@ -31,6 +31,7 @@ namespace Seb4Vision.CSportView.Data.Model.DataTransferObject
         public List<TopTeamPerformerDTO> HomeTeamTopPerfomerDistanceCovered { get; set; }
         public List<TopTeamPerformerDTO> AwayTeamTopPerfomerAverageSpeed { get; set; }
         public List<TopTeamPerformerDTO> HomeTeamTopPerfomerAverageSpeed { get; set; }
+        public bool IsLiveMatch { get; set; }
 
         public MatchDTO()
         {
