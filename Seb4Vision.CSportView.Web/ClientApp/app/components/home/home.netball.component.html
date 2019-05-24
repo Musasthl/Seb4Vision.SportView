@@ -357,11 +357,13 @@ margin: 5px;
                              <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg" />
                             -->
 
-                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <!--<img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
                             <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />
                             <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
-                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />
-
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />-->
+                            <span *ngIf="player.playerEvents.goals >  0">
+                                <img [attr.src]="goalBallUrl" class="gameCardImg" /> <b style="color: #636262">{{player.playerEvents.goals}}</b>
+                            </span>
                         </span>
 
                     </div>
@@ -386,11 +388,13 @@ margin: 5px;
                             <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg"
                             />
                                    -->
-                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <!--<img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
                             <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />
                             <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
-                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />
-
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />-->
+                            <span *ngIf="player.playerEvents.goals >  0">
+                                <img [attr.src]="goalBallUrl" class="gameCardImg" /> <b style="color: #636262">{{player.playerEvents.goals}}</b>
+                            </span>
 
                         </span>
 
@@ -673,12 +677,16 @@ margin: 5px;
                                                         <img *ngIf="player.playerEvents.yellowCards ==  1  && player.playerEvents.redCards == 0" [attr.src]="yellowCardUrl" class="gameCardImg"
                                                         />
                             -->
-                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
-                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />
+                            <!--<img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />-->
 
-                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
+                            <!--<img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
 
-                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />-->
+                            
+                            <span *ngIf="player.playerEvents.goals >  0">
+                                <b style="color: #636262">{{player.playerEvents.goals}}</b>  <img [attr.src]="goalBallUrl" class="gameCardImg" /> 
+                            </span>
 
                             <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>
 
@@ -707,11 +715,15 @@ margin: 5px;
                             />-->
 
 
-                            <img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
-                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />
-                            <img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
+                            <!--<img *ngIf="player.playerEvents.redCards >  0" [attr.src]="redCardUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.yellowCards | pipeLoopNumber)" [attr.src]="yellowCardUrl" class="gameCardImg" />-->
+                            <!--<img *ngFor="let key of (player.playerEvents.ownGoals | pipeLoopNumber)" [attr.src]="ownGoalBallUrl" class="gameCardImg" />
 
-                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />
+                            <img *ngFor="let key of (player.playerEvents.goals | pipeLoopNumber)" [attr.src]="goalBallUrl" class="gameCardImg" />-->
+                            
+                            <span *ngIf="player.playerEvents.goals >  0">
+                                <b style="color: #636262">{{player.playerEvents.goals}}</b>  <img [attr.src]="goalBallUrl" class="gameCardImg" /> 
+                            </span>
 
 
                             <span *ngIf="(player.positionShortDesc == 'GK' && i == 0) || player.positionShortDesc == 'CPT'">({{player.positionShortDesc}})</span>

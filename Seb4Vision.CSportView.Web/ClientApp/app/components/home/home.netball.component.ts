@@ -75,7 +75,7 @@ export class HomeNetballComponent implements OnInit {
         this.selectedPlayer = null;
         // refresh every 5 seconds (5000 milliseconds)
        
-        // this.refreshData();
+   // this.refreshData();
         this.interval = setInterval(() => {
            this.refreshData();
         }, this.autoRefreshInterval);

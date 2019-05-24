@@ -100,7 +100,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
         [HttpGet]
         [Route("getNetBallGame")]
         [Produces(typeof(MatchDTO))]
-        public ActionResult getNetBallGame(long matchId)
+        public ActionResult GetNetBallGame(long matchId)
         {
             try
             {
@@ -539,7 +539,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                             if (matchEvent.TeamID == match.HomeTeamId)
                             {
-                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamGoalEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
                                 UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
 
                             }
