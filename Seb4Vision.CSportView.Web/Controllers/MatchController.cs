@@ -546,7 +546,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             else if (matchEvent.TeamID == match.AwayTeamId)
                             {
                                 UpdateTeamGoalEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
-                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.AwayTeamPlayers);
                             }
                         }
                         break;
