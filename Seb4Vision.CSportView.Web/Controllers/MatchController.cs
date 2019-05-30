@@ -546,7 +546,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             else if (matchEvent.TeamID == match.AwayTeamId)
                             {
                                 UpdateTeamGoalEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
-                                UpdateTeamShotOnTargetEvent(matchEvent, match.HomeTeamEvents, match.AwayTeamPlayers);
+                                UpdateTeamShotOnTargetEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
                             }
                         }
                         break;
@@ -723,7 +723,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             else if (matchEvent.TeamID == match.AwayTeamId)
                             {
                                 UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
-                                UpdateTeamFootFaultsEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamFootFaultsEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
                             }
                         }
                         break;
@@ -738,7 +738,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             else if (matchEvent.TeamID == match.AwayTeamId)
                             {
                                 UpdateTeamPernaltiesEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
-                                UpdateTeamErrorHandlingEvent(matchEvent, match.HomeTeamEvents, match.HomeTeamPlayers);
+                                UpdateTeamErrorHandlingEvent(matchEvent, match.AwayTeamEvents, match.AwayTeamPlayers);
                             }
                         }
                         break;
