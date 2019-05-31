@@ -10,4 +10,5 @@ export interface tournamentMatchDTO {
     homeTeamScore: number;
     awayTeamScore: number;
     isLiveMatch: boolean;
+    matchStatusId: number;
 }

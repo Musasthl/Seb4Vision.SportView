@@ -35,6 +35,7 @@ namespace Seb4Vision.CSportView.Data.Repository
                                              x.MatchID == match.matchID && x.TeamID == match.HomeTeamID && x.StatEvent == 18),
                                          AwayTeamScore = context.MatchEvents.Count(x =>
                                              x.MatchID == match.matchID && x.TeamID == match.AwayTeamID && x.StatEvent == 18),
+                                         MatchStatusId = match.MatchStatus
                                      }).ToList();
             return tournamentMatches;
         }

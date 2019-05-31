@@ -335,7 +335,11 @@ font-weight: bold;">TELKOM NETBALL LEAGUE 2019</h1>
                     <td class="td" style="vertical-align: middle;" >
                       <img *ngIf="match.isLiveMatch"
                        src="./../../images/live.png" style="height: 24px;" /> 
-                       <b>   {{match?.homeTeamName}} {{match?.homeTeamScore}} - {{match?.awayTeamScore}} {{match?.awayTeamName}} 
+                        <b *ngIf="match.matchStatusId == 20">  
+                            {{match?.homeTeamName}}  vs  {{match?.awayTeamName}} 
+                        </b> 
+                        <b *ngIf="match.matchStatusId != 20">  
+                            {{match?.homeTeamName}} {{match?.homeTeamScore}} - {{match?.awayTeamScore}} {{match?.awayTeamName}} 
                         </b> 
                     </td >
                     <td class="td">

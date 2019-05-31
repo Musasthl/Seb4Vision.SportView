@@ -21,5 +21,6 @@ namespace Seb4Vision.CSportView.Data.Model.Model
         public int AwayTeamScore { get; set; }
         public string TournamentName { get; set; }
         public bool IsLiveMatch { get; set; }
+        public int? MatchStatusId { get; set; }
     }
 }
