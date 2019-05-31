@@ -21,7 +21,7 @@
     awayTeamSportVuStats: SportVuTeamStatDTO;
 	
 	
-	
+	https://youtu.be/Pitm1x7pTfI
 	
 	
 	    Missing =  Number of Sprints,  Total Passes, Auctual Play Time
@@ -35,3 +35,8 @@
 		 ? Do the heatmap name change. And where are they located? 
 
 		 ? What about player heatmap. What additional player data is required. 
+
+
+
+
+		 dotnet publish -f netcoreapp2.0 -c Release --self-contained false

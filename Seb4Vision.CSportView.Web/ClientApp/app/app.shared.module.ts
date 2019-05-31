@@ -8,8 +8,7 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { HomeNetballComponent } from './components/home/home.netball.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
+ 
 import { MyService } from './services/myService';
 import { PipeLoopNumber } from './pipe/PipeLoopNumber';
 import { NetBallMatchesComponent } from './components/tournamentMatches/netball.matches.component';
@@ -18,8 +17,7 @@ import { NetBallMatchesComponent } from './components/tournamentMatches/netball.
     declarations: [
         AppComponent,
         NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
+ 
         HomeComponent,
         HomeNetballComponent,
         NetBallMatchesComponent,
@@ -34,10 +32,8 @@ import { NetBallMatchesComponent } from './components/tournamentMatches/netball.
             { path: 'home', component: HomeComponent },
             { path: 'netball', component: HomeNetballComponent },
             { path: 'netball.matches', component: NetBallMatchesComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
-        ])
+        ], { useHash: true })
     ],
     providers: [MyService],
 })

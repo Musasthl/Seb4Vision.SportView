@@ -120,6 +120,8 @@ namespace Seb4Vision.CSportView.Web
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             }); 
+
+
         }
     }
 }
