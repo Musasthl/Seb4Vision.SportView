@@ -14,7 +14,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Seb4Vision.CSportView.Web.Configurations;
-
+using Seb4Vision.CSportView.Golf.Data;
 
 namespace Seb4Vision.CSportView.Web
 {
@@ -34,6 +34,9 @@ namespace Seb4Vision.CSportView.Web
 
             services.AddDbContext<Seb4VisionCSportViewContext>(options =>
               options.UseMySql(Configuration.GetConnectionString("Seb4VisionCSportViewContext")));
+
+            services.AddDbContext<Seb4VisionCSportViewGolfContext>(options =>
+  options.UseMySql(Configuration.GetConnectionString("Seb4VisionCSportViewGolfContext")));
             // options.UseSqlServer(Configuration.GetConnectionString("Seb4VisionCSportViewContext")));
 
             services.AddCors(options =>
@@ -119,7 +122,7 @@ namespace Seb4Vision.CSportView.Web
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
-            }); 
+            });
 
 
         }

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<configuration>
+    <configSections>
+    </configSections>
+  <!--infho-pp-cms -->
+  <!--infho-srv-ops\cms-->
+    <connectionStrings>
+        <add name="WorkshopReworks.Properties.Settings.NetstarConnectionString" connectionString="Data Source=UnitManagementDB;Initial Catalog=Netstar;User ID=merlin;Password=merlin" providerName="System.Data.SqlClient"/>
+		
+        <add name="WorkshopReworks.Properties.Settings.NetstarSimManConnectionString" connectionString="Data Source=UnitManagementDB.netstar.co.za;Initial Catalog=NetstarSimMan;User ID=svc_netstarsimman;Password=XReA2qr5j8nh4KoRZDDi" providerName="System.Data.SqlClient"/>
+       
+	   <add name="WorkshopReworks.Properties.Settings.ReplicationDBConnectionString" connectionString="Data Source=UnitManagementDB;Initial Catalog=ReplicationDB;User ID=merlin;Password=merlin" providerName="System.Data.SqlClient"/>
+    </connectionStrings>
+<startup><supportedRuntime version="v2.0.50727"/></startup></configuration>

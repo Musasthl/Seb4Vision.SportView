@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event updatetimestamp="17/1/2017 11:03:04 AM">
+  <tournament year="2017" tournid="123456" tournideu="123456" eutourid="123456" tournidasia="0" astourid="0" tournidaus="0" autourid="0" tournidsun="JEDI" tournidjap="0" tournidpga="0" ustourid="0" tournidot="0" tournidota="0" tournidotb="0" name="Dimension Data Pro-Am" location="Montagu Golf Course, Fancourt" country="South Africa" begindate="16/02/17" enddate="19/02/17" lastroundcompleted="0" currentround="1" currndverified="N" status="In Progress">
+    <courses>
+      <course no="1" holes="18" frontpar="36" backpar="36" par="72" frontmetres="3461" backmetres="3253" totalmetres="6714" frontyards="3785" backyards="3557" totalyards="7342">
+        <hole no="1" par="4" yards="419" metres="383"/>
+        <hole no="2" par="3" yards="195" metres="178"/>
+        <hole no="3" par="4" yards="455" metres="416"/>
+        <hole no="4" par="5" yards="576" metres="527"/>
+        <hole no="5" par="4" yards="425" metres="389"/>
+        <hole no="6" par="4" yards="457" metres="418"/>
+        <hole no="7" par="4" yards="467" metres="427"/>
+        <hole no="8" par="3" yards="199" metres="182"/>
+        <hole no="9" par="5" yards="592" metres="541"/>
+        <hole no="10" par="5" yards="542" metres="496"/>
+        <hole no="11" par="4" yards="387" metres="354"/>
+        <hole no="12" par="3" yards="208" metres="190"/>
+        <hole no="13" par="4" yards="482" metres="441"/>
+        <hole no="14" par="4" yards="429" metres="392"/>
+        <hole no="15" par="4" yards="428" metres="391"/>
+        <hole no="16" par="4" yards="344" metres="315"/>
+        <hole no="17" par="3" yards="208" metres="190"/>
+        <hole no="18" par="5" yards="529" metres="484"/>
+      </course>
+      <course no="2" holes="18" frontpar="36" backpar="36" par="72" frontmetres="3141" backmetres="3171" totalmetres="6312" frontyards="3436" backyards="3467" totalyards="6903">
+        <hole no="1" par="4" yards="346" metres="316"/>
+        <hole no="2" par="5" yards="544" metres="497"/>
+        <hole no="3" par="4" yards="435" metres="398"/>
+        <hole no="4" par="3" yards="201" metres="184"/>
+        <hole no="5" par="4" yards="329" metres="301"/>
+        <hole no="6" par="4" yards="392" metres="358"/>
+        <hole no="7" par="3" yards="177" metres="162"/>
+        <hole no="8" par="5" yards="579" metres="529"/>
+        <hole no="9" par="4" yards="433" metres="396"/>
+        <hole no="10" par="4" yards="354" metres="324"/>
+        <hole no="11" par="5" yards="554" metres="507"/>
+        <hole no="12" par="3" yards="189" metres="173"/>
+        <hole no="13" par="4" yards="407" metres="372"/>
+        <hole no="14" par="4" yards="460" metres="421"/>
+        <hole no="15" par="3" yards="163" metres="149"/>
+        <hole no="16" par="4" yards="427" metres="390"/>
+        <hole no="17" par="5" yards="537" metres="491"/>
+        <hole no="18" par="4" yards="376" metres="344"/>
+      </course>
+      <course no="3" holes="18" frontpar="36" backpar="37" par="73" frontmetres="3367" backmetres="3408" totalmetres="6775" frontyards="3682" backyards="3728" totalyards="7410">
+        <hole no="1" par="4" yards="396" metres="362"/>
+        <hole no="2" par="3" yards="236" metres="216"/>
+        <hole no="3" par="4" yards="469" metres="429"/>
+        <hole no="4" par="4" yards="458" metres="419"/>
+        <hole no="5" par="5" yards="549" metres="502"/>
+        <hole no="6" par="4" yards="341" metres="312"/>
+        <hole no="7" par="4" yards="440" metres="402"/>
+        <hole no="8" par="3" yards="202" metres="185"/>
+        <hole no="9" par="5" yards="591" metres="540"/>
+        <hole no="10" par="4" yards="408" metres="373"/>
+        <hole no="11" par="3" yards="161" metres="147"/>
+        <hole no="12" par="4" yards="481" metres="440"/>
+        <hole no="13" par="5" yards="533" metres="487"/>
+        <hole no="14" par="4" yards="361" metres="330"/>
+        <hole no="15" par="4" yards="477" metres="436"/>
+        <hole no="16" par="5" yards="572" metres="523"/>
+        <hole no="17" par="3" yards="186" metres="170"/>
+        <hole no="18" par="5" yards="549" metres="502"/>
+      </course>
+    </courses>
+    <players>
+      <player city="" country="ENG" firstname="Alan" lastname="Williamson" lastnameup="WILLIAMSON" fullname="Alan Williamson" id="WIL008" ideu="0" idasia="0" idau="0" idaus="0" idsun="0" idint="0" idpga="0" idjap="0" idot="0" idota="0" idotb="0" idowgr="0" proam="pro" suffix="" represents="Unattached">
+        <totals position="1" status="0" strokes="4" tied="0" totaltopar="0"/>
+        <round no="1" description="Round 1" course="1" holesplayed="1" matchnumber="1" matchnumberindex="1" startingtee="1" strokes="4" teetime="08:00" totaltopar="0" verified="0">
+          <score hole="1" bunkers="" drive="" fairway="" gir="" putts="0" strokes="4"/>
+          <score hole="2" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="3" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="4" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="5" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="6" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="7" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="8" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="9" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="10" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="11" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="12" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="13" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="14" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="15" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="16" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="17" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="18" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+        </round>
+      </player>
+    </players>
+    <teams>
+      <team city="" country="ENG" firstname="Alan" lastname="Williamson" lastnameup="WILLIAMSON" fullname="A. Williamson &amp; L. Verwey" id="WIL008" ideu="0" idasia="0" idau="0" idaus="0" idsun="0" idint="0" idpga="0" idjap="0" idot="0" idota="0" idotb="0" idowgr="0" proam="pro" suffix="" represents="Unattached / Stellenbosch Golf">
+        <totals position="1" status="0" strokes="4" tied="0" totaltopar="0"/>
+        <round no="1" description="Round 1" course="1" holesplayed="1" matchnumber="1" matchnumberindex="1" startingtee="1" strokes="4" teetime="08:00" totaltopar="0" verified="0">
+          <score hole="1" bunkers="" drive="" fairway="" gir="" putts="0" strokes="4"/>
+          <score hole="2" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="3" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="4" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="5" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="6" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="7" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="8" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="9" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="10" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="11" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="12" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="13" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="14" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="15" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="16" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="17" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+          <score hole="18" bunkers="" drive="" fairway="" gir="" putts="0" strokes=""/>
+        </round>
+      </team>
+    </teams>
+  </tournament>
+</event>

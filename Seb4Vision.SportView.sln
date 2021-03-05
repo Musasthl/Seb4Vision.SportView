@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seb4Vision.CSportView.Data", "Seb4Vision.CSportView.Data\Seb4Vision.CSportView.Data.csproj", "{59B69A0B-7966-4CD7-8188-3475AA90C81C}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seb4Vision.CSportView.Web",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seb4Vision.CSportView.Data.Model", "Seb4Vision.CSportView.Data.Model\Seb4Vision.CSportView.Data.Model.csproj", "{178B1730-9ABE-420C-B9FF-32BB96C0A267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seb4Vision.CSportView.LogManager", "Seb4Vision.CSportView.LogManager\Seb4Vision.CSportView.LogManager.csproj", "{254A069A-3DDF-4445-9AC6-ACEBD11BE055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seb4Vision.CSportView.LogManager", "Seb4Vision.CSportView.LogManager\Seb4Vision.CSportView.LogManager.csproj", "{254A069A-3DDF-4445-9AC6-ACEBD11BE055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seb4Vision.CSportView.Golf.Data", "Seb4Vision.CSportView.Golf.Data\Seb4Vision.CSportView.Golf.Data.csproj", "{8C22B4F9-36FB-44C0-841D-F3BB5C415728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{254A069A-3DDF-4445-9AC6-ACEBD11BE055}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254A069A-3DDF-4445-9AC6-ACEBD11BE055}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{254A069A-3DDF-4445-9AC6-ACEBD11BE055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C22B4F9-36FB-44C0-841D-F3BB5C415728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C22B4F9-36FB-44C0-841D-F3BB5C415728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C22B4F9-36FB-44C0-841D-F3BB5C415728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C22B4F9-36FB-44C0-841D-F3BB5C415728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

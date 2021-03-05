@@ -34,10 +34,15 @@
     <ProjectReference Include="..\Seb4Vision.CSportView.Data.Contracts\Seb4Vision.CSportView.Data.Contracts.csproj" />
     <ProjectReference Include="..\Seb4Vision.CSportView.Data.Model\Seb4Vision.CSportView.Data.Model.csproj" />
     <ProjectReference Include="..\Seb4Vision.CSportView.Data\Seb4Vision.CSportView.Data.csproj" />
+    <ProjectReference Include="..\Seb4Vision.CSportView.Golf.Data\Seb4Vision.CSportView.Golf.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\services\MatchDataService.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\app\components\golf\player\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
