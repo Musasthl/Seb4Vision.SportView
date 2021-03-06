@@ -66,7 +66,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 {
                     con.Open();
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus  ");
+                    sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime  ");
                     sb.Append(", sum(st.strokes) as TotalStrokes, sum(ch.par) as TotalPar,");
                     sb.Append(" sum(st.strokes) - sum(ch.par) as RoundScore");
                     sb.Append(" FROM golf.players p ");
@@ -79,7 +79,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                     sb.Append("group by p.playerid, p.firstname, p.lastname, p.photopath, r.roundid, st.holeid, sc.back9start, st.HoleStatus ");
 
-                  
+
                     sb.Append("order by r.Description, RoundScore ");
 
                     var cmd = new MySql.Data.MySqlClient.MySqlCommand(sb.ToString(), con);
@@ -91,6 +91,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                         {
                             var holestatus = "0";
                             var backstart = "0";
+                            var teetime = "";
 
                             var player = new GolfPlayerDTO();
                             player.playerid = long.Parse(res["PlayerId"].ToString());
@@ -137,6 +138,11 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             if (res["back9start"] != null && !string.IsNullOrWhiteSpace(res["back9start"].ToString()))
                                 backstart = res["back9start"].ToString();
 
+
+                            if (res["TeeTime"] != null && !string.IsNullOrWhiteSpace(res["TeeTime"].ToString()))
+                                teetime = res["TeeTime"].ToString();
+
+
                             if (resPlayers.ContainsKey(player.playerid))
                             {
                                 player = resPlayers[player.playerid];
@@ -175,6 +181,39 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     round.roundscore = round.roundcompletedstrokes - round.roundcompletedpar;
                                 }
 
+
+                                if (round.teetime == null)
+                                {
+
+                                    if (!string.IsNullOrWhiteSpace(teetime))
+                                    {
+                                        int iTeeTime = 0;
+                                        teetime = teetime.Replace(":", "").Trim();
+                                        if (int.TryParse(teetime, out iTeeTime))
+                                        {
+                                            round.teetime = iTeeTime;
+                                        }
+                                        else round.teetime = 0;
+                                    }
+                                    else round.teetime = 0;
+                                }
+                                else
+                                {
+
+                                    if (!string.IsNullOrWhiteSpace(teetime))
+                                    {
+                                        int iTeeTime = 0;
+                                        teetime = teetime.Replace(":", "").Trim();
+
+                                        if (int.TryParse(teetime, out iTeeTime))
+                                        {
+                                            if (round.teetime < iTeeTime)
+                                                round.teetime = iTeeTime;
+                                        }
+                                    }
+                                }
+
+
                                 round.totalholesplayed = 0;
 
                                 // Course
@@ -183,15 +222,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     var hole = round.holes[holeid];
                                     hole.holestrokes += strokes;
                                     hole.holepar = par;
-                                    if(hole.holestrokes > 0)
-                                    hole.holescore = hole.holestrokes - hole.holepar;
+                                    if (hole.holestrokes > 0)
+                                        hole.holescore = hole.holestrokes - hole.holepar;
 
                                     hole.holestatus = holestatus;
                                     hole.backstart = backstart;
                                 }
 
                                 round.backstart = backstart;
-                                round.totalholesplayed = round.holes.Count(x => x.Value.holestatus == "2" );
+                                round.totalholesplayed = round.holes.Count(x => x.Value.holestatus == "2");
+
+
                             }
 
                         }

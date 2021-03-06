@@ -136,11 +136,17 @@
         font-weight: bold;
     }
 
+    .holeRow {
+        background-color: #e9fdfe;
+        margin: 0px;
+        margin-top: 5px;
+    }
     .playerRow {
         background-color: #e9fdfe;
         margin: 0px;
         margin-top: 5px;
     }
+
 
         .playerRow.row:nth-child(odd) {
             background-color: #fff;
@@ -307,6 +313,18 @@
         cursor: pointer;
     }
 
+    .btn-hole {
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+
+        padding: 5px;
+        margin: 0px 5px;
+        cursor: pointer;
+        width: 80px;
+        text-align: center;
+    }
+
     .btn-round-selected {
         background-color: red;
         color: white;
@@ -317,6 +335,9 @@
         overflow: auto;
     }
 
+    .player-row-container-no-overflow {
+        height: calc(100vh - 230px);
+    }
     .btn-main-round {
         cursor: pointer;
         background: #e9fdfe;
@@ -333,6 +354,22 @@
         width: 10px;
         height: 10px;
     }
+
+    .cheat-table-tr-spacing {
+        border-bottom: 5px solid #006837;
+    }
+     
+
+    .player-hole-container-with-overflow
+    {
+        height: calc(100vh - 230px);
+        overflow: auto;
+    }
+    .center
+    {
+        text-align: center;
+    }
+    
 </style>
 <div *ngIf="loading" style="    background: transparent; font-weight: bold;
                                       color: white;
@@ -500,7 +537,14 @@
             </div>
 
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-sm-12" style=" text-align: center;margin-bottom: 5px;">
+                <span class="btn-round" (click)="onChangeStatePageClick(1)" [ngClass]="{'btn-round-selected': 1 == selectedStatsPageId}">LEADERBOARD STATS</span>
+                <span class="btn-round" (click)="onChangeStatePageClick(2)" [ngClass]="{'btn-round-selected': 2 == selectedStatsPageId}">HOLE STATS</span>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="selectedStatsPageId == 1">
             <div class="col-sm-12" style=" text-align: center;margin-bottom: 5px;">
                 <span class="btn-round" (click)="onRoundChangeClick(1)" [ngClass]="{'btn-round-selected': 1 == selectedRoundId}">ROUND 1</span>
                 <span class="btn-round" (click)="onRoundChangeClick(2)" [ngClass]="{'btn-round-selected': 2 == selectedRoundId}">ROUND 2</span>
@@ -508,6 +552,35 @@
                 <span class="btn-round" (click)="onRoundChangeClick(4)" [ngClass]="{'btn-round-selected': 4 == selectedRoundId}">FINAL ROUND</span>
             </div>
         </div>
+        <div class="row" *ngIf="selectedStatsPageId == 2">
+
+            <div class="col-sm-12" style=" text-align: center; margin-bottom: 5px">
+
+
+
+                <div class="player-score-indicator score-eagle" style="display: inline-block;"></div>
+                <div style="color:white;display: inline-block; margin-right: 5px; ">EAGLE</div>
+
+                <div class="player-score-indicator score-birdie" style="display: inline-block;"></div>
+                <div style="color:white;display: inline-block; margin-right: 5px;">BIRDIE</div>
+
+                <div class="player-score-indicator score-par" style="display: inline-block;"></div>
+                <div style="color:white;display: inline-block; margin-right: 5px;">Par</div>
+
+
+                <div class="player-score-indicator score-bogey" style="display: inline-block;"></div>
+                <div style="color:white;display: inline-block; margin-right: 5px;">BOGEY</div>
+
+                <div class="player-score-indicator score-dbl-bogey" style="display: inline-block;"></div>
+                <div style="color:white;display: inline-block;">DOUBLE BOGEY</div>
+
+
+
+
+
+            </div>
+        </div>
+
 
         <div class="row">
             <div class="col-sm-1">
@@ -515,7 +588,7 @@
 
 
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-10" *ngIf="selectedStatsPageId == 1">
 
 
                 <div class="playerRow row">
@@ -585,9 +658,9 @@
                                     </span>
                                 </div>
                                 <div class="col-sm-2">
-                                    <span>
+                                    <span [innerHtml]="getPlayerRoundCompletedHoles(selectedRoundId, player)">
 
-                                        {{getPlayerRoundCompletedHoles(selectedRoundId, player)}}
+
                                     </span>
                                 </div>
                             </div>
@@ -597,17 +670,178 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-1">
+
+            <div class="col-sm-10" *ngIf="selectedStatsPageId == 2">
+
+
+
+
+                <div class="player-row-container-no-overflow">
+
+                    <div class="row">
+
+                        <div class="col-sm-2">
+
+                            <div class="playerRow row">
+                                <div class="col-sm-12 player" style="text-align: left;">
+
+                                    <div class="row">
+
+                                        <div class="col-sm-12" style="color:#fe9c1f">SELECT HOLE </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row holeRow center" (click)="onHoleChangeClick(1 )" [ngClass]="{'btn-round-selected': 1  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 1</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(2 )" [ngClass]="{'btn-round-selected': 2  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 2</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(3 )" [ngClass]="{'btn-round-selected': 3  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 3</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(4 )" [ngClass]="{'btn-round-selected': 4  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 4</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(5 )" [ngClass]="{'btn-round-selected': 5  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 5</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(6 )" [ngClass]="{'btn-round-selected': 6  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 6</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(7 )" [ngClass]="{'btn-round-selected': 7  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 7</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(8 )" [ngClass]="{'btn-round-selected': 8  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 8</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(9 )" [ngClass]="{'btn-round-selected': 9  == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 9</div>   </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(10)" [ngClass]="{'btn-round-selected': 10 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 10</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(11)" [ngClass]="{'btn-round-selected': 11 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 11</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(12)" [ngClass]="{'btn-round-selected': 12 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 12</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(13)" [ngClass]="{'btn-round-selected': 13 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 13</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(14)" [ngClass]="{'btn-round-selected': 14 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 14</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(15)" [ngClass]="{'btn-round-selected': 15 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 15</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(16)" [ngClass]="{'btn-round-selected': 16 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 16</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(17)" [ngClass]="{'btn-round-selected': 17 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 17</div>  </div>  </div>
+                            <div class="row holeRow center" (click)="onHoleChangeClick(18)" [ngClass]="{'btn-round-selected': 18 == selectedHoleId}">    <div class="col-sm-12">  <div class="btn-hole">Hole 18</div>  </div>  </div>
+
+
+                        </div>
+
+                        <div class="col-sm-10">
+
+                            <table style=" width: 100%;">
+                                <thead>
+                                    <tr class="playerRow row cheat-table-tr-spacing">
+                                        <!--     <td class="col-sm-12 player" style="text-align: left;"> -->
+
+
+
+
+                                        <td class="tableHeader">
+                                            <span style="        padding-left: 22px;">Player</span>
+                                        </td>
+
+                                        <td class="tableHeader" style=" margin-left: -6px;">
+
+                                            PAR
+                                        </td>
+
+
+                                        <td class="tableHeader" style=" margin-left: -6px;">
+
+                                            R 1
+                                        </td>
+
+
+                                        <td class="tableHeader">
+
+                                            R 2
+                                        </td>
+
+                                        <td class="tableHeader">
+                                            R 3
+
+                                        </td>
+
+
+                                        <td class="tableHeader">
+                                            R 4
+
+                                        </td>
+
+                                        <td class="tableHeader">
+                                            SCORE
+
+                                        </td>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody class="player-hole-container-with-overflow">
+                                    <tr *ngFor="let playerhole of  golfTournameHolePlayers; let i = index;  " [attr.data-index]="i" class="playerRow row player cheat-table-tr-spacing" (click)="onPlayerClick(golfTournament.tournamentid,  playerhole)">
+                                        <!--  <div class="col-sm-12 player " style="text-align: left;"> -->
+
+
+                                        <td>
+                                            <div class="golf-position-index" style="margin:  5px">{{playerhole.position}}</div>
+
+                                            <span>
+                                                {{playerhole.firstname}} {{playerhole.lastname}}
+
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                {{getPlayerRoundHolePar( 1, playerhole,selectedHoleId)}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                   
+                                        <span   [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(1,playerhole, selectedHoleId )">                                        
+                                        </span>
+                                        </td>
+                                        <td>
+
+                                            <span   [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(2,playerhole, selectedHoleId )">
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <span  [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(4,playerhole, selectedHoleId )">
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+
+                                            <span  [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(4,playerhole, selectedHoleId )">
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+                                            <span>
+                                                {{getPlayerHoleScoreTotal(playerhole, selectedHoleId)}}
+
+                                            </span>
+                                        </td>
+
+
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
             </div>
         </div>
     </div>
-
     <div *ngIf="showSelectedPlayer" class="container-fluid myContent-body ">
         <div class="myContent-body  player-container fullHeight">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="row">
-                        <h4 class="left playerName"  style=" margin-left: 12px;">
+                        <h4 class="left playerName" style=" margin-left: 12px;">
                             {{selectedPlayer?.firstname }}
                         </h4>
                         <h1 class="left playerName"> {{selectedPlayer?.lastname}}</h1>
