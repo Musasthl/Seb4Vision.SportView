@@ -41,6 +41,9 @@ export class GolfLeaderboardComponent implements OnInit {
 
     public golfTournament: golfTournamentDTO | any;
     public golfTournameHolePlayers: golfPlayerDTO[] | any;
+    public golfTournameHoleGroupedPlayers: golfPlayerDTO[] | any;
+
+
 
     public selctedHolePar: any;
 
@@ -148,7 +151,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
                     this.getPlayersOnHole((res.json() as golfTournamentDTO).golfPlayers, this.selectedHoleId);
 
-
+                    this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId);
 
 
                     this.sortTournamentLeaderBoard(newGolfTournament);
@@ -963,7 +966,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
-       // this.getPlayersOnHole(tournament.golfPlayers.slice(), this.selectedHoleId);
+        // this.getPlayersOnHole(tournament.golfPlayers.slice(), this.selectedHoleId);
 
         var len = this.golfTournament.golfPlayers.sort(function (a: any, b: any) {
 
@@ -992,6 +995,17 @@ export class GolfLeaderboardComponent implements OnInit {
 
             if (bRound.totalholesplayed == undefined)
                 bRound.totalholesplayed = 0;
+
+
+
+
+            
+
+
+
+
+
+
 
             // Tournament score
 
@@ -1044,7 +1058,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
         let lastScore = 0;
         let lastPosition = 0;
-     
+
         for (let i = 0; i < this.golfTournament.golfPlayers.length; i++) {
 
             //if (i == 0) {
@@ -1078,7 +1092,7 @@ export class GolfLeaderboardComponent implements OnInit {
             }
 
         }
-        
+
 
     }
 
@@ -1092,7 +1106,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let len = players.sort(function (a: any, b: any) {
 
 
-             
+
 
 
             let aHoleTotal = self._getPlayerHoleScoreTotal(a, myIndex);
@@ -1172,4 +1186,235 @@ export class GolfLeaderboardComponent implements OnInit {
         console.log("assign to hole stats");
         this.golfTournameHolePlayers = players;
     }
+
+
+
+    public getPlayersOnHoleGroup(players: any, selectedRound: any) {
+
+
+        let self = this;
+        let selectedRoundId = selectedRound;
+
+
+        let key = "matchid";
+
+        let playerHoleGroup = new Array();
+
+        for (let i = 0; i < players.length; i++) {
+            let item = players[i];
+            if (item.matchid != undefined && item.matchid != "0" && item.matchid != "") {
+                const found = playerHoleGroup.find((element: any) => element.matchid == item.matchid);
+                if (found != undefined) {
+
+                    found.players.push(item);
+                } else {
+                    var obj = {
+                        matchid: item.matchid,
+                        players: new Array()
+                    };
+
+                    obj.players.push(item);
+                    playerHoleGroup.push(obj);
+                }
+            }
+        }
+
+        var len = playerHoleGroup.sort(function (a: any, b: any) {
+
+            if (a.matchid > b.matchid) return 1;
+            if (a.matchid < b.matchid) return -1;
+            return 0;
+        });
+
+
+        for (var y = 0; y < playerHoleGroup.length; y++) {
+            var pLen = playerHoleGroup[y].players.sort(function (a: any, b: any) {
+                let aRound = a.playerounds[selectedRoundId];
+                let bRound = b.playerounds[selectedRoundId];
+
+                if (a.tournamentscore == undefined)
+                    a.tournamentscore = 0;
+
+                if (b.tournamentscore == undefined)
+                    b.tournamentscore = 0;
+
+                if (aRound.roundscore == undefined)
+                    aRound.roundscore = 0;
+
+                if (bRound.roundscore == undefined)
+                    bRound.roundscore = 0;
+
+
+                if (aRound.totalholesplayed == undefined)
+                    aRound.totalholesplayed = 0;
+
+                if (bRound.totalholesplayed == undefined)
+                    bRound.totalholesplayed = 0;
+
+
+                // Descending
+                if (aRound.totalholesplayed > bRound.totalholesplayed) return -1;
+                if (aRound.totalholesplayed < bRound.totalholesplayed) return 1;
+
+                // Ascending
+                if (a.tournamentscore > b.tournamentscore) return 1;
+                if (a.tournamentscore < b.tournamentscore) return -1;
+
+                // Ascending
+                if (aRound.teetime < bRound.teetime) return -1;
+                if (aRound.teetime > bRound.teetime) return 1;
+
+
+
+                // Ascending
+                if (a.firstname + " " + a.lastname < b.firstname + " " + b.lastname) return -1;
+                if (a.firstname + " " + a.lastname > b.firstname + " " + b.lastname) return 1;
+
+
+
+
+
+                //// If the tournamentscore number is the same between both items, sort by round
+                if (aRound.roundscore > bRound.roundscore) return -1;
+                if (aRound.roundscore < bRound.roundscore) return 1;
+
+
+                if (a.playerid > b.playerid) return -1;
+                if (a.playerid < b.playerid) return 1;
+
+                return 0;
+
+
+            })
+        }
+
+
+
+        console.log(playerHoleGroup);
+
+        this.golfTournameHoleGroupedPlayers = playerHoleGroup;
+
+    }
+
+
+
+
+    public getPlayerRoundFirstStrokes(roundId: any, player: any) {
+
+        var total = 0;
+        let round = player.playerounds[roundId];
+
+        for (var x = 0; x < 9; x++) {
+            if (round.holes[x] != undefined) {
+                var strokes = round.holes[x].holestrokes;
+                if (strokes != undefined)
+                    total = total + strokes;
+            }
+        }
+
+        if (total == 0)
+            return "-";
+        return total;
+    }
+
+
+    public getPlayerRoundFinalStrokes(roundId: any, player: any) {
+
+
+        var total = 0;
+        let round = player.playerounds[roundId];
+
+        for (var x = 9; x < 18; x++) {
+            if (round.holes[x] != undefined) {
+                var strokes = round.holes[x].holestrokes;
+                if (strokes != undefined)
+                    total = total + strokes;
+            }
+        }
+
+        //var hole = round.holes[holeid];
+        //hole.holestrokes += strokes;
+
+
+        if (total == 0)
+            return "-";
+        return total;
+    }
+
+    public getHolePar(holeNo: any) {
+
+        var res = this.golfTournament.courseholes[holeNo];
+        if (res != undefined && res != null) {
+            if (res.holeno == holeNo)
+                return res.par;
+        }
+
+        for (var y = 0; y < 18; y++) {
+            var res = this.golfTournament.courseholes[y];
+            if (res != undefined && res != null) {
+                if (res.holeno == holeNo)
+                    return res.par;
+            }
+        }
+
+        return "-";
+    }
+
+
+    public getCourseStartTotalPar() {
+        var total = 0;
+
+        for (var x = 0; x < 9; x++) {
+            var res = this.golfTournament.courseholes[x];
+            if (this.golfTournament.courseholes[x] != undefined) {
+
+                if (this.golfTournament.courseholes[x].par != undefined)
+                    total = total + this.golfTournament.courseholes[x].par;
+            }
+        }
+
+        if (total == 0)
+            return "-";
+        return total;
+    }
+
+    public getCourseFinalTotalPar() {
+        var total = 0;
+
+        for (var x = 9; x < 18; x++) {
+            var res = this.golfTournament.courseholes[x];
+            if (this.golfTournament.courseholes[x] != undefined) {
+
+                if (this.golfTournament.courseholes[x].par != undefined)
+                    total = total + this.golfTournament.courseholes[x].par;
+            }
+        }
+
+        if (total == 0)
+            return "-";
+        return total;
+    }
+
+
+    public getCourseTotalPar() {
+        var total = 0;
+
+        for (var x = 0; x < 18; x++) {
+            var res = this.golfTournament.courseholes[x];
+            if (this.golfTournament.courseholes[x] != undefined) {
+
+                if (this.golfTournament.courseholes[x].par != undefined)
+                    total = total + this.golfTournament.courseholes[x].par;
+            }
+        }
+
+        if (total == 0)
+            return "-";
+        return total;
+    }
+
+
+
+
+
 }

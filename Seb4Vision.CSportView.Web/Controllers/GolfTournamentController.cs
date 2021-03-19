@@ -49,6 +49,9 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 var dbCourse = _context.Course.SingleOrDefault(x => x.courseid == dbTournament.courseid);
 
 
+                var courseholes = _context.CourseHoles.Where(x => x.courseid == dbTournament.courseid).Select( x=> new GolfTournamentCourseHoleDTO { holeno = x.HoleNumber, par = x.par }).OrderBy(x => x.holeno).ToList< GolfTournamentCourseHoleDTO>();
+
+ 
 
                 var goftTournament = new GolfTournamentDTO()
                 {
@@ -58,6 +61,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     begindate = dbTournament.BeginDate,
                     enddate = dbTournament.EndDate,
                     location = dbCourse.Description,
+                    courseholes = courseholes
                 };
 
 
@@ -66,7 +70,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 {
                     con.Open();
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime  ");
+                    // sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime  ");
+                    sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
                     sb.Append(", sum(st.strokes) as TotalStrokes, sum(ch.par) as TotalPar,");
                     sb.Append(" sum(st.strokes) - sum(ch.par) as RoundScore");
                     sb.Append(" FROM golf.players p ");
@@ -95,6 +100,13 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                             var player = new GolfPlayerDTO();
                             player.playerid = long.Parse(res["PlayerId"].ToString());
+                            if (res["MatchId"] != null)
+                            {
+                                if (!string.IsNullOrWhiteSpace(res["MatchId"].ToString()))
+                                {
+                                    player.matchid = long.Parse(res["MatchId"].ToString());
+                                }
+                            }
 
                             if (res["PhotoPath"] != null)
                                 player.photopath = res["PhotoPath"].ToString();

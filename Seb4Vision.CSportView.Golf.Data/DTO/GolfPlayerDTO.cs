@@ -20,6 +20,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
 
         public Dictionary<long, GolfPlayerRoundDTO> playerounds = new Dictionary<long, GolfPlayerRoundDTO>();
         public int roundsplayed;
+        public long matchid;
 
         public GolfPlayerDTO()
         {

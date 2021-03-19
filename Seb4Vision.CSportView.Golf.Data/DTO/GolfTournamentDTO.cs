@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Seb4Vision.CSportView.Golf.Data.DTO
@@ -7,6 +8,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
     public class GolfTournamentDTO
     {
         public string location;
+        public List<GolfTournamentCourseHoleDTO> courseholes;
 
         public long tournamentid { get; set; }
         public string description { get; set; }
