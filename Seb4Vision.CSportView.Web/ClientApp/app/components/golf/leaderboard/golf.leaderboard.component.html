@@ -379,6 +379,11 @@
         text-align: center;
         padding: 2px;
     }
+
+    .black
+    {
+        background: black;
+    }
 </style>
 <div *ngIf="loading" style="    background: transparent; font-weight: bold;
                                       color: white;
@@ -965,7 +970,7 @@
                                                 </span>
                                             </td>
                                    
-                                            <td class=" td-group-score"><span class="group-total">{{getPlayerRoundSocre(player)}}</span></td>
+                                            <td class=" td-group-score black"><span class="group-total">{{getPlayerTournmanetSocre(player)}}</span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 1 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 2 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 3 )"></span></td>
@@ -986,7 +991,7 @@
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 17)"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 18)"></span></td>
                                             <td class=" td-group-score"> <span class="group-total">{{getPlayerRoundFinalStrokes(selectedRoundId, player)}}</span></td>
-                                            <td class=" td-group-score"> <span class="group-total">{{getPlayerRoundStrokes(selectedRoundId, player)}}</span></td>
+                                            <td class=" td-group-score"> <span class="group-total">{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
                                         </tr>
 
 
@@ -1104,7 +1109,7 @@
 
                                         <tr>
                                             <td colspan="19">
-                                                <h4 class="golf-stats-title" style=" margin-left: 12px;"> DRAW {{group.matchid}}</h4>
+                                                <h4 class="golf-stats-title" style=" margin-left: 12px;"> MATCH {{group.matchid}}</h4>
 
 
                                             
@@ -1122,7 +1127,8 @@
 
                                                 </span>
                                             </td>
-                                            <td class=" td-group-score"><span class="group-total">{{getPlayerRoundSocre(player)}}</span></td>
+
+                                            <td class=" td-group-score black"><span class="group-total">{{getPlayerTournmanetSocre(player)}}</span></td>
 
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 1 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 2 )"></span></td>
@@ -1145,7 +1151,7 @@
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 17)"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 18)"></span></td>
                                             <td class=" td-group-score"> <span class="group-total">{{getPlayerRoundFinalStrokes(selectedRoundId, player)}}</span></td>
-                                            <td class=" td-group-score"> <span class="group-total" >{{getPlayerRoundStrokes(selectedRoundId, player)}}</span></td>
+                                            <td class=" td-group-score"> <span class="group-total" >{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
                                         </tr>
 
 

@@ -45,6 +45,10 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public int roundcompletedpar;
         public string backstart;
         public int? teetime;
+        public bool first9done;
+        public bool last9done;
+        public int first9score;
+        public int last9score;
 
         public GolfPlayerRoundDTO()
         {

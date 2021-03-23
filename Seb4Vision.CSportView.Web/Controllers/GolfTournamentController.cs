@@ -49,9 +49,9 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 var dbCourse = _context.Course.SingleOrDefault(x => x.courseid == dbTournament.courseid);
 
 
-                var courseholes = _context.CourseHoles.Where(x => x.courseid == dbTournament.courseid).Select( x=> new GolfTournamentCourseHoleDTO { holeno = x.HoleNumber, par = x.par }).OrderBy(x => x.holeno).ToList< GolfTournamentCourseHoleDTO>();
+                var courseholes = _context.CourseHoles.Where(x => x.courseid == dbTournament.courseid).Select(x => new GolfTournamentCourseHoleDTO { holeno = x.HoleNumber, par = x.par }).OrderBy(x => x.holeno).ToList<GolfTournamentCourseHoleDTO>();
 
- 
+
 
                 var goftTournament = new GolfTournamentDTO()
                 {
@@ -237,12 +237,68 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     if (hole.holestrokes > 0)
                                         hole.holescore = hole.holestrokes - hole.holepar;
 
+
                                     hole.holestatus = holestatus;
                                     hole.backstart = backstart;
                                 }
 
                                 round.backstart = backstart;
                                 round.totalholesplayed = round.holes.Count(x => x.Value.holestatus == "2");
+
+
+                                var first9holesPlayedCount = 0;
+                                for (int i = 1; i <= 9; i++)
+                                {
+                                    var hole = round.holes[i];
+                                    if (hole.holestatus == "2")
+                                    {
+                                        first9holesPlayedCount++;
+                                    }
+                                }
+
+                                var last9holesPlayedCount = 0;
+                                for (int i = 10; i <= 18; i++)
+                                {
+                                    var hole = round.holes[i];
+                                    if (hole.holestatus == "2")
+                                        last9holesPlayedCount++;
+                                }
+
+
+                                if (first9holesPlayedCount == 9)
+                                {
+                                    round.first9done = true;
+                                    var first9Strokes = round.holes[1].holestrokes + round.holes[2].holestrokes + round.holes[3].holestrokes
+                                    + round.holes[4].holestrokes + round.holes[5].holestrokes + round.holes[6].holestrokes + round.holes[7].holestrokes
+                                    + round.holes[8].holestrokes + round.holes[9].holestrokes ;
+
+                                    var first9Par =  round.holes[1].holepar + round.holes[2].holepar + round.holes[3].holepar
+                                    + round.holes[4].holepar + round.holes[5].holepar + round.holes[6].holepar + round.holes[7].holepar
+                                    + round.holes[8].holepar + round.holes[9].holepar;
+
+                                    round.first9score = first9Strokes - first9Par;
+
+                                }
+                                else
+                                    round.first9done = false;
+
+                                if (last9holesPlayedCount == 9)
+                                {
+                                    round.last9done = true;
+
+                                    var last9Strokes = round.holes[10].holestrokes + round.holes[11].holestrokes + round.holes[12].holestrokes
+                  + round.holes[13].holestrokes + round.holes[14].holestrokes + round.holes[15].holestrokes + round.holes[16].holestrokes
+                  + round.holes[17].holestrokes + round.holes[18].holestrokes;
+
+                                    var last9Par =  round.holes[10].holepar + round.holes[11].holepar + round.holes[12].holepar
+                                    + round.holes[13].holepar + round.holes[14].holepar + round.holes[15].holepar + round.holes[16].holepar
+                                    + round.holes[17].holepar + round.holes[18].holepar;
+
+                                    round.last9score = last9Strokes - last9Par;
+                                }
+                                else
+                                    round.last9done = false;
+
 
 
                             }

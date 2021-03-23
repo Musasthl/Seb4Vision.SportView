@@ -1,0 +1,42 @@
+﻿    idSportVuTeamStats: number;
+    teamName: string;
+    teamAvgSpeed: string;
+
+    teamSpeed: string;
+    teamHeatMap: string;
+    teamDistanceWalking: string;
+    teamDistanceRunning: string;
+    teamDistanceSprinting: string;
+    offensiveTime: string;
+    defensiveTime: string;
+    otherTime: string;
+    teamSpeedWalking: string;
+    teamSpeedRunning: string;
+    teamSpeedSprinting: string;
+    teamPossession: string;
+	
+	match.homeTeamSportVuStats.
+	
+	   homeTeamSportVuStats: SportVuTeamStatDTO;
+    awayTeamSportVuStats: SportVuTeamStatDTO;
+	
+	
+	https://youtu.be/Pitm1x7pTfI
+	
+	
+	    Missing =  Number of Sprints,  Total Passes, Auctual Play Time
+	
+		Took from sport view =  Total Distance,  Average Speed
+	
+	    Total Distance (KM)  teamDistance: string;
+		 Average Speed
+
+
+		 ? Do the heatmap name change. And where are they located? 
+
+		 ? What about player heatmap. What additional player data is required. 
+
+
+
+
+		 dotnet publish -f netcoreapp2.0 -c Release --self-contained false

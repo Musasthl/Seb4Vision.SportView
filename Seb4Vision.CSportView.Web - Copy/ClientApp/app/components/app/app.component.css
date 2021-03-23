@@ -1,0 +1,26 @@
+ body {
+background-color: #11345a;
+}
+
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    .body-content {
+        padding-top: 50px;
+    }
+}
+.center {
+    text-align: center;
+}
+
+.aLeft {
+    text-align: left;
+}
+
+.aRight {
+    text-align: right;
+}
+
+.playerImage {
+    background-image: url("../../images/defaultPhoto.png");
+ }
+ 

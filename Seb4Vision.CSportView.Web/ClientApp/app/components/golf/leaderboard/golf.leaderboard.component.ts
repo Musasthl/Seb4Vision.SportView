@@ -611,6 +611,20 @@ export class GolfLeaderboardComponent implements OnInit {
         return round.roundstrokes;
     }
 
+    public getPlayerFullRoundStrokes(roundId: any, player: any) {
+
+
+        let round = player.playerounds[roundId];
+
+        if (round.roundstrokes == undefined)
+            return "-";
+
+        if (round.first9done == true && round.last9done == true)
+            return round.roundstrokes;
+
+        return "-";
+    }
+
 
     public getPlayerRoundCompletedHoles(roundId: any, player: any) {
 
@@ -999,8 +1013,6 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
-            
-
 
 
 
@@ -1221,8 +1233,8 @@ export class GolfLeaderboardComponent implements OnInit {
 
         var len = playerHoleGroup.sort(function (a: any, b: any) {
 
-            if (a.matchid > b.matchid) return 1;
-            if (a.matchid < b.matchid) return -1;
+            if (a.matchid > b.matchid) return -1;
+            if (a.matchid < b.matchid) return 1;
             return 0;
         });
 
@@ -1304,7 +1316,13 @@ export class GolfLeaderboardComponent implements OnInit {
         var total = 0;
         let round = player.playerounds[roundId];
 
-        for (var x = 0; x < 9; x++) {
+
+        if (round.first9done == false) {
+            return "-"
+        }
+
+
+        for (var x = 0; x <= 9; x++) {
             if (round.holes[x] != undefined) {
                 var strokes = round.holes[x].holestrokes;
                 if (strokes != undefined)
@@ -1324,7 +1342,14 @@ export class GolfLeaderboardComponent implements OnInit {
         var total = 0;
         let round = player.playerounds[roundId];
 
-        for (var x = 9; x < 18; x++) {
+
+        if (round.last9done == false) {
+            return "-"
+        }
+
+
+
+        for (var x = 10; x <= 18; x++) {
             if (round.holes[x] != undefined) {
                 var strokes = round.holes[x].holestrokes;
                 if (strokes != undefined)

@@ -1,0 +1,415 @@
+<style>
+    .body-content {
+        padding: 5px 25px;
+    }
+
+    .myContent-body {}
+
+    .heading {
+        text-align: center;
+        /*
+        background-color: #0c0d12;
+        background-image: linear-gradient(#050505, #343434);
+        */
+        background-color: transparent;
+    }
+
+    .heading .title {
+        color: #fbc720;
+    }
+
+    .sub-heading {
+        background-color: #4f4f4f;
+        color: white;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+
+    .navigation-sub-heading {
+        display: none;
+    }
+
+
+    .navigation-sub-heading .nav {
+        color: black;
+        font-weight: bold;
+        background-color: white;
+        background: rgba(255, 255, 255, 0.5);
+        border-bottom: 2px solid #999;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .navigation-sub-heading .nav.highlighted {
+        background-color: white;
+        background: rgba(255, 255, 255, 0.7);
+        border-bottom: 2px solid red;
+    }
+
+    .sub-heading-footer {
+        padding: 10px;
+    }
+
+    .sub-heading-footer div .score {
+        color: white;
+    }
+
+    .sub-heading-footer div .teamlogo {
+        height: 85px;
+        cursor: pointer;
+        position: absolute;
+        top: -26px;
+    }
+
+    .sub-heading-footer div .teamlogo.left {
+        left: -43px;
+    }
+
+
+    .sub-heading-footer div .teamlogo.right {
+        right: -43px;
+    }
+
+    .teamHeatMap {
+        width: 190px;
+        cursor: pointer;
+    }
+
+
+    .gameCardImg {
+        height: 18px;
+    }
+
+    .sub-heading-footer-strip {
+        padding: 0px;
+        color: white;
+        margin: auto;
+        max-width: 306px;
+    }
+
+
+    .sub-heading-footer-strip.highlighted {
+        /* background-color: #fbcb36;
+        background-image: linear-gradient(#DAA520, yellow);
+        color: black;
+        */
+    }
+
+    .player {
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 4px;
+        text-transform: uppercase;
+    }
+
+    .player.altRow {
+        background-color: #e9fdfe;
+    }
+
+    .team-title {
+        font-weight: bold;
+        color: black;
+        font-size: 20px;
+        padding: 10px;
+        vertical-align: middle;
+        display: inline-flex;
+    }
+
+
+
+
+
+    .playerRow {
+        background-color: #e9fdfe;
+        margin-top: 5px;
+    }
+
+    .playerRow.row:nth-child(odd) {
+        background-color: #e9fdfe;
+    }
+
+    .playersSub {
+        font-weight: bold;
+        padding: 8px;
+    }
+
+
+    .jersey.highlighted {
+        background-color: #fbcb36;
+        background-image: linear-gradient(#DAA520, yellow);
+        color: black;
+        display: inline-block;
+        width: 25px;
+        text-align: center;
+        padding-left: 2px;
+        padding-right: 2px;
+        margin: 0px 2px 0px 2px;
+    }
+
+
+    .player-container {
+        padding: 30px;
+        width: 640px;
+        margin: auto auto;
+    }
+
+    .playerStats {
+        text-align: right;
+        color: white;
+        text-transform: uppercase;
+    }
+
+    .playerStats.title {
+        font-weight: bold;
+        color: white;
+    }
+
+
+    .tornament-sub {
+        color: red;
+        font-weight: bold;
+    }
+
+    .playerName {
+        font-weight: bold;
+        color: white;
+    }
+
+    .player-info {
+        color: gray;
+    }
+
+    .playerTeamLogo {
+        height: 74px;
+        cursor: pointer;
+        background: transparent;
+    }
+
+    .playerPhoto {
+        height: 255px;
+        cursor: pointer;
+    }
+
+    .btnBack {
+        color: #49ff00;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    /* float */
+
+    .right {
+        float: right;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .fullHeight {
+        height: 90vh;
+    }
+
+
+    .substituteBar.row:nth-child(odd) {
+        background: #e9fdfe;
+    }
+
+    .barBackground {
+        background-color: #e9fdfe;
+    }
+
+    .alignRight {
+        text-align: right;
+    }
+
+    .alignLeft {
+        text-align: left;
+    }
+
+    .statsValue {
+        background-color: #bdfdfd;
+        width: 55px;
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 4px;
+        text-align: center;
+        background: linear-gradient(to bottom, #bdfdfd 0%, #c8e6e6 100%);
+    }
+
+    .statsDescription {
+        background-color: #e9fdfe;
+        color: black;
+        font-size: 15px;
+        padding: 4px;
+        font-weight: bold;
+        margin: 0px 5px;
+        width: 186px;
+        background: linear-gradient(to bottom, #e9fdfe 0%, #d7eaea 100%);
+        text-transform: uppercase;
+    }
+
+    .topPerformerStatsValue {
+        height: 29px;
+        width: 70px;
+
+    }
+
+    .topPerformerStatsTableCol {
+        padding: 0;
+        text-align: center;
+    }
+
+    .table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .td,
+    .th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    .tr
+    {
+        cursor: pointer;
+    }
+    .tr:nth-child(even) {
+        background-color: #c8ca67;
+    }
+
+    /* aligntment */
+</style>
+<div *ngIf="loading" style="    background: transparent; font-weight: bold;
+                                      color: white;
+                                      position: relative;
+                                      top: 150px;
+                                      text-align: center;">
+    <img src="../../images/loading.gif" style="      height: 92px;  background: transparent;
+
+                                                                                             " />
+    <br /> <br />
+    <p>Loading. Please wait...</p>
+</div>
+
+<div class="body-content" *ngIf="!loading" style="    margin-bottom: 60px;">
+    <div *ngIf="!showSelectedPlayer" class="container-fluid myContent-body">
+
+        <div class="row heading">
+            <div class="col-sm-12" style="height: 20px;">
+
+            </div>
+        </div>
+
+        <div class="row navigation-sub-heading">
+            <div class="col-sm-6 nav highlighted center">
+                MATCH
+            </div>
+            <div class="col-sm-6 nav center">
+                SQUAD
+            </div>
+
+        </div>
+        <div class="row  sub-heading-footer">
+
+
+
+<h1 style="color: white;
+font-weight: bold;">TELKOM NETBALL LEAGUE 2019</h1>
+
+            <table class="table">
+                <head>
+                    <th>Home Team Vs Away Team</th>
+                    <th>Event Details</th>
+                </head>
+                <tr class="tr" *ngFor="let match of         this.tournamentMatches " (click)="openMatch(match.matchID)"
+                    style="color: white;">
+                    <td class="td" style="vertical-align: middle;" >
+                      <img *ngIf="match.isLiveMatch"
+                       src="./../../images/live.png" style="height: 24px;" /> 
+                        <b *ngIf="match.matchStatusId == 20">  
+                            {{match?.homeTeamName}}  vs  {{match?.awayTeamName}} 
+                        </b> 
+                        <b *ngIf="match.matchStatusId != 20">  
+                            {{match?.homeTeamName}} {{match?.homeTeamScore}} - {{match?.awayTeamScore}} {{match?.awayTeamName}} 
+                        </b> 
+                    </td >
+                    <td class="td">
+                      <b>  {{match?.date | date :'fullDate'}}</b>
+<br/>
+                        {{match?.tournamentName}}
+                        <br/>
+                        {{match?.venue}}
+                    </td>
+                </tr>
+          
+
+
+            </table>
+
+
+
+
+
+
+
+
+            <!-- 
+
+            <div class="col-sm-3 left barBackground alignRight">
+                <img [attr.src]="homeTeamLogo" class="teamlogo left">
+                <span class="team-title">  {{match?.homeTeamName}}</span>
+            </div>
+            <div class="col-sm-6 center" style="    padding: 0;">
+                <span class="score center" style="       width: 60px; background-color: #71abfc;float: left;color:black; font-weight: bold;font-size: 20px;    padding: 10px;">
+
+                    {{match?.homeTeamScore}}
+                </span>
+                <div style="    text-transform: uppercase;   color: #1d2f57;  float: left;
+                    font-size: 20px;
+                    font-weight: bold;
+                    background-color: #cee1f0;
+                    position: absolute;
+                    left: 60px;
+                    right: 60px;
+                    height: 88px;
+                    top: -40px;
+                    padding: 5px;">
+                            
+                                    <br>
+                    {{match?.tournament}}
+                    <br>
+                    {{match?.venue}}
+                </div>
+                <span class="score center" style="    width: 60px; background-color: #71abfc;  float: right;color:black; font-weight: bold;font-size: 20px;    padding: 10px;">
+
+                    {{match?.awayTeamScore}}
+                </span>
+            </div>
+            <div class="col-sm-3 right barBackground alignLeft">
+
+                <img [attr.src]="awayTeamLogo" class="teamlogo right">
+                <span class="team-title"> {{match?.awayTeamName}}</span>
+            </div>
+        -->
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
