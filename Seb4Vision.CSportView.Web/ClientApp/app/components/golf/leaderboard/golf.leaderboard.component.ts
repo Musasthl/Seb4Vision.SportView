@@ -725,10 +725,10 @@ export class GolfLeaderboardComponent implements OnInit {
         let hole = round.holes[index];
 
         if (hole.holestrokes == undefined)
-            return '<span class="score-stroke holestroke-color">-</span>';
+            return '<span class="score-stroke holestroke-color score-normal">-</span>';
 
         if (hole.holestrokes == 0)
-            return '<span class="score-stroke holestroke-color">-</span>';
+            return '<span class="score-stroke holestroke-color score-normal">-</span>';
 
 
 
@@ -756,7 +756,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
         }
 
-        return '<span class="score-stroke  holestroke-color">' + hole.holestrokes + '</span>';
+        return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
     }
 
 
@@ -851,6 +851,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let r2 = player.playerounds[2];
         let r3 = player.playerounds[3];
         let r4 = player.playerounds[4];
+       // let r5 = player.playerounds[5];
 
 
         let r1holeTotal = 0;
@@ -864,6 +865,9 @@ export class GolfLeaderboardComponent implements OnInit {
 
         let r4holeTotal = 0;
         let r4hole = r4.holes[index];
+
+        //let r5holeTotal = 0;
+        //let r5hole = r5.holes[index];
 
         if (r1hole.holestrokes != undefined)
             r1holeTotal = r1hole.holestrokes;
@@ -877,7 +881,13 @@ export class GolfLeaderboardComponent implements OnInit {
         if (r4hole.holestrokes != undefined)
             r4holeTotal = r4hole.holestrokes;
 
-        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal;
+
+       // if (r5hole.holestrokes != undefined)
+       //     r5holeTotal = r5hole.holestrokes;
+
+        // return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal + r5holeTotal;
+
+        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal ;
 
     }
 
@@ -888,6 +898,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let r2 = player.playerounds[2];
         let r3 = player.playerounds[3];
         let r4 = player.playerounds[4];
+        // let r5 = player.playerounds[5];
 
 
         let r1holeTotal = 0;
@@ -902,6 +913,10 @@ export class GolfLeaderboardComponent implements OnInit {
         let r4holeTotal = 0;
         let r4hole = r4.holes[index];
 
+
+        //let r5holeTotal = 0;
+        //let r5hole = r5.holes[index];
+
         if (r1hole.holescore != undefined)
             r1holeTotal = r1hole.holescore;
 
@@ -914,7 +929,11 @@ export class GolfLeaderboardComponent implements OnInit {
         if (r4hole.holescore != undefined)
             r4holeTotal = r4hole.holescore;
 
-        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal;
+        //if (r5hole.holescore != undefined)
+        //    r5holeTotal = r5hole.holescore;
+
+        //return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal + r5holeTotal;
+        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal ;
 
     }
 
@@ -976,13 +995,12 @@ export class GolfLeaderboardComponent implements OnInit {
 
         this.reloadGolfSelectedPlayer(tournament.golfPlayers);
 
-        this.golfTournament = tournament;
-
+        
 
 
         // this.getPlayersOnHole(tournament.golfPlayers.slice(), this.selectedHoleId);
 
-        var len = this.golfTournament.golfPlayers.sort(function (a: any, b: any) {
+        var len = tournament.golfPlayers.sort(function (a: any, b: any) {
 
 
 
@@ -1071,7 +1089,10 @@ export class GolfLeaderboardComponent implements OnInit {
         let lastScore = 0;
         let lastPosition = 0;
 
-        for (let i = 0; i < this.golfTournament.golfPlayers.length; i++) {
+        tournament.golfPlayers = tournament.golfPlayers.filter((item : any) => item.tournamentstrokes  != 0);
+
+
+        for (let i = 0; i < tournament.golfPlayers.length; i++) {
 
             //if (i == 0) {
             //    lastPosition = 1;
@@ -1088,23 +1109,35 @@ export class GolfLeaderboardComponent implements OnInit {
             //    lastScore = this.golfTournament.golfPlayers[i].tournamentscore;
             //}
 
+            /*
+            if (tournament.golfPlayers[i].tournamentstrokes == 0) {
+                // remove element from array
+                tournament.golfPlayers =  tournament.golfPlayers.splice(i, 1);
+            }
+
+            if (i >= tournament.golfPlayers.length)
+                continue;
+
+            */
+
             if (i == 0) {
                 lastPosition = 1;
-                this.golfTournament.golfPlayers[i].position = " " + (i + 1);
-                lastScore = this.golfTournament.golfPlayers[i].tournamentscore;
+               tournament.golfPlayers[i].position = " " + (i + 1);
+                lastScore = tournament.golfPlayers[i].tournamentscore;
                 continue;
             }
 
-            if (this.golfTournament.golfPlayers[i].tournamentscore == lastScore) {
-                this.golfTournament.golfPlayers[i].position = " ";
+            if (tournament.golfPlayers[i].tournamentscore == lastScore) {
+             tournament.golfPlayers[i].position = " ";
             } else {
                 lastPosition = lastPosition + 1;
-                this.golfTournament.golfPlayers[i].position = " " + (i + 1);
-                lastScore = this.golfTournament.golfPlayers[i].tournamentscore;
+                tournament.golfPlayers[i].position = " " + (i + 1);
+                lastScore = tournament.golfPlayers[i].tournamentscore;
             }
 
         }
 
+        this.golfTournament = tournament;
 
     }
 
@@ -1174,6 +1207,21 @@ export class GolfLeaderboardComponent implements OnInit {
             //    this.golfTournament.golfPlayers[i].position = " " + lastPosition;
             //    lastScore = this.golfTournament.golfPlayers[i].tournamentscore;
             //}
+
+
+            // BEGIN REMOVING ZERO ELEMENTS
+
+            if (players[i].tournamentstrokes == 0) {
+            
+               players.splice(i, 1);
+            }
+
+            if (i >= players.length)
+                continue;
+
+            // END REMOVING ZERO ELEMENTS
+
+
 
             let playerTotal = this._getPlayerHoleScoreTotal(players[i], holeIndex);
             players[i].position = " ";

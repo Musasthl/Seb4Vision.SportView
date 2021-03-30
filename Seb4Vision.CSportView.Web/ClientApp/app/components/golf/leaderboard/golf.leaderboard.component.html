@@ -141,6 +141,7 @@
         margin: 0px;
         margin-top: 5px;
     }
+
     .playerRow {
         background-color: #e9fdfe;
         margin: 0px;
@@ -317,7 +318,6 @@
         font-size: 14px;
         font-weight: bold;
         border-radius: 5px;
-
         padding: 5px;
         margin: 0px 5px;
         cursor: pointer;
@@ -338,6 +338,7 @@
     .player-row-container-no-overflow {
         height: calc(100vh - 230px);
     }
+
     .btn-main-round {
         cursor: pointer;
         background: #e9fdfe;
@@ -358,31 +359,41 @@
     .cheat-table-tr-spacing {
         border-bottom: 5px solid #006837;
     }
-     
 
-    .player-hole-container-with-overflow
-    {
+
+    .player-hole-container-with-overflow {
         height: calc(100vh - 230px);
         overflow: auto;
     }
-    .center
-    {
+
+    .center {
         text-align: center;
     }
 
-    .group-total{
+    .group-total {
         text-align: center;
-        color: red;
+        color: black;
     }
+
     .td-group-score {
         background-color: #fe9c20;
         text-align: center;
         padding: 2px;
     }
 
-    .black
+    .black {
+    
+        color: black;
+    }
+
+
+    .blackFont {
+        color: black;
+    }
+
+    .hide-element
     {
-        background: black;
+        display: none;
     }
 </style>
 <div *ngIf="loading" style="    background: transparent; font-weight: bold;
@@ -489,9 +500,20 @@
                     </div>
                 </div>
 
+                <!--<div class="row">
+
+                    <div class="col-sm-12" style="text-align: center;">
+                        <span class="btn-main-round"  (click)="onGoToMainRoundClick(5)">
+                            FINAL ROUND
+                        </span>
+                    </div>
+                   
+                </div>-->
+
+
                 <div class="row">
                     <div class="col-sm-12" style=" text-align: center;">
-                        <img [attr.src]="superSportLogo" class="superSportLogo">
+                        <img [attr.src]="superSportLogo" class="superSportLogo" style="margin-top: 30px;">
                     </div>
                 </div>
 
@@ -555,7 +577,7 @@
             <div class="col-sm-12" style=" text-align: center;margin-bottom: 5px;">
                 <span class="btn-round" (click)="onChangeStatePageClick(1)" [ngClass]="{'btn-round-selected': 1 == selectedStatsPageId}">LEADERBOARD STATS</span>
                 <span class="btn-round" (click)="onChangeStatePageClick(3)" [ngClass]="{'btn-round-selected': 3 == selectedStatsPageId}">STATS PER HOLE</span>
-                <span class="btn-round" (click)="onChangeStatePageClick(2)" [ngClass]="{'btn-round-selected': 2 == selectedStatsPageId}">HOLE STATS</span>
+                <!--<span class="btn-round" (click)="onChangeStatePageClick(2)" [ngClass]="{'btn-round-selected': 2 == selectedStatsPageId}">HOLE STATS</span>-->
                 <span class="btn-round" (click)="onChangeStatePageClick(4)" [ngClass]="{'btn-round-selected': 4 == selectedStatsPageId}">MATCH DRAWS</span>
 
             </div>
@@ -567,6 +589,7 @@
                 <span class="btn-round" (click)="onRoundChangeClick(2)" [ngClass]="{'btn-round-selected': 2 == selectedRoundId}">ROUND 2</span>
                 <span class="btn-round" (click)="onRoundChangeClick(3)" [ngClass]="{'btn-round-selected': 3 == selectedRoundId}">ROUND 3</span>
                 <span class="btn-round" (click)="onRoundChangeClick(4)" [ngClass]="{'btn-round-selected': 4 == selectedRoundId}">FINAL ROUND</span>
+                <!--<span class="btn-round" (click)="onRoundChangeClick(5)" [ngClass]="{'btn-round-selected': 5 == selectedRoundId}">FINAL ROUND</span>-->
             </div>
         </div>
 
@@ -602,7 +625,7 @@
             </div>
         </div>
 
- 
+
 
 
         <div class="row">
@@ -652,7 +675,10 @@
 
 
                 <div class="player-row-container">
-                    <div *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  " [attr.data-index]="i" class="playerRow row ">
+                    <!-- [ngClass]="{'hide-element': player.tournamentstrokes == 0}" -->
+                    <div *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  " [attr.data-index]="i" class="playerRow row "
+                          [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}" 
+                         >
                         <div class="col-sm-12 player " style="text-align: left;">
                             <div class="row" (click)="onPlayerClick(golfTournament.tournamentid,  player)">
 
@@ -901,9 +927,8 @@
                                     <thead>
                                         <tr class="playerRow row">
                                             <td class="tableHeader">
-                                         
                                             </td>
-                                         
+
                                             <td></td>
                                             <td class="tableHeader"><span class="score-stroke">1 </span></td>
                                             <td class="tableHeader"><span class="score-stroke">2 </span></td>
@@ -931,7 +956,7 @@
                                             <td class="tableHeader">
                                                 <span style="padding-left: 22px;"></span>PLAYER
                                             </td>
-                                         
+
                                             <td>PAR</td>
                                             <td class="tableHeader"><span class="score-stroke">{{getHolePar(1 )}}</span></td>
                                             <td class="tableHeader"><span class="score-stroke">{{getHolePar(2 )}}</span></td>
@@ -959,7 +984,12 @@
 
                                     </thead>
                                     <tbody>
-                                        <tr class="playerRow row cheat-table-tr-spacing" *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  " [attr.data-index]="i" (click)="onPlayerClick(golfTournament.tournamentid,  player)">
+
+                                        <!--   [ngClass]="{'hide-element': player.tournamentstrokes == 0}" -->
+                                        <tr class="playerRow row cheat-table-tr-spacing" *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  "
+                                            [attr.data-index]="i" (click)="onPlayerClick(golfTournament.tournamentid,  player)"
+                                              [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}" 
+                                            >
 
                                             <td>
                                                 <div class="golf-position-index" style="margin:  5px">{{player.position}}</div>
@@ -969,8 +999,8 @@
 
                                                 </span>
                                             </td>
-                                   
-                                            <td class=" td-group-score black"><span class="group-total">{{getPlayerTournmanetSocre(player)}}</span></td>
+
+                                            <td class=" td-group-score black"><span class="group-total blackFont">{{getPlayerTournmanetSocre(player)}}</span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 1 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 2 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 3 )"></span></td>
@@ -1050,7 +1080,7 @@
                                     <thead>
                                         <tr class="playerRow row">
                                             <td class="tableHeader">
-                                                <span style="padding-left: 22px;"></span> 
+                                                <span style="padding-left: 22px;"></span>
                                             </td>
                                             <td></td>
                                             <td class="tableHeader"><span class="score-stroke">1 </span></td>
@@ -1076,43 +1106,43 @@
                                             <td class="tableHeader td-group-score"><span class="group-total">TOT</span></td>
                                         </tr>
                                         <tr class="playerRow row cheat-table-tr-spacing">
-<td class="tableHeader">
-<span style="padding-left: 22px;"></span>PLAYER
-</td>
+                                            <td class="tableHeader">
+                                                <span style="padding-left: 22px;"></span>PLAYER
+                                            </td>
 
-<td>PAR</td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(1 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(2 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(3 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(4 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(5 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(6 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(7 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(8 )}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(9 )}}</span></td>
-<td class="tableHeader td-group-score"><span class="group-total">{{getCourseStartTotalPar()}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(10)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(11)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(12)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(13)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(14)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(15)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(16)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(17)}}</span></td>
-<td class="tableHeader"><span class="score-stroke">{{getHolePar(18)}}</span></td>
-<td class="tableHeader  td-group-score"><span class="group-total">{{getCourseFinalTotalPar()}}</span></td>
-<td class="tableHeader  td-group-score"><span class="group-total">{{getCourseTotalPar()}}</span></td>
-</tr>
+                                            <td>PAR</td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(1 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(2 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(3 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(4 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(5 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(6 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(7 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(8 )}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(9 )}}</span></td>
+                                            <td class="tableHeader td-group-score"><span class="group-total">{{getCourseStartTotalPar()}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(10)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(11)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(12)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(13)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(14)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(15)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(16)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(17)}}</span></td>
+                                            <td class="tableHeader"><span class="score-stroke">{{getHolePar(18)}}</span></td>
+                                            <td class="tableHeader  td-group-score"><span class="group-total">{{getCourseFinalTotalPar()}}</span></td>
+                                            <td class="tableHeader  td-group-score"><span class="group-total">{{getCourseTotalPar()}}</span></td>
+                                        </tr>
 
                                     </thead>
-                                    <tbody  *ngFor="let group of golfTournameHoleGroupedPlayers  ; let r = index;  " [attr.data-index]="r">
+                                    <tbody *ngFor="let group of golfTournameHoleGroupedPlayers  ; let r = index;  " [attr.data-index]="r">
 
                                         <tr>
                                             <td colspan="19">
                                                 <h4 class="golf-stats-title" style=" margin-left: 12px;"> MATCH {{group.matchid}}</h4>
 
 
-                                            
+
                                             </td>
                                         </tr>
 
@@ -1128,7 +1158,7 @@
                                                 </span>
                                             </td>
 
-                                            <td class=" td-group-score black"><span class="group-total">{{getPlayerTournmanetSocre(player)}}</span></td>
+                                            <td class=" td-group-score black"><span class="group-total blackFont">{{getPlayerTournmanetSocre(player)}}</span></td>
 
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 1 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 2 )"></span></td>
@@ -1139,7 +1169,7 @@
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 7 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 8 )"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 9 )"></span></td>
-                                            <td class=" td-group-score"> <span  class="group-total">{{getPlayerRoundFirstStrokes(selectedRoundId, player)}}</span></td>
+                                            <td class=" td-group-score"> <span class="group-total">{{getPlayerRoundFirstStrokes(selectedRoundId, player)}}</span></td>
 
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 10)"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 11)"></span></td>
@@ -1151,7 +1181,7 @@
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 17)"></span></td>
                                             <td> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 18)"></span></td>
                                             <td class=" td-group-score"> <span class="group-total">{{getPlayerRoundFinalStrokes(selectedRoundId, player)}}</span></td>
-                                            <td class=" td-group-score"> <span class="group-total" >{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
+                                            <td class=" td-group-score"> <span class="group-total">{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
                                         </tr>
 
 
@@ -1576,6 +1606,96 @@
 
                 </div>
             </div>
+
+
+            <!--- Round 5 -->
+
+            <!--<div class="row">
+
+
+                <div class="col-sm-12 player-detail-stats">
+
+                    <h4 class="golf-stats-title">Final Round Stats</h4>
+                    <h4 class="golf-stats-title right">
+
+                        {{getPlayerRoundSocreByRoundId(5, selectedPlayer)}}
+
+                    </h4>
+
+                    <table style="width: 100%">
+                        <tr>
+                            <th>Hole</th>
+                            <th><span class="score-stroke">1 </span></th>
+                            <th><span class="score-stroke">2 </span></th>
+                            <th><span class="score-stroke">3 </span></th>
+                            <th><span class="score-stroke">4 </span></th>
+                            <th><span class="score-stroke">5 </span></th>
+                            <th><span class="score-stroke">6 </span></th>
+                            <th><span class="score-stroke">7 </span></th>
+                            <th><span class="score-stroke">8 </span></th>
+                            <th><span class="score-stroke">9 </span></th>
+                            <th><span class="score-stroke">10</span></th>
+                            <th><span class="score-stroke">11</span></th>
+                            <th><span class="score-stroke">12</span></th>
+                            <th><span class="score-stroke">13</span></th>
+                            <th><span class="score-stroke">14</span></th>
+                            <th><span class="score-stroke">15</span></th>
+                            <th><span class="score-stroke">16</span></th>
+                            <th><span class="score-stroke">17</span></th>
+                            <th><span class="score-stroke">18</span></th>
+                        </tr>
+                        <tbody>
+                            <tr>
+                                <th>Par</th>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 1 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 2 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 3 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 4 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 5 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 6 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 7 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 8 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 9 )}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 10)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 11)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 12)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 13)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 14)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 15)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 16)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 17)}}</span></td>
+                                <td><span class="score-stroke">{{getPlayerRoundHolePar( 5,selectedPlayer, 18)}}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Strokes</th>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 1 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 2 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 3 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 4 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 5 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 6 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 7 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 8 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 9 )"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 10)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 11)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 12)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 13)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 14)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 15)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 16)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 17)"></td>
+                                <td [innerHTML]="getPlayerRoundHoleStrokeElement(5,selectedPlayer, 18)"></td>
+                            </tr>
+
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>-->
+
 
             <div class="row">
                 <div class="col">
