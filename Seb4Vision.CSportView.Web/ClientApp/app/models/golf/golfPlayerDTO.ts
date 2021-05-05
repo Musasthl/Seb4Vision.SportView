@@ -9,5 +9,6 @@ export interface golfPlayerDTO {
     tournamentstrokes: number;
     tournamentpar: number;
     tournamentscore: number;
+  
 }  
  

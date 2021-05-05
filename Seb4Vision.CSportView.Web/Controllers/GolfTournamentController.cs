@@ -184,6 +184,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                                 round.roundstrokes += strokes;
                                 round.roundpar += par;
+                                round.played = true;
 
                                 if (holestatus == "2")
                                 {

@@ -44,6 +44,8 @@ export class GolfLeaderboardComponent implements OnInit {
     public golfTournameHoleGroupedPlayers: golfPlayerDTO[] | any;
 
 
+    public selectedRoundPlayers: golfPlayerDTO[] | any;
+
 
     public selctedHolePar: any;
 
@@ -152,6 +154,9 @@ export class GolfLeaderboardComponent implements OnInit {
                     this.getPlayersOnHole((res.json() as golfTournamentDTO).golfPlayers, this.selectedHoleId);
 
                     this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId);
+
+
+
 
 
                     this.sortTournamentLeaderBoard(newGolfTournament);
@@ -611,6 +616,16 @@ export class GolfLeaderboardComponent implements OnInit {
         return round.roundstrokes;
     }
 
+
+
+    public DiPlayerPlayedOnRound(roundId: any, player: any) {
+
+
+        let round = player.playerounds[roundId];
+         
+        return round.played;
+    }
+
     public getPlayerFullRoundStrokes(roundId: any, player: any) {
 
 
@@ -753,10 +768,10 @@ export class GolfLeaderboardComponent implements OnInit {
             if (hole.holepar + 2 <= hole.holestrokes) {
                 return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
             }
-
+            else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
         }
 
-        return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
+        return '<span class="score-stroke holestroke-color score-normal">-</span>';
     }
 
 
@@ -940,6 +955,8 @@ export class GolfLeaderboardComponent implements OnInit {
     public onRoundChangeClick(roundId: any) {
         this.selectedRoundId = roundId;
         console.log("Change round to: " + roundId);
+
+        this.reloadSelectedRoundPlayerSorted(this.selectedRoundId);
     }
 
 
@@ -969,6 +986,7 @@ export class GolfLeaderboardComponent implements OnInit {
     public onGoToMainRoundClick(roundId: any) {
         this.selectedRoundId = roundId;
         this.showLeaderBoard = true;
+        this.reloadSelectedRoundPlayerSorted(this.selectedRoundId);
     }
 
 
@@ -991,8 +1009,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let selectedRoundId = this.selectedRoundId;
 
 
-
-
+ 
         this.reloadGolfSelectedPlayer(tournament.golfPlayers);
 
         
@@ -1139,6 +1156,131 @@ export class GolfLeaderboardComponent implements OnInit {
 
         this.golfTournament = tournament;
 
+
+
+        this.reloadSelectedRoundPlayerSorted(this.selectedRoundId);
+    }
+
+
+    public reloadSelectedRoundPlayerSorted(roundId: any) {
+        let lastScore = 0;
+        let lastPosition = 0;
+        let selectedRoundId = roundId;
+        // this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId);
+
+        if (this.golfTournament != undefined) {
+            console.log("reloadSelectedRoundPlayerSorted");
+
+           // let golfPlayers = this.golfTournament.golfPlayers.filter((item: any) => item.playerounds[roundId].roundstrokes != 0).slice();
+            let golfPlayers = this.golfTournament.golfPlayers.filter((item: any) => item.playerounds[roundId].played == true).slice();
+
+            var len = golfPlayers.sort(function (a: any, b: any) {
+
+
+
+
+                let aRound = a.playerounds[selectedRoundId];
+                let bRound = b.playerounds[selectedRoundId];
+
+
+                if (a.tournamentscore == undefined)
+                    a.tournamentscore = 0;
+
+                if (b.tournamentscore == undefined)
+                    b.tournamentscore = 0;
+
+                if (aRound.roundscore == undefined)
+                    aRound.roundscore = 0;
+
+                if (bRound.roundscore == undefined)
+                    bRound.roundscore = 0;
+
+
+                if (aRound.totalholesplayed == undefined)
+                    aRound.totalholesplayed = 0;
+
+                if (bRound.totalholesplayed == undefined)
+                    bRound.totalholesplayed = 0;
+
+
+
+
+
+
+
+
+
+
+                // Tournament score
+
+
+                //   console.log("A = " + a.tournamentscore + " B = " + b.tournamentscore)
+                // If the first item has a higher number, move it down
+                // If the first item has a lower number, move it up
+                // Ascending
+                if (a.tournamentscore > b.tournamentscore) return 1;
+                if (a.tournamentscore < b.tournamentscore) return -1;
+
+
+                // Descending
+                if (aRound.totalholesplayed > bRound.totalholesplayed) return -1;
+                if (aRound.totalholesplayed < bRound.totalholesplayed) return 1;
+
+
+
+                // Ascending
+                if (aRound.teetime < bRound.teetime) return -1;
+                if (aRound.teetime > bRound.teetime) return 1;
+
+
+
+                // Ascending
+                if (a.firstname + " " + a.lastname < b.firstname + " " + b.lastname) return -1;
+                if (a.firstname + " " + a.lastname > b.firstname + " " + b.lastname) return 1;
+
+
+
+
+
+                //// If the tournamentscore number is the same between both items, sort by round
+                if (aRound.roundscore > bRound.roundscore) return -1;
+                if (aRound.roundscore < bRound.roundscore) return 1;
+
+
+
+
+
+
+                if (a.playerid > b.playerid) return -1;
+                if (a.playerid < b.playerid) return 1;
+
+                return 0;
+
+            });
+
+
+
+            for (let i = 0; i < golfPlayers.length; i++) {
+
+
+                if (i == 0) {
+                    lastPosition = 1;
+                    golfPlayers[i].position = " " + (i + 1);
+                    lastScore = golfPlayers[i].tournamentscore;
+                    continue;
+                }
+
+                if (golfPlayers[i].tournamentscore == lastScore) {
+                    golfPlayers[i].position = " ";
+                } else {
+                    lastPosition = lastPosition + 1;
+                    golfPlayers[i].position = " " + (i + 1);
+                    lastScore = golfPlayers[i].tournamentscore;
+                }
+            }
+
+            this.selectedRoundPlayers = golfPlayers;
+        }
     }
 
     public getPlayersOnHole(players: any, holeIndex: any) {

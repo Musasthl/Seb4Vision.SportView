@@ -40,15 +40,16 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public int roundscore { get; set; }
 
         public Dictionary<long, GolfPlayerRoundHoles> holes = new Dictionary<long, GolfPlayerRoundHoles>();
-        public int totalholesplayed;
-        public int roundcompletedstrokes;
-        public int roundcompletedpar;
-        public string backstart;
-        public int? teetime;
-        public bool first9done;
-        public bool last9done;
-        public int first9score;
-        public int last9score;
+        public int totalholesplayed { get; set; }
+        public int roundcompletedstrokes { get; set; }
+        public int roundcompletedpar { get; set; }
+        public string backstart { get; set; }
+        public int? teetime { get; set; }
+        public bool first9done { get; set; }
+        public bool last9done { get; set; }
+        public int first9score { get; set; }
+        public int last9score { get; set; }
+        public bool played { get; set; }
 
         public GolfPlayerRoundDTO()
         {

@@ -674,11 +674,16 @@
                 </div>
 
 
-                <div class="player-row-container">
+                <div class="player-row-container" *ngIf="selectedRoundPlayers">
                     <!-- [ngClass]="{'hide-element': player.tournamentstrokes == 0}" -->
-                    <div *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  " [attr.data-index]="i" class="playerRow row "
-                          [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}" 
-                         >
+                    <!-- Leader Board
+                            <div *ngFor="let player of  selectedRoundPlayers; let i = index;  " [attr.data-index]="i" class="playerRow row "
+          [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}"
+         >
+
+        -->
+                    <div *ngFor="let player of  selectedRoundPlayers; let i = index;  " [attr.data-index]="i" class="playerRow row "
+                         [ngClass]="{'hide-element': (DiPlayerPlayedOnRound(selectedRoundId, player) == false)}">
                         <div class="col-sm-12 player " style="text-align: left;">
                             <div class="row" (click)="onPlayerClick(golfTournament.tournamentid,  player)">
 
@@ -686,6 +691,7 @@
                                     <div class="golf-position-index">{{player.position}}</div>
 
                                     <span>
+                                         
                                         {{player.firstname}} {{player.lastname}}
 
                                     </span>
@@ -985,11 +991,16 @@
                                     </thead>
                                     <tbody>
 
-                                        <!--   [ngClass]="{'hide-element': player.tournamentstrokes == 0}" -->
+                                        <!--   [ngClass]="{'hide-element': player.tournamentstrokes == 0}"
+            [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}">
+
+        -->
                                         <tr class="playerRow row cheat-table-tr-spacing" *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  "
                                             [attr.data-index]="i" (click)="onPlayerClick(golfTournament.tournamentid,  player)"
-                                              [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}" 
-                                            >
+                                            [ngClass]="{'hide-element': (DiPlayerPlayedOnRound(selectedRoundId, player) == false  )}">
+
+                               
+
 
                                             <td>
                                                 <div class="golf-position-index" style="margin:  5px">{{player.position}}</div>
