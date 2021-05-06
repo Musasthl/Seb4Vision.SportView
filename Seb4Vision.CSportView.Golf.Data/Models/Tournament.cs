@@ -11,6 +11,7 @@ namespace Seb4Vision.CSportView.Golf.Data.Models
         public long tournamentid { get; set; }
         public long courseid { get; set; }
         public string Description { get; set; }
+        public string ExtraDesc { get; set; }
         public string Country { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }

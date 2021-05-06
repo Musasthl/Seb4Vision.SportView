@@ -43,8 +43,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                 var resPlayers = new Dictionary<long, GolfPlayerDTO>();
 
+                string appSettingsTournamentId = _config.GetSection("AppSettings").GetSection("TournamentId").Value;
 
-                var dbTournament = _context.Tournament.SingleOrDefault(x => x.tournamentid == 1);
+
+                Golf.Data.Models.Tournament dbTournament = null;
+
+                if (!string.IsNullOrEmpty(appSettingsTournamentId))
+                {
+                    dbTournament = _context.Tournament.SingleOrDefault(x => x.tournamentid == int.Parse(appSettingsTournamentId));
+                }
+                else
+                    dbTournament = _context.Tournament.SingleOrDefault(x => x.tournamentid == 1);
 
                 var dbCourse = _context.Course.SingleOrDefault(x => x.courseid == dbTournament.courseid);
 
@@ -53,15 +62,20 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
 
 
+
+
                 var goftTournament = new GolfTournamentDTO()
                 {
                     tournamentid = dbTournament.tournamentid,
                     description = dbTournament.Description,
+                    extraDesc = dbTournament.ExtraDesc == null ? string.Empty : dbTournament.ExtraDesc,
                     country = dbTournament.Country,
                     begindate = dbTournament.BeginDate,
                     enddate = dbTournament.EndDate,
                     location = dbCourse.Description,
-                    courseholes = courseholes
+                    courseholes = courseholes,
+                    courses = new List<GolfTournamentCourseDTO>()
+
                 };
 
 
@@ -74,6 +88,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
                     sb.Append(", sum(st.strokes) as TotalStrokes, sum(ch.par) as TotalPar,");
                     sb.Append(" sum(st.strokes) - sum(ch.par) as RoundScore");
+                    sb.Append(" , c.ShortDesc as CourseShortDesc, c.courseid as CourseId, c.colorCode as CourseColorCode ");
+
                     sb.Append(" FROM golf.players p ");
                     sb.Append("left join golf.score sc on sc.playerid = p.playerid ");
                     sb.Append("left join golf.shots st on st.idscore = sc.idscore and st.holestatus in(1, 2, 0) ");
@@ -81,6 +97,9 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     sb.Append("left join golf.courseholes ch on ch.idcourseholes = st.holeid ");
                     sb.Append("left join golf.course c on c.courseid = sc.courseid  ");
                     sb.Append("Where  p.playerid <> -1 ");
+
+                    if (!string.IsNullOrEmpty(appSettingsTournamentId))
+                        sb.Append($" AND sc.Tournamentid = {appSettingsTournamentId} ");
 
                     sb.Append("group by p.playerid, p.firstname, p.lastname, p.photopath, r.roundid, st.holeid, sc.back9start, st.HoleStatus ");
 
@@ -113,6 +132,37 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                             if (res["Country"] != null)
                                 player.country = res["Country"].ToString();
+
+
+
+                            if (res["CourseShortDesc"] != null)
+                                player.courseShortDesc = res["CourseShortDesc"].ToString();
+
+                            if (res["courseId"] != null)
+                                player.courseId = res["courseId"].ToString();
+
+                            if (res["CourseColorCode"] != null)
+                                player.colorCode = res["CourseColorCode"].ToString();
+
+
+                            if (!string.IsNullOrWhiteSpace(player.courseShortDesc))
+                            {
+                                var courseExists = goftTournament.courses.SingleOrDefault(x => string.Equals(x.ShortDesc.Trim(), player.courseShortDesc.Trim(), StringComparison.OrdinalIgnoreCase));
+                                if (courseExists == null)
+                                {
+                                    player.courseIndexId = (goftTournament.courses.Count + 1).ToString();
+                                    goftTournament.courses.Add(new GolfTournamentCourseDTO()
+                                    {
+                                        index = player.colorCode,
+                                        courseid = player.courseId,
+                                        ShortDesc = player.courseShortDesc
+                                    });
+                                }else
+                                {
+                                    player.courseIndexId = courseExists.index;
+                                }
+                            }
+
 
                             if (!string.IsNullOrEmpty(res["Par"].ToString()))
                             {
@@ -185,6 +235,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                 round.roundstrokes += strokes;
                                 round.roundpar += par;
                                 round.played = true;
+
+                                player.PlayedInTournament = true;
 
                                 if (holestatus == "2")
                                 {
@@ -271,9 +323,9 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     round.first9done = true;
                                     var first9Strokes = round.holes[1].holestrokes + round.holes[2].holestrokes + round.holes[3].holestrokes
                                     + round.holes[4].holestrokes + round.holes[5].holestrokes + round.holes[6].holestrokes + round.holes[7].holestrokes
-                                    + round.holes[8].holestrokes + round.holes[9].holestrokes ;
+                                    + round.holes[8].holestrokes + round.holes[9].holestrokes;
 
-                                    var first9Par =  round.holes[1].holepar + round.holes[2].holepar + round.holes[3].holepar
+                                    var first9Par = round.holes[1].holepar + round.holes[2].holepar + round.holes[3].holepar
                                     + round.holes[4].holepar + round.holes[5].holepar + round.holes[6].holepar + round.holes[7].holepar
                                     + round.holes[8].holepar + round.holes[9].holepar;
 
@@ -291,7 +343,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                   + round.holes[13].holestrokes + round.holes[14].holestrokes + round.holes[15].holestrokes + round.holes[16].holestrokes
                   + round.holes[17].holestrokes + round.holes[18].holestrokes;
 
-                                    var last9Par =  round.holes[10].holepar + round.holes[11].holepar + round.holes[12].holepar
+                                    var last9Par = round.holes[10].holepar + round.holes[11].holepar + round.holes[12].holepar
                                     + round.holes[13].holepar + round.holes[14].holepar + round.holes[15].holepar + round.holes[16].holepar
                                     + round.holes[17].holepar + round.holes[18].holepar;
 
@@ -319,7 +371,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 //    lastname = p.lastname
                 //}).ToList<GolfPlayerDTO>();
 
-
+                goftTournament.courses = goftTournament.courses.OrderBy(x => x.ShortDesc).ToList();
                 if (goftTournament == null)
                 {
                     return NotFound();

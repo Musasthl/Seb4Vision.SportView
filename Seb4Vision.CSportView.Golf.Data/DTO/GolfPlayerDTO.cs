@@ -17,10 +17,15 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public int tournamentstrokes { get; set; }
         public int tournamentpar { get; set; }
         public int tournamentscore { get; set; }
+        public bool PlayedInTournament { get; set; }
 
         public Dictionary<long, GolfPlayerRoundDTO> playerounds = new Dictionary<long, GolfPlayerRoundDTO>();
         public int roundsplayed;
         public long matchid;
+        public string courseShortDesc;
+        public string courseId;
+        public string courseIndexId;
+        public string colorCode;
 
         public GolfPlayerDTO()
         {

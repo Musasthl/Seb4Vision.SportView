@@ -130,6 +130,9 @@
     }
 
 
+    .tournamentExtraDesc {
+        color: gray;
+    }
 
     .tableHeader {
         font-size: 18px;
@@ -381,12 +384,11 @@
         padding: 2px;
     }
 
-    .td-hole-highlighted
-    {
-       width: 64px;
+    .td-hole-highlighted {
+        width: 64px;
     }
 
-    .td-hole-number{
+    .td-hole-number {
         width: 44px;
     }
 
@@ -402,6 +404,7 @@
     .hide-element {
         display: none;
     }
+
 </style>
 <div *ngIf="loading" style="    background: transparent; font-weight: bold;
                                       color: white;
@@ -442,7 +445,7 @@
                     position: absolute;
                     left: 60px;
                     right: 60px;
-                    height: 88px;
+                    height: 116px;
                     top: -40px;
                     padding: 5px;">
                     {{golfTournament?.description}}
@@ -450,6 +453,9 @@
                     {{golfTournament?.location}}
                     <br>
                     {{golfTournament?.country}}
+
+                    <br>
+                    <span class="tournamentExtraDesc">{{golfTournament?.extraDesc}}</span>
 
                     <p *ngIf="match?.isLiveMatch">
                         <img src="./../../../images/live.png" class="liveIcon"
@@ -555,7 +561,7 @@
                     position: absolute;
                     left: 60px;
                     right: 60px;
-                    height: 88px;
+                    height: 116px;
                     top: -40px;
                     padding: 5px;">
                     {{golfTournament?.description}}
@@ -563,7 +569,8 @@
                     {{golfTournament?.location}}
                     <br>
                     {{golfTournament?.country}}
-
+                    <br>
+                    <span class="tournamentExtraDesc">{{golfTournament?.extraDesc}}</span>
                     <p *ngIf="match?.isLiveMatch">
                         <img src="./../../../images/live.png" class="liveIcon"
                              style="  height:36px; position: absolute;
@@ -645,6 +652,19 @@
             <div class="col-sm-10" *ngIf="selectedStatsPageId == 1">
 
 
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: right; font-size: 18px;">
+
+                        <span style="color: white; font-weight: bold">COURSE INDICATOR: </span>
+                        <ng-container *ngFor="let course of  golfTournament.courses; let i = index;  " [attr.data-index]="i">
+
+                            <div style="display: inline-block; width: 10px; height: 10px;" [innerHtml]="getCourseIndicator(course)"></div>    <span style="color: white; display: inline-block"> {{course.shortDesc}} </span>
+                        </ng-container>
+                    </div>
+                </div>
+
+
+
                 <div class="playerRow row">
                     <div class="col-sm-12 player" style="text-align: left;">
 
@@ -688,7 +708,12 @@
                       [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}"
                      >
 
+
                     -->
+
+
+
+
                     <div *ngFor="let player of  selectedRoundPlayers; let i = index;  " [attr.data-index]="i" class="playerRow row "
                          [ngClass]="{'hide-element': (DiPlayerPlayedOnRound(selectedRoundId, player) == false)}">
                         <div class="col-sm-12 player " style="text-align: left;">
@@ -725,6 +750,10 @@
 
 
                                     </span>
+
+                                    <div style="display: inline-block;  width: 10px; height: 10px; float: right; margin-right: 15px" [innerHtml]="getCourseIndicatorById(player.courseIndexId)"></div>    
+
+
                                 </div>
                             </div>
 
@@ -1013,9 +1042,9 @@
                                             <tbody>
 
                                                 <!--   [ngClass]="{'hide-element': player.tournamentstrokes == 0}"
-                    [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}">
+                                                    [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}">
 
-                -->
+                                                -->
                                                 <tr class="playerRow row cheat-table-tr-spacing" *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  "
                                                     [attr.data-index]="i" (click)="onPlayerClick(golfTournament.tournamentid,  player)"
                                                     [ngClass]="{'hide-element': (DiPlayerPlayedOnRound(selectedRoundId, player) == false  )}">
@@ -1063,9 +1092,9 @@
                                         </table>
                                     </div>
                                 </div>
-                                </div>
-
                             </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -1112,7 +1141,7 @@
                             <div class="col-sm-12  ">
                                 <div style="        width: 100%;
         padding-right: 27px;
-    
+
 ">
 
                                     <table style="width: 100%">

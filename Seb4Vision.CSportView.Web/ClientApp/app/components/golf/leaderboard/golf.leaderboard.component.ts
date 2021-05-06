@@ -622,7 +622,9 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
         let round = player.playerounds[roundId];
-         
+
+
+
         return round.played;
     }
 
@@ -660,6 +662,14 @@ export class GolfLeaderboardComponent implements OnInit {
             return round.totalholesplayed + "*";
 
         return round.totalholesplayed;
+    }
+
+    public getCourseIndicator(course: any) {
+        return '<div class="course-indicator  course-indicator-' + course.index + '"></div>';
+    }
+
+    public getCourseIndicatorById(courseIndexId: any) {
+        return '<div class="course-indicator-big  course-indicator-' + courseIndexId + '"></div>';
     }
 
     public getPlayerRoundHolePar(roundId: any, player: any, index: any) {
@@ -866,7 +876,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let r2 = player.playerounds[2];
         let r3 = player.playerounds[3];
         let r4 = player.playerounds[4];
-       // let r5 = player.playerounds[5];
+        // let r5 = player.playerounds[5];
 
 
         let r1holeTotal = 0;
@@ -897,12 +907,12 @@ export class GolfLeaderboardComponent implements OnInit {
             r4holeTotal = r4hole.holestrokes;
 
 
-       // if (r5hole.holestrokes != undefined)
-       //     r5holeTotal = r5hole.holestrokes;
+        // if (r5hole.holestrokes != undefined)
+        //     r5holeTotal = r5hole.holestrokes;
 
         // return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal + r5holeTotal;
 
-        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal ;
+        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal;
 
     }
 
@@ -948,7 +958,7 @@ export class GolfLeaderboardComponent implements OnInit {
         //    r5holeTotal = r5hole.holescore;
 
         //return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal + r5holeTotal;
-        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal ;
+        return r1holeTotal + r2holeTotal + r3holeTotal + r4holeTotal;
 
     }
 
@@ -1009,10 +1019,10 @@ export class GolfLeaderboardComponent implements OnInit {
         let selectedRoundId = this.selectedRoundId;
 
 
- 
+
         this.reloadGolfSelectedPlayer(tournament.golfPlayers);
 
-        
+
 
 
         // this.getPlayersOnHole(tournament.golfPlayers.slice(), this.selectedHoleId);
@@ -1053,7 +1063,6 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
-
             // Tournament score
 
 
@@ -1061,8 +1070,32 @@ export class GolfLeaderboardComponent implements OnInit {
             // If the first item has a higher number, move it down
             // If the first item has a lower number, move it up
             // Ascending
-            if (a.tournamentscore > b.tournamentscore) return 1;
-            if (a.tournamentscore < b.tournamentscore) return -1;
+            if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+
+                var aTScore = a.tournamentscore;
+                var bTScore = b.tournamentscore;
+                if (aTScore > 0)
+                    aTScore = aTScore * -0.000000001;
+
+                if (bTScore > 0)
+                    bTScore = bTScore * -0.000000001;
+
+                if (a.tournamentscore > 0 && b.tournamentscore > 0) {
+                    if (aTScore > bTScore) return -1;
+                    if (aTScore < bTScore) return 1;
+                }
+
+                // Ascending
+                if (aTScore > bTScore) return 1;
+                if (aTScore < bTScore) return -1;
+
+            } else {
+
+
+                // Ascending
+                if (a.tournamentscore > b.tournamentscore) return 1;
+                if (a.tournamentscore < b.tournamentscore) return -1;
+            }
 
 
             // Descending
@@ -1105,8 +1138,11 @@ export class GolfLeaderboardComponent implements OnInit {
 
         let lastScore = 0;
         let lastPosition = 0;
+        // Commented out attempting to show players in round
+        // tournament.golfPlayers = tournament.golfPlayers.filter((item : any) => item.tournamentstrokes  != 0);
 
-        tournament.golfPlayers = tournament.golfPlayers.filter((item : any) => item.tournamentstrokes  != 0);
+        tournament.golfPlayers = tournament.golfPlayers.filter((item: any) => item.playedInTournament == true);
+
 
 
         for (let i = 0; i < tournament.golfPlayers.length; i++) {
@@ -1139,13 +1175,13 @@ export class GolfLeaderboardComponent implements OnInit {
 
             if (i == 0) {
                 lastPosition = 1;
-               tournament.golfPlayers[i].position = " " + (i + 1);
+                tournament.golfPlayers[i].position = " " + (i + 1);
                 lastScore = tournament.golfPlayers[i].tournamentscore;
                 continue;
             }
 
             if (tournament.golfPlayers[i].tournamentscore == lastScore) {
-             tournament.golfPlayers[i].position = " ";
+                tournament.golfPlayers[i].position = " ";
             } else {
                 lastPosition = lastPosition + 1;
                 tournament.golfPlayers[i].position = " " + (i + 1);
@@ -1171,9 +1207,10 @@ export class GolfLeaderboardComponent implements OnInit {
         if (this.golfTournament != undefined) {
             console.log("reloadSelectedRoundPlayerSorted");
 
-           // let golfPlayers = this.golfTournament.golfPlayers.filter((item: any) => item.playerounds[roundId].roundstrokes != 0).slice();
+            // let golfPlayers = this.golfTournament.golfPlayers.filter((item: any) => item.playerounds[roundId].roundstrokes != 0).slice();
             let golfPlayers = this.golfTournament.golfPlayers.filter((item: any) => item.playerounds[roundId].played == true).slice();
 
+            // Added zero filter
             var len = golfPlayers.sort(function (a: any, b: any) {
 
 
@@ -1211,15 +1248,45 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
+
                 // Tournament score
 
 
                 //   console.log("A = " + a.tournamentscore + " B = " + b.tournamentscore)
                 // If the first item has a higher number, move it down
                 // If the first item has a lower number, move it up
-                // Ascending
-                if (a.tournamentscore > b.tournamentscore) return 1;
-                if (a.tournamentscore < b.tournamentscore) return -1;
+
+
+               
+             
+ 
+
+                if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+
+                    var aTScore = a.tournamentscore;
+                    var bTScore = b.tournamentscore;
+                    if (aTScore > 0)
+                        aTScore = aTScore * -0.000000001;
+
+                    if (bTScore > 0)
+                        bTScore = bTScore * -0.000000001;
+
+                    if (a.tournamentscore > 0 && b.tournamentscore > 0) {
+                        if (aTScore > bTScore) return -1;
+                        if (aTScore < bTScore) return 1;
+                    }
+
+                    // Ascending
+                    if (aTScore > bTScore) return 1;
+                    if (aTScore < bTScore) return -1;
+
+                } else {
+
+
+                    // Ascending
+                    if (a.tournamentscore > b.tournamentscore) return 1;
+                    if (a.tournamentscore < b.tournamentscore) return -1;
+                }
 
 
                 // Descending
@@ -1228,9 +1295,14 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
+
+
+
+
                 // Ascending
                 if (aRound.teetime < bRound.teetime) return -1;
                 if (aRound.teetime > bRound.teetime) return 1;
+
 
 
 
@@ -1253,6 +1325,8 @@ export class GolfLeaderboardComponent implements OnInit {
 
                 if (a.playerid > b.playerid) return -1;
                 if (a.playerid < b.playerid) return 1;
+
+
 
                 return 0;
 
@@ -1289,7 +1363,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let self = this;
         let myIndex = holeIndex;
 
-
+        // Hole order
         let len = players.sort(function (a: any, b: any) {
 
 
@@ -1298,6 +1372,8 @@ export class GolfLeaderboardComponent implements OnInit {
 
             let aHoleTotal = self._getPlayerHoleScoreTotal(a, myIndex);
             let bHoleTotal = self._getPlayerHoleScoreTotal(b, myIndex);
+
+
 
 
 
@@ -1354,8 +1430,8 @@ export class GolfLeaderboardComponent implements OnInit {
             // BEGIN REMOVING ZERO ELEMENTS
 
             if (players[i].tournamentstrokes == 0) {
-            
-               players.splice(i, 1);
+
+                players.splice(i, 1);
             }
 
             if (i >= players.length)
@@ -1430,6 +1506,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
         for (var y = 0; y < playerHoleGroup.length; y++) {
+            // Sorting zero
             var pLen = playerHoleGroup[y].players.sort(function (a: any, b: any) {
                 let aRound = a.playerounds[selectedRoundId];
                 let bRound = b.playerounds[selectedRoundId];
@@ -1458,9 +1535,38 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (aRound.totalholesplayed > bRound.totalholesplayed) return -1;
                 if (aRound.totalholesplayed < bRound.totalholesplayed) return 1;
 
-                // Ascending
-                if (a.tournamentscore > b.tournamentscore) return 1;
-                if (a.tournamentscore < b.tournamentscore) return -1;
+
+
+                if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+
+                    var aTScore = a.tournamentscore;
+                    var bTScore = b.tournamentscore;
+                    if (aTScore > 0)
+                        aTScore = aTScore * -0.000000001;
+
+                    if (bTScore > 0)
+                        bTScore = bTScore * -0.000000001;
+
+                    if (a.tournamentscore > 0 && b.tournamentscore > 0) {
+                        if (aTScore > bTScore) return -1;
+                        if (aTScore < bTScore) return 1;
+                    }
+
+                    // Ascending
+                    if (aTScore > bTScore) return 1;
+                    if (aTScore < bTScore) return -1;
+
+                } else {
+
+
+                    // Ascending
+                    if (a.tournamentscore > b.tournamentscore) return 1;
+                    if (a.tournamentscore < b.tournamentscore) return -1;
+                }
+
+                //// Ascending
+                //if (a.tournamentscore > b.tournamentscore) return 1;
+                //if (a.tournamentscore < b.tournamentscore) return -1;
 
                 // Ascending
                 if (aRound.teetime < bRound.teetime) return -1;

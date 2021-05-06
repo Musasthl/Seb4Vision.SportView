@@ -10,6 +10,7 @@ namespace Seb4Vision.CSportView.Golf.Data.Models
         [Key]
         public long courseid { get; set; }
         public string Description { get; set; }
+        public string ShortDesc { get; set; }
         public int Holes { get; set; }
         public int frontpar { get; set; }
         public int BackPar { get; set; }
