@@ -658,7 +658,7 @@
                         <span style="color: white; font-weight: bold">COURSE INDICATOR: </span>
                         <ng-container *ngFor="let course of  golfTournament.courses; let i = index;  " [attr.data-index]="i">
 
-                            <div style="display: inline-block; width: 10px; height: 10px;" [innerHtml]="getCourseIndicator(course)"></div>    <span style="color: white; display: inline-block"> {{course.shortDesc}} </span>
+                            <div style="display: inline-block; width: 33px; height: 10px;" [innerHtml]="getCourseIndicator(course)"></div>    <span style="color: white; display: inline-block"> {{course.shortDesc}} </span>
                         </ng-container>
                     </div>
                 </div>
