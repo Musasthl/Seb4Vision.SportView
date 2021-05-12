@@ -668,8 +668,9 @@ export class GolfLeaderboardComponent implements OnInit {
         return '<div class="course-indicator  course-indicator-' + course.index + '"></div>';
     }
 
-    public getCourseIndicatorById(courseIndexId: any) {
-        return '<div class="course-indicator-big  course-indicator-' + courseIndexId + '"></div>';
+    public getCourseIndicatorById(roundId: any, player: any) {
+        let round = player.playerounds[roundId];
+        return '<div class="course-indicator-big  course-indicator-' + round.courseColorCode + '"></div>';
     }
 
     public getPlayerRoundHolePar(roundId: any, player: any, index: any) {
@@ -1056,8 +1057,19 @@ export class GolfLeaderboardComponent implements OnInit {
                 bRound.totalholesplayed = 0;
 
 
+            if (aRound.roundstrokes == undefined)
+                aRound.roundstrokes = 0;
+
+            if (bRound.roundstrokes == undefined)
+                bRound.roundstrokes = 0;
 
 
+
+            if (a.tournamentstrokes == undefined)
+                a.tournamentstrokes = 0;
+
+            if (b.tournamentstrokes == undefined)
+                b.tournamentstrokes = 0;
 
 
 
@@ -1070,7 +1082,8 @@ export class GolfLeaderboardComponent implements OnInit {
             // If the first item has a higher number, move it down
             // If the first item has a lower number, move it up
             // Ascending
-            if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+            // Line 2 - Leaderboard
+            if (((a.tournamentscore > 0 || a.tournamentscore == 0) && a.tournamentstrokes == 0) || ((b.tournamentscore > 0 || b.tournamentscore == 0) && b.tournamentstrokes == 0)) {
 
                 var aTScore = a.tournamentscore;
                 var bTScore = b.tournamentscore;
@@ -1242,11 +1255,30 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
+                if (aRound.roundstrokes == undefined)
+                    aRound.roundstrokes = 0;
+
+                if (bRound.roundstrokes == undefined)
+                    bRound.roundstrokes = 0;
 
 
 
 
+                if (aRound.roundstrokes == undefined)
+                    aRound.roundstrokes = 0;
 
+                if (bRound.roundstrokes == undefined)
+                    bRound.roundstrokes = 0;
+
+               
+
+
+
+                if (a.tournamentstrokes == undefined)
+                    a.tournamentstrokes = 0;
+
+                if (b.tournamentstrokes == undefined)
+                    b.tournamentstrokes = 0;
 
 
                 // Tournament score
@@ -1260,8 +1292,9 @@ export class GolfLeaderboardComponent implements OnInit {
                
              
  
-
-                if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+                // Line 3
+                if (((a.tournamentscore > 0 || a.tournamentscore == 0) && a.tournamentstrokes == 0) || ((b.tournamentscore > 0 || b.tournamentscore == 0) && b.tournamentstrokes == 0))
+                {
 
                     var aTScore = a.tournamentscore;
                     var bTScore = b.tournamentscore;
@@ -1531,13 +1564,29 @@ export class GolfLeaderboardComponent implements OnInit {
                     bRound.totalholesplayed = 0;
 
 
+                if (aRound.roundstrokes == undefined)
+                    aRound.roundstrokes = 0;
+
+                if (bRound.roundstrokes == undefined)
+                    bRound.roundstrokes = 0;
+
+
+
+                if (a.tournamentstrokes == undefined)
+                    a.tournamentstrokes = 0;
+
+                if (b.tournamentstrokes == undefined)
+                    b.tournamentstrokes = 0;
+
                 // Descending
                 if (aRound.totalholesplayed > bRound.totalholesplayed) return -1;
                 if (aRound.totalholesplayed < bRound.totalholesplayed) return 1;
 
 
 
-                if (a.tournamentscore > 0 || b.tournamentscore > 0) {
+                // TODO: Compare below code line wiht Git to see if it previously existed
+                // Line 1
+                if (((a.tournamentscore > 0 || a.tournamentscore == 0) && a.tournamentstrokes == 0) || ((b.tournamentscore > 0 || b.tournamentscore == 0) && b.tournamentstrokes == 0)) {
 
                     var aTScore = a.tournamentscore;
                     var bTScore = b.tournamentscore;
@@ -1560,7 +1609,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
                     // Ascending
-                    if (a.tournamentscore > b.tournamentscore) return 1;
+                         if (a.tournamentscore > b.tournamentscore) return 1;
                     if (a.tournamentscore < b.tournamentscore) return -1;
                 }
 

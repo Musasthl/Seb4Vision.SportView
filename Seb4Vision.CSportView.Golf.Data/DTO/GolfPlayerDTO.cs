@@ -55,6 +55,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public int first9score { get; set; }
         public int last9score { get; set; }
         public bool played { get; set; }
+        public string CourseColorCode { get; set; }
 
         public GolfPlayerRoundDTO()
         {
