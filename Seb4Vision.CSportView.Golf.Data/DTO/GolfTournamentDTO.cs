@@ -10,6 +10,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public string location;
         public List<GolfTournamentCourseHoleDTO> courseholes;
         public List<GolfTournamentCourseDTO> courses = new List<GolfTournamentCourseDTO>();
+        public int pointsFormat;
 
         public string extraDesc { get; set; }
 

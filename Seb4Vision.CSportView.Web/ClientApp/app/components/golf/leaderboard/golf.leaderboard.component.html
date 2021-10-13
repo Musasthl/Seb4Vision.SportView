@@ -1396,7 +1396,27 @@
                                 <td><span class="score-stroke">{{getPlayerRoundHolePar( 1,selectedPlayer, 18)}}</span></td>
                             </tr>
                             <tr>
-                                <th>Strokes</th>
+                                <th>
+
+
+                                    <span *ngIf="golfTournament?.pointsFormat==1">Strokes</span>
+
+
+                                    <span *ngIf="golfTournament?.pointsFormat==2;">Points</span>
+
+                                    <!--<ng-container *ngIf="golfTournament?.pointsFormat==2;  then #IsStrokePoints; else #IsStrokePoints">
+    </ng-container>
+
+    <ng-template #IsStrokePoints>
+       Strokes
+    </ng-template>
+
+    <ng-template #IsModifiedPointsScore>
+     Points
+    </ng-template>-->
+
+
+                                </th>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(1,selectedPlayer, 1 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(1,selectedPlayer, 2 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(1,selectedPlayer, 3 )"></td>
@@ -1482,7 +1502,12 @@
                                 <td><span class="score-stroke">{{getPlayerRoundHolePar( 2,selectedPlayer, 18)}}</span></td>
                             </tr>
                             <tr>
-                                <th>Strokes</th>
+                                <th>
+                                    <span *ngIf="golfTournament?.pointsFormat==1">Strokes</span>
+
+
+                                    <span *ngIf="golfTournament?.pointsFormat==2;">Points</span>
+                                </th>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(2,selectedPlayer, 1 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(2,selectedPlayer, 2 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(2,selectedPlayer, 3 )"></td>
@@ -1570,7 +1595,12 @@
                                 <td><span class="score-stroke">{{getPlayerRoundHolePar( 3,selectedPlayer, 18)}}</span></td>
                             </tr>
                             <tr>
-                                <th>Strokes</th>
+                                <th>
+                                    <span *ngIf="golfTournament?.pointsFormat==1">Strokes</span>
+
+
+                                    <span *ngIf="golfTournament?.pointsFormat==2;">Points</span>
+                                </th>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(3,selectedPlayer, 1 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(3,selectedPlayer, 2 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(3,selectedPlayer, 3 )"></td>
@@ -1658,7 +1688,12 @@
                                 <td><span class="score-stroke">{{getPlayerRoundHolePar( 4,selectedPlayer, 18)}}</span></td>
                             </tr>
                             <tr>
-                                <th>Strokes</th>
+                                <th>
+                                    <span *ngIf="golfTournament?.pointsFormat==1">Strokes</span>
+
+
+                                    <span *ngIf="golfTournament?.pointsFormat==2;">Points</span>
+                                </th>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(4,selectedPlayer, 1 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(4,selectedPlayer, 2 )"></td>
                                 <td [innerHTML]="getPlayerRoundHoleStrokeElement(4,selectedPlayer, 3 )"></td>

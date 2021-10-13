@@ -153,7 +153,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
                     this.getPlayersOnHole((res.json() as golfTournamentDTO).golfPlayers, this.selectedHoleId);
 
-                    this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId);
+                    this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId, newGolfTournament.pointsFormat);
 
 
 
@@ -569,8 +569,9 @@ export class GolfLeaderboardComponent implements OnInit {
         if (player.tournamentscore == undefined)
             return "-";
 
-        if (player.tournamentscore > 0)
+        if (this.golfTournament.pointsFormat == 1 && player.tournamentscore > 0) {
             return "+" + player.tournamentscore;
+        }
         return player.tournamentscore;
     }
 
@@ -582,7 +583,7 @@ export class GolfLeaderboardComponent implements OnInit {
         if (round.roundscore == undefined)
             return "-";
 
-        if (round.roundscore > 0)
+        if (this.golfTournament.pointsFormat == 1 && round.roundscore > 0)
             return "+" + round.roundscore;
         return round.roundscore;
     }
@@ -595,7 +596,7 @@ export class GolfLeaderboardComponent implements OnInit {
         if (round.roundscore == undefined)
             return "";
 
-        if (round.roundscore > 0)
+        if (this.golfTournament.pointsFormat == 1 && round.roundscore > 0)
             return "SCORE: +" + round.roundscore;
 
         if (round.roundscore == 0) {
@@ -712,31 +713,56 @@ export class GolfLeaderboardComponent implements OnInit {
         if (hole.holestrokes == undefined)
             return '<span class="score-stroke">-</span>';
 
-        if (hole.holestrokes == 0)
-            return '<span class="score-stroke">-</span>';
 
-
+        if (hole.holestrokes == 0 && hole.holestatus != "2")
+          //  if (this.golfTournament.pointsFormat == 1)
+                return '<span class="score-stroke">-</span>';
+          //  else
+              //  return '<span class="score-stroke">0</span>';
 
 
         if (hole.holepar != undefined && hole.holestatus == "2") {
-            if (hole.holepar - 2 == hole.holestrokes) {
-                return '<span class="score-stroke  score-eagle">' + hole.holestrokes + '</span>';
-            }
 
-            if (hole.holepar - 1 == hole.holestrokes) {
-                return '<span class="score-stroke  score-birdie">' + hole.holestrokes + '</span>';
-            }
+            if (this.golfTournament.pointsFormat == 1) {
+                if (hole.holepar - 2 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-eagle">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar == hole.holestrokes) {
-                return '<span class="score-stroke  score-par">' + hole.holestrokes + '</span>';
-            }
+                if (hole.holepar - 1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-birdie">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar + 1 == hole.holestrokes) {
-                return '<span class="score-stroke  score-bogey">' + hole.holestrokes + '</span>';
-            }
+                if (hole.holepar == hole.holestrokes) {
+                    return '<span class="score-stroke  score-par">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar + 2 <= hole.holestrokes) {
-                return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
+                if (hole.holepar + 1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-bogey">' + hole.holestrokes + '</span>';
+                }
+
+                if (hole.holepar + 2 <= hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
+                }
+            } else {
+                if (5 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-eagle">' + hole.holestrokes + '</span>';
+                }
+
+                if (2 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-birdie">' + hole.holestrokes + '</span>';
+                }
+
+                if (0 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-par">' + hole.holestrokes + '</span>';
+                }
+
+                if (-1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-bogey">' + hole.holestrokes + '</span>';
+                }
+
+                if (8 >= hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
+                }
             }
 
         }
@@ -753,33 +779,59 @@ export class GolfLeaderboardComponent implements OnInit {
         if (hole.holestrokes == undefined)
             return '<span class="score-stroke holestroke-color score-normal">-</span>';
 
-        if (hole.holestrokes == 0)
-            return '<span class="score-stroke holestroke-color score-normal">-</span>';
-
+        if (hole.holestrokes == 0 && hole.holestatus != "2")
+           // if (this.golfTournament.pointsFormat == 1)
+                return '<span class="score-stroke holestroke-color score-normal">-</span>';
+          //  else
+          //      return '<span class="score-stroke holestroke-color score-normal">0</span>';
 
 
 
         if (hole.holepar != undefined && hole.holestatus == "2") {
-            if (hole.holepar - 2 == hole.holestrokes) {
-                return '<span class="score-stroke  score-eagle  holestroke-color">' + hole.holestrokes + '</span>';
-            }
+            if (this.golfTournament.pointsFormat == 1) {
+                if (hole.holepar - 2 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-eagle  holestroke-color">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar - 1 == hole.holestrokes) {
-                return '<span class="score-stroke  score-birdie  holestroke-color">' + hole.holestrokes + '</span>';
-            }
+                if (hole.holepar - 1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-birdie  holestroke-color">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar == hole.holestrokes) {
-                return '<span class="score-stroke  score-par holestroke-color">' + hole.holestrokes + '</span>';
-            }
+                if (hole.holepar == hole.holestrokes) {
+                    return '<span class="score-stroke  score-par holestroke-color">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar + 1 == hole.holestrokes) {
-                return '<span class="score-stroke  score-bogey holestroke-color">' + hole.holestrokes + '</span>';
-            }
+                if (hole.holepar + 1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                }
 
-            if (hole.holepar + 2 <= hole.holestrokes) {
-                return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                if (hole.holepar + 2 <= hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                }
+                else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
+            } else
+            {
+                if ( 5 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-eagle  holestroke-color">' + hole.holestrokes + '</span>';
+                }
+
+                if (2  == hole.holestrokes) {
+                    return '<span class="score-stroke  score-birdie  holestroke-color">' + hole.holestrokes + '</span>';
+                }
+
+                if (0 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-par holestroke-color">' + hole.holestrokes + '</span>';
+                }
+
+                if (-1 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                }
+
+                if ( 8 >= hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                }
+                else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
             }
-            else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
         }
 
         return '<span class="score-stroke holestroke-color score-normal">-</span>';
@@ -797,7 +849,10 @@ export class GolfLeaderboardComponent implements OnInit {
             return "-";
 
         if (hole.holestrokes == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return "0";
         return hole.holestrokes;
     }
 
@@ -810,7 +865,11 @@ export class GolfLeaderboardComponent implements OnInit {
             return "-";
 
         if (hole.holescore == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return "0";
+
         return hole.holescore;
     }
 
@@ -823,7 +882,10 @@ export class GolfLeaderboardComponent implements OnInit {
             return "-";
 
         if (hole.holescore == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return "0";
 
 
 
@@ -841,7 +903,10 @@ export class GolfLeaderboardComponent implements OnInit {
             return "-";
 
         if (hole.holestrokes == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return "0";
 
         return hole.holestrokes;
     }
@@ -850,7 +915,11 @@ export class GolfLeaderboardComponent implements OnInit {
 
         let total = this._getPlayerHoleStrokeTotal(player, index);
         if (total == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return 0;
+        
 
 
         return total;
@@ -861,7 +930,10 @@ export class GolfLeaderboardComponent implements OnInit {
         //  let total = this._getPlayerHoleStrokeTotal(player, index);
         let total = this._getPlayerHoleScoreTotal(player, index);
         if (total == 0)
-            return "-";
+            if (this.golfTournament.pointsFormat == 1)
+                return "-";
+            else
+                return "0";
 
         if (total == undefined)
             return "-";
@@ -1019,7 +1091,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
         let selectedRoundId = this.selectedRoundId;
 
-
+        let pointsFormat = tournament.pointsFormat;
 
         this.reloadGolfSelectedPlayer(tournament.golfPlayers);
 
@@ -1104,10 +1176,14 @@ export class GolfLeaderboardComponent implements OnInit {
 
             } else {
 
-
-                // Ascending
-                if (a.tournamentscore > b.tournamentscore) return 1;
-                if (a.tournamentscore < b.tournamentscore) return -1;
+                if (pointsFormat == 1) {
+                    // Ascending
+                    if (a.tournamentscore > b.tournamentscore) return 1;
+                    if (a.tournamentscore < b.tournamentscore) return -1;
+                } else {
+                    if (a.tournamentscore > b.tournamentscore) return -1;
+                    if (a.tournamentscore < b.tournamentscore) return 1;
+                }
             }
 
 
@@ -1130,11 +1206,14 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
-
-            //// If the tournamentscore number is the same between both items, sort by round
-            if (aRound.roundscore > bRound.roundscore) return -1;
-            if (aRound.roundscore < bRound.roundscore) return 1;
-
+            if (pointsFormat == 1) {
+                //// If the tournamentscore number is the same between both items, sort by round
+                if (aRound.roundscore > bRound.roundscore) return -1;
+                if (aRound.roundscore < bRound.roundscore) return 1;
+            } else {
+                if (aRound.roundscore > bRound.roundscore) return 1;
+                if (aRound.roundscore < bRound.roundscore) return -1;
+            }
 
 
 
@@ -1217,6 +1296,8 @@ export class GolfLeaderboardComponent implements OnInit {
         let selectedRoundId = roundId;
         // this.getPlayersOnHoleGroup((res.json() as golfTournamentDTO).golfPlayers, this.selectedRoundId);
 
+        let pointsFormat = this.golfTournament.pointsFormat;
+
         if (this.golfTournament != undefined) {
             console.log("reloadSelectedRoundPlayerSorted");
 
@@ -1270,7 +1351,7 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (bRound.roundstrokes == undefined)
                     bRound.roundstrokes = 0;
 
-               
+
 
 
 
@@ -1289,12 +1370,11 @@ export class GolfLeaderboardComponent implements OnInit {
                 // If the first item has a lower number, move it up
 
 
-               
-             
- 
+
+
+
                 // Line 3
-                if (((a.tournamentscore > 0 || a.tournamentscore == 0) && a.tournamentstrokes == 0) || ((b.tournamentscore > 0 || b.tournamentscore == 0) && b.tournamentstrokes == 0))
-                {
+                if (((a.tournamentscore > 0 || a.tournamentscore == 0) && a.tournamentstrokes == 0) || ((b.tournamentscore > 0 || b.tournamentscore == 0) && b.tournamentstrokes == 0)) {
 
                     var aTScore = a.tournamentscore;
                     var bTScore = b.tournamentscore;
@@ -1305,20 +1385,28 @@ export class GolfLeaderboardComponent implements OnInit {
                         bTScore = bTScore * -0.000000001;
 
                     if (a.tournamentscore > 0 && b.tournamentscore > 0) {
-                        if (aTScore > bTScore) return -1;
-                        if (aTScore < bTScore) return 1;
+                  
+                            if (aTScore > bTScore) return -1;
+                            if (aTScore < bTScore) return 1;
+                       
                     }
 
-                    // Ascending
-                    if (aTScore > bTScore) return 1;
-                    if (aTScore < bTScore) return -1;
+               
+                        // Ascending
+                        if (aTScore > bTScore) return 1;
+                        if (aTScore < bTScore) return -1;
+                 
 
                 } else {
 
-
-                    // Ascending
-                    if (a.tournamentscore > b.tournamentscore) return 1;
-                    if (a.tournamentscore < b.tournamentscore) return -1;
+                    if (pointsFormat == 1) {
+                        // Ascending
+                        if (a.tournamentscore > b.tournamentscore) return 1;
+                        if (a.tournamentscore < b.tournamentscore) return -1;
+                    } else {
+                        if (a.tournamentscore > b.tournamentscore) return -1;
+                        if (a.tournamentscore < b.tournamentscore) return 1;
+                    }
                 }
 
 
@@ -1348,9 +1436,13 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
                 //// If the tournamentscore number is the same between both items, sort by round
-                if (aRound.roundscore > bRound.roundscore) return -1;
-                if (aRound.roundscore < bRound.roundscore) return 1;
-
+                if (pointsFormat == 1) {
+                    if (aRound.roundscore > bRound.roundscore) return -1;
+                    if (aRound.roundscore < bRound.roundscore) return 1;
+                } else {
+                    if (aRound.roundscore > bRound.roundscore) return 1;
+                    if (aRound.roundscore < bRound.roundscore) return -1;
+                }
 
 
 
@@ -1394,7 +1486,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
         let self = this;
-        let myIndex = holeIndex;
+        let myIndex = holeIndex; 
 
         // Hole order
         let len = players.sort(function (a: any, b: any) {
@@ -1500,7 +1592,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
-    public getPlayersOnHoleGroup(players: any, selectedRound: any) {
+    public getPlayersOnHoleGroup(players: any, selectedRound: any, pointsFormat: number) {
 
 
         let self = this;
@@ -1510,6 +1602,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let key = "matchid";
 
         let playerHoleGroup = new Array();
+      
 
         for (let i = 0; i < players.length; i++) {
             let item = players[i];
@@ -1608,9 +1701,16 @@ export class GolfLeaderboardComponent implements OnInit {
                 } else {
 
 
-                    // Ascending
-                         if (a.tournamentscore > b.tournamentscore) return 1;
-                    if (a.tournamentscore < b.tournamentscore) return -1;
+                    if (pointsFormat == 1) {
+
+                        // Ascending
+                        if (a.tournamentscore > b.tournamentscore) return 1;
+                        if (a.tournamentscore < b.tournamentscore) return -1;
+                    } else {
+                        // Descending
+                        if (a.tournamentscore > b.tournamentscore) return -1;
+                        if (a.tournamentscore < b.tournamentscore) return 1;
+                    }
                 }
 
                 //// Ascending
@@ -1630,10 +1730,15 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
 
+                if (pointsFormat == 1) {
 
-                //// If the tournamentscore number is the same between both items, sort by round
-                if (aRound.roundscore > bRound.roundscore) return -1;
-                if (aRound.roundscore < bRound.roundscore) return 1;
+                    //// If the tournamentscore number is the same between both items, sort by round
+                    if (aRound.roundscore > bRound.roundscore) return -1;
+                    if (aRound.roundscore < bRound.roundscore) return 1;
+                } else {
+                    if (aRound.roundscore > bRound.roundscore) return 1;
+                    if (aRound.roundscore < bRound.roundscore) return -1;
+                }
 
 
                 if (a.playerid > b.playerid) return -1;

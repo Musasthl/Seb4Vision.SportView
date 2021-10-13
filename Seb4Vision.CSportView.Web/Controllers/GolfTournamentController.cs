@@ -42,17 +42,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
             try
             {
 
-      
+
 
                 var resPlayers = new Dictionary<long, GolfPlayerDTO>();
 
                 string appSettingsTournamentId = _config.GetSection("AppSettings").GetSection("TournamentId").Value;
 
-     
+
 
 
                 EGolfPointsFormat pointsFormat = GolfGamePointsFormatHelper.GetPointsFormat(_config.GetSection("AppSettings").GetSection("GolfPointsFormat").Value);
-       
+
 
                 Golf.Data.Models.Tournament dbTournament = null;
 
@@ -82,7 +82,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     enddate = dbTournament.EndDate,
                     location = dbCourse.Description,
                     courseholes = courseholes,
-                    courses = new List<GolfTournamentCourseDTO>()
+                    courses = new List<GolfTournamentCourseDTO>(),
+                    pointsFormat = (int)pointsFormat
 
                 };
 
@@ -92,7 +93,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                 {
                     con.Open();
                     StringBuilder sb = new StringBuilder();
-                     
+
                     // sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
 
 
@@ -153,7 +154,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             if (res["courseId"] != null)
                                 player.courseId = res["courseId"].ToString();
 
-                 
+
 
 
 
@@ -216,7 +217,11 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                 player.tournamentpar += par;
                             }
 
-                            player.tournamentscore = player.tournamentstrokes - player.tournamentpar;
+
+                            if (pointsFormat == EGolfPointsFormat.ModifiedStablefordAwardPoints)
+                                player.tournamentscore = player.tournamentstrokes;
+                            else
+                                player.tournamentscore = player.tournamentstrokes - player.tournamentpar;
 
                             // Round
 
@@ -263,7 +268,10 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     round.roundcompletedstrokes += strokes;
                                     round.roundcompletedpar += par;
 
-                                    round.roundscore = round.roundcompletedstrokes - round.roundcompletedpar;
+                                    if (pointsFormat == EGolfPointsFormat.ModifiedStablefordAwardPoints)
+                                        round.roundscore = round.roundcompletedstrokes;
+                                    else
+                                        round.roundscore = round.roundcompletedstrokes - round.roundcompletedpar;
                                 }
 
 
@@ -307,9 +315,16 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     var hole = round.holes[holeid];
                                     hole.holestrokes += strokes;
                                     hole.holepar = par;
-                                    if (hole.holestrokes > 0)
-                                        hole.holescore = hole.holestrokes - hole.holepar;
 
+                                    if (pointsFormat == EGolfPointsFormat.ModifiedStablefordAwardPoints)
+                                    {
+                                        hole.holescore = hole.holestrokes;
+                                    }
+                                    else
+                                    {
+                                        if (hole.holestrokes > 0)
+                                            hole.holescore = hole.holestrokes - hole.holepar;
+                                    }
 
                                     hole.holestatus = holestatus;
                                     hole.backstart = backstart;
@@ -349,7 +364,12 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     + round.holes[4].holepar + round.holes[5].holepar + round.holes[6].holepar + round.holes[7].holepar
                                     + round.holes[8].holepar + round.holes[9].holepar;
 
-                                    round.first9score = first9Strokes - first9Par;
+
+                                    if (pointsFormat == EGolfPointsFormat.ModifiedStablefordAwardPoints)
+                                    {
+                                        round.first9score = first9Strokes;
+                                    }
+                                    else round.first9score = first9Strokes - first9Par;
 
                                 }
                                 else
@@ -367,7 +387,13 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     + round.holes[13].holepar + round.holes[14].holepar + round.holes[15].holepar + round.holes[16].holepar
                                     + round.holes[17].holepar + round.holes[18].holepar;
 
-                                    round.last9score = last9Strokes - last9Par;
+
+                                    if (pointsFormat == EGolfPointsFormat.ModifiedStablefordAwardPoints)
+                                    {
+                                        round.last9score = last9Strokes;
+                                    }
+                                    else
+                                        round.last9score = last9Strokes - last9Par;
                                 }
                                 else
                                     round.last9done = false;
