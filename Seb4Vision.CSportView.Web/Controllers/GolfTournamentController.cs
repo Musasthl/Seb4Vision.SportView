@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Seb4Vision.CSportView.Golf.Data;
 using Seb4Vision.CSportView.Golf.Data.DTO;
+using Seb4Vision.CSportView.Web.Enums;
+using Seb4Vision.CSportView.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +42,17 @@ namespace Seb4Vision.CSportView.Web.Controllers
             try
             {
 
+      
 
                 var resPlayers = new Dictionary<long, GolfPlayerDTO>();
 
                 string appSettingsTournamentId = _config.GetSection("AppSettings").GetSection("TournamentId").Value;
 
+     
+
+
+                EGolfPointsFormat pointsFormat = GolfGamePointsFormatHelper.GetPointsFormat(_config.GetSection("AppSettings").GetSection("GolfPointsFormat").Value);
+       
 
                 Golf.Data.Models.Tournament dbTournament = null;
 
