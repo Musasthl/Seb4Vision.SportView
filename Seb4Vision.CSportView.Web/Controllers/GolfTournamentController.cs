@@ -97,7 +97,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     // sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
 
 
-                    sb.Append("SELECT p.PlayerId, r.RoundId, ch.HoleNumber as HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
+                    sb.Append("SELECT p.PlayerId, r.RoundId, ch.HoleNumber as HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId, p.MatchidIndex  ");
 
                     sb.Append(", sum(st.strokes) as TotalStrokes, sum(ch.par) as TotalPar,");
                     sb.Append(" sum(st.strokes) - sum(ch.par) as RoundScore");
@@ -139,6 +139,18 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                     player.matchid = long.Parse(res["MatchId"].ToString());
                                 }
                             }
+
+                            if (res["MatchidIndex"] != null)
+                            {
+                                if (!string.IsNullOrWhiteSpace(res["MatchidIndex"].ToString()))
+                                {
+                                    player.matchidIndex = int.Parse(res["MatchidIndex"].ToString());
+                                }
+                            }
+
+                            
+
+
 
                             if (res["PhotoPath"] != null)
                                 player.photopath = res["PhotoPath"].ToString();

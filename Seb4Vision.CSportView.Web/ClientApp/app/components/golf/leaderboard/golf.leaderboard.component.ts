@@ -99,10 +99,13 @@ export class GolfLeaderboardComponent implements OnInit {
 
         this.matchId = '1557397485782';
 
-        // this.refreshData();
-        this.interval = setInterval(() => {
+       // this.refreshData();
+        // Uncomment below for auto refresh
+         this.interval = setInterval(() => {
             this.refreshData();
         }, this.autoRefreshInterval);
+      
+
 
         /*
 
@@ -637,8 +640,16 @@ export class GolfLeaderboardComponent implements OnInit {
         if (round.roundstrokes == undefined)
             return "-";
 
-        if (round.first9done == true && round.last9done == true)
-            return round.roundstrokes;
+        if (round.first9done == true && round.last9done == true) {
+            if (this.golfTournament.pointsFormat == 1)
+                return round.roundstrokes;
+            else {
+                if (round.backstart == "1")
+                    return "F *";
+                else
+                    return "F";
+            }
+        }
 
         return "-";
     }
@@ -715,10 +726,10 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
         if (hole.holestrokes == 0 && hole.holestatus != "2")
-          //  if (this.golfTournament.pointsFormat == 1)
-                return '<span class="score-stroke">-</span>';
-          //  else
-              //  return '<span class="score-stroke">0</span>';
+            //  if (this.golfTournament.pointsFormat == 1)
+            return '<span class="score-stroke">-</span>';
+        //  else
+        //  return '<span class="score-stroke">0</span>';
 
 
         if (hole.holepar != undefined && hole.holestatus == "2") {
@@ -743,6 +754,12 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (hole.holepar + 2 <= hole.holestrokes) {
                     return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
                 }
+
+                // Need to review the double eagle
+                if (hole.holepar - 3 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-eagle">' + hole.holestrokes + '</span>';
+                }
+
             } else {
                 if (5 == hole.holestrokes) {
                     return '<span class="score-stroke  score-eagle">' + hole.holestrokes + '</span>';
@@ -760,7 +777,11 @@ export class GolfLeaderboardComponent implements OnInit {
                     return '<span class="score-stroke  score-bogey">' + hole.holestrokes + '</span>';
                 }
 
-                if (8 >= hole.holestrokes) {
+                if (8 <= hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-eagle">' + hole.holestrokes + '</span>';
+                }
+
+                if (-3 >= hole.holestrokes) {
                     return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
                 }
             }
@@ -780,10 +801,10 @@ export class GolfLeaderboardComponent implements OnInit {
             return '<span class="score-stroke holestroke-color score-normal">-</span>';
 
         if (hole.holestrokes == 0 && hole.holestatus != "2")
-           // if (this.golfTournament.pointsFormat == 1)
-                return '<span class="score-stroke holestroke-color score-normal">-</span>';
-          //  else
-          //      return '<span class="score-stroke holestroke-color score-normal">0</span>';
+            // if (this.golfTournament.pointsFormat == 1)
+            return '<span class="score-stroke holestroke-color score-normal">-</span>';
+        //  else
+        //      return '<span class="score-stroke holestroke-color score-normal">0</span>';
 
 
 
@@ -808,14 +829,18 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (hole.holepar + 2 <= hole.holestrokes) {
                     return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
                 }
+                // Need to review the double eagle
+                if (hole.holepar - 3 == hole.holestrokes) {
+                    return '<span class="score-stroke  score-dbl-eagle">' + hole.holestrokes + '</span>';
+                }
+
                 else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
-            } else
-            {
-                if ( 5 == hole.holestrokes) {
+            } else {
+                if (5 == hole.holestrokes) {
                     return '<span class="score-stroke  score-eagle  holestroke-color">' + hole.holestrokes + '</span>';
                 }
 
-                if (2  == hole.holestrokes) {
+                if (2 == hole.holestrokes) {
                     return '<span class="score-stroke  score-birdie  holestroke-color">' + hole.holestrokes + '</span>';
                 }
 
@@ -827,8 +852,13 @@ export class GolfLeaderboardComponent implements OnInit {
                     return '<span class="score-stroke  score-bogey holestroke-color">' + hole.holestrokes + '</span>';
                 }
 
-                if ( 8 >= hole.holestrokes) {
-                    return '<span class="score-stroke  score-dbl-bogey holestroke-color">' + hole.holestrokes + '</span>';
+                if (8 <= hole.holestrokes) {
+                 
+                    return '<span class="score-stroke  score-dbl-eagle holestroke-color">' + hole.holestrokes + '</span>';
+                }
+
+                if (-3 >= parseInt(hole.holestrokes)) {
+                    return '<span class="score-stroke  score-dbl-bogey">' + hole.holestrokes + '</span>';
                 }
                 else return '<span class="score-stroke  holestroke-color score-normal">' + hole.holestrokes + '</span>';
             }
@@ -919,7 +949,7 @@ export class GolfLeaderboardComponent implements OnInit {
                 return "-";
             else
                 return 0;
-        
+
 
 
         return total;
@@ -1385,17 +1415,17 @@ export class GolfLeaderboardComponent implements OnInit {
                         bTScore = bTScore * -0.000000001;
 
                     if (a.tournamentscore > 0 && b.tournamentscore > 0) {
-                  
-                            if (aTScore > bTScore) return -1;
-                            if (aTScore < bTScore) return 1;
-                       
+
+                        if (aTScore > bTScore) return -1;
+                        if (aTScore < bTScore) return 1;
+
                     }
 
-               
-                        // Ascending
-                        if (aTScore > bTScore) return 1;
-                        if (aTScore < bTScore) return -1;
-                 
+
+                    // Ascending
+                    if (aTScore > bTScore) return 1;
+                    if (aTScore < bTScore) return -1;
+
 
                 } else {
 
@@ -1486,7 +1516,7 @@ export class GolfLeaderboardComponent implements OnInit {
 
 
         let self = this;
-        let myIndex = holeIndex; 
+        let myIndex = holeIndex;
 
         // Hole order
         let len = players.sort(function (a: any, b: any) {
@@ -1602,7 +1632,7 @@ export class GolfLeaderboardComponent implements OnInit {
         let key = "matchid";
 
         let playerHoleGroup = new Array();
-      
+
 
         for (let i = 0; i < players.length; i++) {
             let item = players[i];
@@ -1671,6 +1701,8 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (b.tournamentstrokes == undefined)
                     b.tournamentstrokes = 0;
 
+
+                /* Disabled this when adding match id index sort
                 // Descending
                 if (aRound.totalholesplayed > bRound.totalholesplayed) return -1;
                 if (aRound.totalholesplayed < bRound.totalholesplayed) return 1;
@@ -1743,6 +1775,9 @@ export class GolfLeaderboardComponent implements OnInit {
 
                 if (a.playerid > b.playerid) return -1;
                 if (a.playerid < b.playerid) return 1;
+                */
+                if (a.matchidIndex > b.matchidIndex) return 1;
+                if (a.matchidIndex < b.matchidIndex) return -1;
 
                 return 0;
 

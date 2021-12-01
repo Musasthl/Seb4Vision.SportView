@@ -27,6 +27,8 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public string courseIndexId;
         public string colorCode;
 
+        public int? matchidIndex { get; set; }
+
         public GolfPlayerDTO()
         {
             for (long i = 1; i <= 4; i++)
