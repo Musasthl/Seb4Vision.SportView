@@ -99,11 +99,11 @@ export class GolfLeaderboardComponent implements OnInit {
 
         this.matchId = '1557397485782';
 
-       // this.refreshData();
+        this.refreshData();
         // Uncomment below for auto refresh
-         this.interval = setInterval(() => {
-            this.refreshData();
-        }, this.autoRefreshInterval);
+        // this.interval = setInterval(() => {
+        //    this.refreshData();
+        //}, this.autoRefreshInterval);
       
 
 
@@ -1654,9 +1654,13 @@ export class GolfLeaderboardComponent implements OnInit {
         }
 
         var len = playerHoleGroup.sort(function (a: any, b: any) {
+            // From top to bottom
+            //if (a.matchid > b.matchid) return -1;
+            //if (a.matchid < b.matchid) return 1;
 
-            if (a.matchid > b.matchid) return -1;
-            if (a.matchid < b.matchid) return 1;
+            // From bottom to top
+            if (a.matchid > b.matchid) return 1;
+            if (a.matchid < b.matchid) return -1;
             return 0;
         });
 
@@ -1776,6 +1780,8 @@ export class GolfLeaderboardComponent implements OnInit {
                 if (a.playerid > b.playerid) return -1;
                 if (a.playerid < b.playerid) return 1;
                 */
+
+                // From  top to bottm
                 if (a.matchidIndex > b.matchidIndex) return 1;
                 if (a.matchidIndex < b.matchidIndex) return -1;
 

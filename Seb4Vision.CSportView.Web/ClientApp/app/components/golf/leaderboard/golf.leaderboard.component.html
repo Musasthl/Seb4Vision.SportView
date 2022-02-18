@@ -966,7 +966,18 @@
 
 
                     </div>
+                </div>                
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: right; font-size: 18px; margin-left: -31px;">
+
+                        <span style="color: white; font-weight: bold">COURSE INDICATOR: </span>
+                        <ng-container *ngFor="let course of  golfTournament.courses; let i = index;  " [attr.data-index]="i">
+
+                            <div style="display: inline-block; width: 33px; height: 10px;" [innerHtml]="getCourseIndicator(course)"></div>    <span style="color: white; display: inline-block"> {{course.shortDesc}} </span>
+                        </ng-container>
+                    </div>
                 </div>
+
                 <div class=" row">
                     <div class="col-sm-12 player" style="text-align: left;">
 
@@ -1007,6 +1018,7 @@
                                                     <td class="tableHeader td-hole-number"><span class="score-stroke">18</span></td>
                                                     <td class="tableHeader td-group-score td-hole-highlighted"><span class="group-total">IN</span></td>
                                                     <td class="tableHeader td-group-score td-hole-highlighted"><span class="group-total">TOT</span></td>
+                                                    <td class="tableHeader td-hole-number"><span class="score-stroke"></span></td>
                                                 </tr>
                                                 <tr class="playerRow row cheat-table-tr-spacing">
                                                     <td class="tableHeader">
@@ -1035,6 +1047,8 @@
                                                     <td class="tableHeader td-hole-number"><span class="score-stroke">{{getHolePar(18)}}</span></td>
                                                     <td class="tableHeader td-group-score td-hole-highlighted"><span class="group-total">{{getCourseFinalTotalPar()}}</span></td>
                                                     <td class="tableHeader td-group-score td-hole-highlighted"><span class="group-total">{{getCourseTotalPar()}}</span></td>
+
+                                                    <td class="tableHeader td-hole-number"> </td>
                                                 </tr>
 
 
@@ -1050,9 +1064,9 @@
                                             <tbody>
 
                                                 <!--   [ngClass]="{'hide-element': player.tournamentstrokes == 0}"
-                                                    [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}">
+                                        [ngClass]="{'hide-element': (getPlayerRoundStrokes(selectedRoundId, player) == 0 || getPlayerRoundStrokes(selectedRoundId, player) == '-')}">
 
-                                                -->
+                                    -->
                                                 <tr class="playerRow row cheat-table-tr-spacing" *ngFor="let player of golfTournament.golfPlayers  ; let i = index;  "
                                                     [attr.data-index]="i" (click)="onPlayerClick(golfTournament.tournamentid,  player)"
                                                     [ngClass]="{'hide-element': (DiPlayerPlayedOnRound(selectedRoundId, player) == false  )}">
@@ -1091,6 +1105,12 @@
                                                     <td class="td-hole-number"> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 18)"></span></td>
                                                     <td class=" td-group-score td-hole-highlighted"> <span class="group-total">{{getPlayerRoundFinalStrokes(selectedRoundId, player)}}</span></td>
                                                     <td class=" td-group-score td-hole-highlighted"> <span class="group-total">{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
+
+
+                                                    <td class="td-hole-number" style=" text-align: center;">
+                                                        <div style=" vertical-align: middle; height: 20px;" [innerHtml]="getCourseIndicatorById(selectedRoundId, player)"></div>
+                                                    </td>
+
                                                 </tr>
 
 
@@ -1144,6 +1164,18 @@
 
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: right; font-size: 18px; margin-left: -31px;">
+
+                        <span style="color: white; font-weight: bold">COURSE INDICATOR: </span>
+                        <ng-container *ngFor="let course of  golfTournament.courses; let i = index;  " [attr.data-index]="i">
+
+                            <div style="display: inline-block; width: 33px; height: 10px;" [innerHtml]="getCourseIndicator(course)"></div>    <span style="color: white; display: inline-block"> {{course.shortDesc}} </span>
+                        </ng-container>
+                    </div>
+                </div>
+
                 <div class=" row">
                     <div class="col-sm-12 player" style="text-align: left;">
 
@@ -1183,6 +1215,7 @@
                                                 <td class="tableHeader"><span class="score-stroke">18</span></td>
                                                 <td class="tableHeader td-group-score"><span class="group-total">IN</span></td>
                                                 <td class="tableHeader td-group-score"><span class="group-total">TOT</span></td>
+                                                <td class="tableHeader"></td>
                                             </tr>
                                             <tr class="playerRow row cheat-table-tr-spacing">
                                                 <td class="tableHeader">
@@ -1211,6 +1244,7 @@
                                                 <td class="tableHeader td-hole-number"><span class="score-stroke">{{getHolePar(18)}}</span></td>
                                                 <td class="tableHeader  td-group-score  td-hole-highlighted"><span class="group-total">{{getCourseFinalTotalPar()}}</span></td>
                                                 <td class="tableHeader  td-group-score  td-hole-highlighted"><span class="group-total">{{getCourseTotalPar()}}</span></td>
+                                                <td class="tableHeader td-hole-number"></td>
                                             </tr>
 
                                         </thead>
@@ -1271,6 +1305,11 @@
                                                     <td class="td-hole-number"> <span [innerHTML]="getPlayerRoundHoleStrokeElementOnTable(selectedRoundId,player, 18)"></span></td>
                                                     <td class=" td-group-score  td-hole-highlighted"> <span class="group-total">{{getPlayerRoundFinalStrokes(selectedRoundId, player)}}</span></td>
                                                     <td class=" td-group-score  td-hole-highlighted"> <span class="group-total">{{getPlayerFullRoundStrokes(selectedRoundId, player)}}</span></td>
+
+                                                    <td class="td-hole-number" style=" text-align: center;">
+                                                        <div style=" vertical-align: middle; height: 20px;" [innerHtml]="getCourseIndicatorById(selectedRoundId, player)"></div>
+                                                    </td>
+
                                                 </tr>
 
 
