@@ -101,9 +101,9 @@ export class GolfLeaderboardComponent implements OnInit {
 
         this.refreshData();
         // Uncomment below for auto refresh
-        // this.interval = setInterval(() => {
-        //    this.refreshData();
-        //}, this.autoRefreshInterval);
+         this.interval = setInterval(() => {
+            this.refreshData();
+        }, this.autoRefreshInterval);
       
 
 
