@@ -53,6 +53,12 @@ namespace Seb4Vision.CSportView.Web.Controllers
 
                 EGolfPointsFormat pointsFormat = GolfGamePointsFormatHelper.GetPointsFormat(_config.GetSection("AppSettings").GetSection("GolfPointsFormat").Value);
 
+                string usePlayerFullTeamName = "0";
+                if (_config.GetSection("AppSettings").GetSection("UsePlayerFullTeamName").Exists())
+                    usePlayerFullTeamName = _config.GetSection("AppSettings").GetSection("UsePlayerFullTeamName").Value;
+
+
+
 
                 Golf.Data.Models.Tournament dbTournament = null;
 
@@ -83,7 +89,8 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     location = dbCourse.Description,
                     courseholes = courseholes,
                     courses = new List<GolfTournamentCourseDTO>(),
-                    pointsFormat = (int)pointsFormat
+                    pointsFormat = (int)pointsFormat,
+                    usePlayerFullTeamName = int.Parse(usePlayerFullTeamName)
 
                 };
 
@@ -97,7 +104,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     // sb.Append("SELECT p.PlayerId, r.RoundId, st.HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId  ");
 
 
-                    sb.Append("SELECT p.PlayerId, r.RoundId, ch.HoleNumber as HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId, p.MatchidIndex  ");
+                    sb.Append("SELECT p.PlayerId, r.RoundId, ch.HoleNumber as HoleId, c.Par, r.description as Round,  p.FirstName, p.LastName, p.TeamFullName, p.PhotoPath, p.Country, sc.back9start, st.HoleStatus, sc.TeeTime, p.MatchId, p.MatchidIndex  ");
 
                     sb.Append(", sum(st.strokes) as TotalStrokes, sum(ch.par) as TotalPar,");
                     sb.Append(" sum(st.strokes) - sum(ch.par) as RoundScore");
@@ -114,7 +121,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                     if (!string.IsNullOrEmpty(appSettingsTournamentId))
                         sb.Append($" AND sc.Tournamentid = {appSettingsTournamentId} ");
 
-                    sb.Append("group by p.playerid, p.firstname, p.lastname, p.photopath, r.roundid, ch.HoleNumber , sc.back9start, st.HoleStatus ");
+                    sb.Append("group by p.playerid, p.firstname, p.lastname, p.TeamFullName, p.photopath, r.roundid, ch.HoleNumber , sc.back9start, st.HoleStatus ");
 
 
                     sb.Append("order by r.Description, RoundScore ");
@@ -148,7 +155,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                                 }
                             }
 
-                            
+
 
 
 
@@ -220,6 +227,7 @@ namespace Seb4Vision.CSportView.Web.Controllers
                             {
                                 player.firstname = res["FirstName"].ToString();
                                 player.lastname = res["LastName"].ToString();
+                                player.teamfullname = res["TeamFullName"].ToString();
                                 resPlayers.Add(player.playerid, player);
                             }
 

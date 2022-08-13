@@ -11,6 +11,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public string firstname { get; set; }
 
         public string lastname { get; set; }
+        public string teamfullname { get; set; }
 
         public string photopath { get; set; }
         public string country { get; set; }

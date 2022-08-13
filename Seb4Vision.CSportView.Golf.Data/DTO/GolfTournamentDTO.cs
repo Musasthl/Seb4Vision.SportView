@@ -11,7 +11,7 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public List<GolfTournamentCourseHoleDTO> courseholes;
         public List<GolfTournamentCourseDTO> courses = new List<GolfTournamentCourseDTO>();
         public int pointsFormat;
-
+        public int usePlayerFullTeamName { get; set; }
         public string extraDesc { get; set; }
 
         public long tournamentid { get; set; }
@@ -22,5 +22,6 @@ namespace Seb4Vision.CSportView.Golf.Data.DTO
         public string country { get; set; }
         public DateTime begindate { get; set; }
         public DateTime enddate { get; set; }
+   
     }
 }

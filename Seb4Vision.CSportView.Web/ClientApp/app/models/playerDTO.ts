@@ -6,6 +6,7 @@ export interface playerDTO {
     teamID: number;
     name: string;
     surname: string;
+    teamfullname: string;
     preferredName: string;
     jerseyNumber: string;
     photoPath: string;

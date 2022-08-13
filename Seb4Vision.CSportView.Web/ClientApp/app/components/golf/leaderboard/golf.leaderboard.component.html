@@ -726,10 +726,12 @@
                                 <div class="col-sm-4">
                                     <div class="golf-position-index">{{player.position}}</div>
 
-                                    <span>
+                                    <span *ngIf="golfTournament.usePlayerFullTeamName == 1">
+                                        {{player.teamfullname}}
+                                    </span>
 
+                                    <span *ngIf="golfTournament.usePlayerFullTeamName != 1">
                                         {{player.firstname}} {{player.lastname}}
-
                                     </span>
                                 </div>
                                 <div class="col-sm-2">
@@ -1077,10 +1079,16 @@
                                                     <td>
                                                         <div class="golf-position-index" style="margin:  5px">{{player.position}}</div>
 
-                                                        <span>
-                                                            {{player.firstname}} {{player.lastname}}
+                                               
 
-                                                        </span>
+                                                            <span *ngIf="golfTournament.usePlayerFullTeamName == 1">
+                                                                {{player.teamfullname}}
+                                                            </span>
+
+                                                            <span *ngIf="golfTournament.usePlayerFullTeamName != 1">
+                                                                {{player.firstname}} {{player.lastname}}
+                                                            </span>
+ 
                                                     </td>
 
                                                     <td class=" td-group-score black td-hole-highlighted"><span class="group-total blackFont">{{getPlayerTournmanetSocre(player)}}</span></td>
@@ -1275,10 +1283,14 @@
 
                                                         <div class="golf-position-index" style="margin:  5px">{{player.position}}</div>
 
-                                                        <span>
-                                                            {{player.firstname}} {{player.lastname}}
-
+                                                        <span *ngIf="golfTournament.usePlayerFullTeamName == 1">
+                                                            {{player.teamfullname}}
                                                         </span>
+
+                                                        <span *ngIf="golfTournament.usePlayerFullTeamName != 1">
+                                                            {{player.firstname}} {{player.lastname}}
+                                                        </span>
+ 
                                                     </td>
 
                                                     <td class=" td-group-score black  td-hole-highlighted"><span class="group-total blackFont">{{getPlayerTournmanetSocre(player)}}</span></td>
@@ -1336,12 +1348,18 @@
         <div class="myContent-body  player-container fullHeight">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="row">
+                    <div class="row" *ngIf="golfTournament.usePlayerFullTeamName != 1">
                         <h4 class="left playerName" style=" margin-left: 12px;">
                             {{selectedPlayer?.firstname }}
                         </h4>
                         <h1 class="left playerName"> {{selectedPlayer?.lastname}}</h1>
                     </div>
+
+                    <div class="row" *ngIf="golfTournament.usePlayerFullTeamName == 1">
+             
+                        <h1 class="left playerName"> {{selectedPlayer?.teamfullname}}</h1>
+                    </div>
+
                     <div class="row">
                         <Span class="tornament-sub">{{match?.tournament}}</Span>
                     </div>
